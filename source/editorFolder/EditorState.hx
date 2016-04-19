@@ -1,7 +1,7 @@
 package editorFolder ;
 
 import flixel.FlxState;
-import flixel.group.FlxTypedGroup;
+import flixel.group.FlxGroup;
 import flixel.FlxSprite;
 
 /**
@@ -24,8 +24,8 @@ class EditorState extends FlxState
 		super.destroy();
 	}
 
-	override public function update():Void
+	override public function update(elapsed:Float):Void
 	{
-		super.update();
+		super.update(elapsed);
 	}
 }

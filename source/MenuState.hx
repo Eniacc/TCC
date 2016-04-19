@@ -1,67 +1,89 @@
 package;
 
 import editorFolder.EditorState;
+import flixel.util.FlxColor;
+import playStateFolder.PlayState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.input.gamepad.FlxGamepad;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
-import flixel.util.FlxMath;
-import flixel.util.FlxDestroyUtil;
-import playStateFolder.PlayState;
+import flixel.math.FlxMath;
+import openfl.system.System;
 
-/**
- * A FlxState which can be used for the game's menu.
- */
 class MenuState extends FlxState
 {
-	/**
-	 * Function that is called up when to state is created to set it up. 
-	 */
-	
+	private var txtTitle:FlxText;
 	private var btnPlay:FlxButton;
 	private var btnEditor:FlxButton;
+	private var btnOptions:FlxButton;
+	#if desktop
+	private var btnExit:FlxButton;
+	#end
 	
 	override public function create():Void
 	{
-		btnPlay = new FlxButton(0, 0, "Play", clickPlay);
-		btnPlay.x = FlxG.width / 2 - btnPlay.width / 2;
-		btnPlay.y = FlxG.height / 2 - btnPlay.height / 2;
-		add(btnPlay);
+		txtTitle = new FlxText(0, 0, 0, "SHMUP\nSANDBOX", 100);
+		txtTitle.alignment = CENTER;
+		txtTitle.screenCenter(X);
+		txtTitle.y = 80;
+		add(txtTitle);
+		
+		#if desktop
+		btnExit = new FlxButton(0, 0, "Exit", clickExit);
+		btnExit.x = (FlxG.width / 2) - (btnExit.width / 2);
+		btnExit.y = FlxG.height - btnExit.height - 20;
+		//btnExit.loadGraphic(AssetPaths.button__png, true, 20, 20);
+		add(btnExit);
+		#end
+
+		btnOptions = new FlxButton(0, 0, "Options", clickOptions);
+		btnOptions.x = (FlxG.width / 2) - (btnOptions.width / 2);
+		btnOptions.y = FlxG.height - btnOptions.height - 20;
+		#if desktop
+		btnOptions.y = btnExit.y - btnOptions.height - 10;
+		#end
+		//btnOptions.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		add(btnOptions);
+		
 		btnEditor = new FlxButton(0, 0, "Editor", clickEditor);
-		btnEditor.x = FlxG.width / 2 - btnEditor.width / 2;
-		btnEditor.y = FlxG.height / 2 - btnEditor.height / 2 + 20;
+		btnEditor.x = (FlxG.width / 2) - (btnEditor.width / 2);
+		btnEditor.y = btnOptions.y - btnEditor.height - 10;
+		//btnEditor.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnEditor);
+
+		btnPlay = new FlxButton(0, 0, "Play", clickPlay);
+		btnPlay.x = (FlxG.width / 2) - (btnPlay.width / 2);
+		btnPlay.y = btnEditor.y - btnPlay.height - 10;	
+		//btnPlay.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		add(btnPlay);
+		
+		FlxG.camera.fade(FlxColor.BLACK, .33, true);
 		
 		super.create();
 	}
-	
-	private function clickPlay()
+
+	override public function update(elapsed:Float):Void
 	{
+		super.update(elapsed);
+	}
+	
+	private function clickPlay():Void {
 		FlxG.switchState(new PlayState());
 	}
 	
-	private function clickEditor()
-	{
+	private function clickEditor():Void {
 		FlxG.switchState(new EditorState());
 	}
-	
-	/**
-	 * Function that is called when this state is destroyed - you might want to 
-	 * consider setting all objects this state uses to null to help garbage collection.
-	 */
-	override public function destroy():Void
-	{
-		super.destroy();
-		btnPlay = FlxDestroyUtil.destroy(btnPlay);
-		btnEditor = FlxDestroyUtil.destroy(btnEditor);
+	 
+	private function clickOptions():Void {
+		FlxG.switchState(new OptionsState());
 	}
-
-	/**
-	 * Function that is called once every frame.
-	 */
-	override public function update():Void
-	{
-		super.update();
-	}	
+	
+	#if desktop
+	private function clickExit():Void {
+		System.exit(0);
+	}
+	#end
 }

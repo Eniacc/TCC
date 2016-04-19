@@ -1,46 +1,40 @@
-package playStateFolder ;
+package playStateFolder;
 
-import flixel.addons.weapon.FlxBullet;
-import flixel.addons.weapon.FlxWeapon;
-import flixel.effects.particles.FlxParticle;
 import flixel.FlxG;
-import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.group.FlxGroup;
-import flixel.input.gamepad.FlxGamepad;
+import flixel.effects.particles.FlxEmitter;
+import flixel.effects.particles.FlxParticle;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.gamepad.FlxGamepadInputID;
-import flixel.input.gamepad.id.XInputID;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
-import flixel.util.FlxDestroyUtil;
-import flixel.util.FlxCollision;
-import openfl.display.FPS;
-import flixel.math.FlxRandom;
-import flixel.effects.particles.FlxEmitter;
+import flixel.math.FlxMath;
 import flixel.util.FlxColor;
+import flixel.util.FlxDestroyUtil;
+import flixel.util.FlxSpriteUtil;
+import openfl.display.FPS;
+import playStateFolder.Player;
 
-/**
- * A FlxState which can be used for the actual gameplay.
- */
 class PlayState extends FlxState
 {
+	
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
 	
-	 private var player:Player;
-	 private var grpEnemy:FlxTypedGroup<Enemy>;
-	 private var grpBullet:FlxTypedGroup<PBullet>;
-	 private var sndBullet:FlxSound;
-	 private var sndExplosion:FlxSound;
-	 private var countFrame:Float = 0;
-	 
-	 private var fps:FPS = new FPS();
-	 //private var weapon:FlxWeapon = new FlxWeapon("arma", null, Bullet);
-	 
-	 private var _explosionPixel:FlxParticle;
+	private var player:Player;
+	private var grpEnemy:FlxTypedGroup<Enemy>;
+	private var grpBullet:FlxTypedGroup<PBullet>;
+	private var sndBullet:FlxSound;
+	private var sndExplosion:FlxSound;
+	private var countFrame:Float = 0;
+
+	private var fps:FPS = new FPS();
+	//private var weapon:FlxWeapon = new FlxWeapon("arma", null, Bullet);
+
+	private var _explosionPixel:FlxParticle;
 	 
 	override public function create():Void
 	{
@@ -58,7 +52,8 @@ class PlayState extends FlxState
 		//trace(FlxG.overlap(player, grpEnemy));
 		
 		sndBullet = FlxG.sound.load(AssetPaths.shot1__wav);
-		sndExplosion = FlxG.sound.load(AssetPaths.explosion1__mp3);
+		sndExplosion = FlxG.sound.load(AssetPaths.explosion1__ogg);
+		
 		super.create();
 	}
 	
@@ -80,12 +75,11 @@ class PlayState extends FlxState
 		super.destroy();
 	}
 
-	/**
-	 * Function that is called once every frame.
-	 */
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+		
+		FlxSpriteUtil.bound(player);
 		//trace(fps.currentFPS); //Show FPS
 		var shoot:Bool = (player.gamePad != null && player.gamePad.anyPressed([FlxGamepadInputID.RIGHT_TRIGGER])) ? true : FlxG.keys.anyPressed(["SPACE"]);
 		if (shoot)
@@ -102,10 +96,7 @@ class PlayState extends FlxState
 				_explosionPixel = new FlxParticle();
 				_explosionPixel.makeGraphic(2, 10, FlxColor.WHITE);
 				_explosionPixel.visible = false;
-				var shellRight = new FlxEmitter(player.x + 100, player.y + 20, 1);				
-				//shellRight.setXSpeed(1000+player.velocity.x,1000+player.velocity.x);
-				//shellRight.setYSpeed(300,300);
-				//shellRight.bounce = 0.8;				
+				var shellRight = new FlxEmitter(player.x + 100, player.y + 20, 1);							
 				shellRight.launchMode = FlxEmitterMode.SQUARE;
 				shellRight.velocity.set(1000 + player.velocity.x, 300, 1000 + player.velocity.x, 300);				
 				shellRight.angle.set(-90,90);	
@@ -116,10 +107,7 @@ class PlayState extends FlxState
 				_explosionPixel = new FlxParticle();
 				_explosionPixel.makeGraphic(2, 10, FlxColor.WHITE);
 				_explosionPixel.visible = false;
-				var shellLeft = new FlxEmitter(player.x, player.y + 20, 1);					
-				//shellLeft.setXSpeed(-1000+player.velocity.x,-1000+player.velocity.x);
-				//shellLeft.setYSpeed(300, 300);
-				//shellLeft.bounce = 0.8;				
+				var shellLeft = new FlxEmitter(player.x, player.y + 20, 1);								
 				shellLeft.launchMode = FlxEmitterMode.SQUARE;
 				shellLeft.velocity.set( -1000 + player.velocity.x, 300, -1000 + player.velocity.x, 300);
 				shellLeft.angle.set(90,-90);
@@ -129,6 +117,7 @@ class PlayState extends FlxState
 			}
 			countFrame--;
 		}
+		
 		//FlxG.overlap(grpBullet, grpEnemy, bulletHitEnemy);
 		grpBullet.forEach(bulletTest);
 		grpEnemy.forEach(hitTest);
@@ -176,12 +165,12 @@ class PlayState extends FlxState
 			sndExplosion.play(true);
 			
 			var fe = new FlxEmitter(B.x, B.y, 30);
-			//fe.setXSpeed(-500,500);
-			//fe.setYSpeed(-200,50);
-			//fe.bounce = 0.8;
+
 			fe.launchMode = FlxEmitterMode.SQUARE;
 			fe.velocity.set(-500, -200, 500, 50);
+			fe.lifespan.set(0, 2);
 			add(fe);
+			
 			for (i in 0...(Std.int(fe.maxSize / 3))) 
 			{
 				_explosionPixel = new FlxParticle();

@@ -60,10 +60,10 @@ class Player extends FlxSprite
 		}
 		#end
 		#if mobile
-		_up = PlayState.virtualPad.buttonUp.status == FlxButton.PRESSED;
-		_down = PlayState.virtualPad.buttonDown.status == FlxButton.PRESSED;
-		_left = PlayState.virtualPad.buttonLeft.status == FlxButton.PRESSED;
-		_right = PlayState.virtualPad.buttonRight.status == FlxButton.PRESSED;
+		_up = playStateFolder.PlayState.virtualPad.buttonUp.status == FlxButton.PRESSED;
+		_down = playStateFolder.PlayState.virtualPad.buttonDown.status == FlxButton.PRESSED;
+		_left = playStateFolder.PlayState.virtualPad.buttonLeft.status == FlxButton.PRESSED;
+		_right = playStateFolder.PlayState.virtualPad.buttonRight.status == FlxButton.PRESSED;
 		#end
 		if (_up && _down) _up = _down = false;
 		if (_left && _right) _left = _right = false;
@@ -81,10 +81,8 @@ class Player extends FlxSprite
 			else if (_down)
 			{
 				mA = 90;
-				if (_left)
-					mA += 45;
-				else if (_right)
-					mA -= 45;
+				if (_left) mA += 45;
+				else if (_right) mA -= 45;
 				facing = FlxObject.DOWN;
 			}
 			else if (_left)
