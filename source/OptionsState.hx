@@ -24,7 +24,6 @@ class OptionsState extends FlxState
 	private var btnVolumeUp:FlxButton;
 	private var btnClearData:FlxButton;
 	private var btnBack:FlxButton;
-	private var btnResolution:FlxButton;
 	#if desktop
 	private var btnFullScreen:FlxButton;
 	#end
@@ -66,12 +65,19 @@ class OptionsState extends FlxState
 		txtMusicVolumeAmt.borderColor = 0xff464646;
 		txtMusicVolumeAmt.y = barMusicVolume.y + (barMusicVolume.height / 2) - (txtMusicVolumeAmt.height / 2);
 		txtMusicVolumeAmt.screenCenter(FlxAxes.X);
-		add(txtMusicVolumeAmt);
+		add(txtMusicVolumeAmt);	
 		
-		btnBack = new FlxButton(0, 0, "Back", clickBack);
+		btnBack = new FlxButton(0, 0, "Back", clickBack);	
+		btnBack.x = (FlxG.width / 2) - (btnBack.width / 2);
+		btnBack.y = FlxG.height - btnBack.height - 20;
 		add(btnBack);
-		btnResolution = new FlxButton(0, 20, "Res", clickChangeResolution);
-		add(btnResolution);
+		
+		#if desktop
+		btnFullScreen = new FlxButton(0, 0, FlxG.fullscreen ? "Windowed" : "Fullscreen", clickFullscreen);		
+		btnFullScreen.x = (FlxG.width / 2) - (btnFullScreen.width / 2);
+		btnFullScreen.y = btnBack.y - btnFullScreen.height - 10;
+		add(btnFullScreen);
+		#end
 		
 		// create and bind our save object to "flixel-tutorial"
 		_save = new FlxSave();
@@ -124,9 +130,12 @@ class OptionsState extends FlxState
 		});
 	}
 	
-	private function clickChangeResolution():Void
+	#if desktop
+	private function clickFullscreen():Void
 	{
-		//FlxG.fullscreen = true;
-		FlxG.resizeGame(1600, 900);
+		FlxG.fullscreen = !FlxG.fullscreen;
+		btnFullScreen.text = FlxG.fullscreen ? "Windowed" : "Fullscreen";
+		_save.data.fullscreen = FlxG.fullscreen;
 	}
+	#end
 }
