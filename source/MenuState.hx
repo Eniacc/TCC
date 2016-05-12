@@ -1,6 +1,7 @@
 package;
 
-import editorFolder.EditorState;
+import shipStateFolder.ShipMenuState;
+import stageEditorFolder.StageMenuState;
 import flixel.util.FlxColor;
 import playStateFolder.PlayState;
 import flixel.FlxG;
@@ -48,13 +49,13 @@ class MenuState extends FlxState
 		//btnOptions.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnOptions);
 		
-		btnShipEditor = new FlxButton(0, 0, "Ship Editor", clickEditor);
+		btnShipEditor = new FlxButton(0, 0, "Ship Editor", clickShipEditor);
 		btnShipEditor.x = (FlxG.width / 2) - (btnShipEditor.width / 2);
 		btnShipEditor.y = btnOptions.y - btnShipEditor.height - 10;
 		//btnEditor.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnShipEditor);
 		
-		btnStageEditor = new FlxButton(0, 0, "Stage Editor", clickEditor);
+		btnStageEditor = new FlxButton(0, 0, "Stage Editor", clickStageEditor);
 		btnStageEditor.x = (FlxG.width / 2) - (btnStageEditor.width / 2);
 		btnStageEditor.y = btnShipEditor.y - btnStageEditor.height - 10;
 		//btnEditor.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
@@ -80,8 +81,12 @@ class MenuState extends FlxState
 		FlxG.switchState(new PlayState());
 	}
 	
-	private function clickEditor():Void {
-		FlxG.switchState(new EditorState());
+	private function clickStageEditor():Void {
+		FlxG.switchState(new StageMenuState());
+	}
+	
+	private function clickShipEditor():Void {
+		FlxG.switchState(new ShipMenuState());
 	}
 	 
 	private function clickOptions():Void {

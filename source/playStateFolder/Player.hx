@@ -23,7 +23,8 @@ class Player extends FlxSprite
 	public function new(X:Float=0, Y:Float=0) 
 	{
 		super(X, Y);
-		loadGraphic(AssetPaths.ShipSpritesheet__png, true, 100, 62);
+		//loadGraphic(AssetPaths.ShipSpritesheet__png, true, 100, 62);
+		loadGraphic(AssetPaths.RedShipSprite__png, true, 60, 62);
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		animation.add("lr", [1]);
