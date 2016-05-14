@@ -37,14 +37,7 @@ class PlayState extends FlxState
 	private var _explosionPixel:FlxParticle;
 	 
 	override public function create():Void
-	{
-		background = new FlxSprite();
-		background.loadGraphic("assets/Background.jpg");
-		add(background);
-		background.width = 1280;
-		background.height = 720;
-		
-		
+	{		
 		grpBullet = new FlxTypedGroup<PBullet>();
 		add(grpBullet);
 		
