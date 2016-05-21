@@ -15,13 +15,14 @@ class Main extends Sprite
 		_save.bind("shmup-sandbox");
 		
 		super();
-		addChild(new FlxGame(1280, 720, MenuState));
+		addChild(new FlxGame(1280, 720, PlayState));
+		FlxG.fullscreen = false;
 		
 		if (_save.data.volume != null) {
 			FlxG.sound.volume = _save.data.volume;
 		}
 
-		FlxG.sound.playMusic(AssetPaths.Battle_Normal__ogg, 1, true);
+		//FlxG.sound.playMusic(AssetPaths.Battle_Normal__ogg, 1, true);
 
 		_save.close();
 	}

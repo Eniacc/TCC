@@ -16,6 +16,8 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSpriteUtil;
 import openfl.display.FPS;
 import playStateFolder.Player;
+import playStateFolder.HUD;
+import flixel.addons.display.FlxBackdrop;
 
 class PlayState extends FlxState
 {
@@ -30,6 +32,10 @@ class PlayState extends FlxState
 	private var sndBullet:FlxSound;
 	private var sndExplosion:FlxSound;
 	private var countFrame:Float = 0;
+	private var backdrop:FlxBackdrop;
+	private var _health:Int = 3;
+	private var _enemiesKilled:Int = 0;
+	private var _hud:HUD;
 
 	private var fps:FPS = new FPS();
 	//private var weapon:FlxWeapon = new FlxWeapon("arma", null, Bullet);
@@ -38,6 +44,13 @@ class PlayState extends FlxState
 	 
 	override public function create():Void
 	{		
+		
+		add(backdrop = new FlxBackdrop(AssetPaths.background__jpg));
+		backdrop.velocity.set(0, 200);
+		
+		_hud = new HUD();
+		add(_hud);
+		
 		grpBullet = new FlxTypedGroup<PBullet>();
 		add(grpBullet);
 		
@@ -47,7 +60,7 @@ class PlayState extends FlxState
 		add(grpEnemy);
 		grpEnemy.add(new Enemy(500, 100));
 		
-		add(new FlxText(100, 100, 200, "Xbox360 Controller " + ((player.gamePad == null) ? "NOT FOUND" : "FOUND")));
+		//add(new FlxText(100, 100, 200, "Xbox360 Controller " + ((player.gamePad == null) ? "NOT FOUND" : "FOUND")));
 		
 		//trace(FlxG.overlap(player, grpEnemy));
 		
@@ -59,7 +72,8 @@ class PlayState extends FlxState
 	
 	function startPlayer()
 	{
-		player = new Player(640,600);
+		player = new Player(640, 600);
+		player.antialiasing = true;
 		add(player);
 	}
 	
@@ -79,6 +93,9 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		
+		if (_health == 0)
+			FlxG.switchState(new MenuState());
+			
 		FlxSpriteUtil.bound(player);
 		//trace(fps.currentFPS); //Show FPS
 		var shoot:Bool = (player.gamePad != null && player.gamePad.anyPressed([FlxGamepadInputID.RIGHT_TRIGGER])) ? true : FlxG.keys.anyPressed(["SPACE"]);
@@ -86,8 +103,8 @@ class PlayState extends FlxState
 		{
 			if (countFrame <= 0)
 			{
-				grpBullet.add(new PBullet(player.x+12.5, player.y+5));
-				grpBullet.add(new PBullet(player.x + 72.5, player.y+5));
+				//grpBullet.add(new PBullet(player.x + 12.5, player.y + 5));
+				grpBullet.add(new PBullet(player.x + 22.5, player.y + 5));
 				//FlxG.camera.shake(0.001, 0.1, null, true, 2);
 				FlxG.camera.shake(0.001, 0.1, null, true, null);
 				sndBullet.play(true);
@@ -96,7 +113,7 @@ class PlayState extends FlxState
 				_explosionPixel = new FlxParticle();
 				_explosionPixel.makeGraphic(2, 10, FlxColor.WHITE);
 				_explosionPixel.visible = false;
-				var shellRight = new FlxEmitter(player.x + 100, player.y + 20, 1);							
+				var shellRight = new FlxEmitter(player.x + 30, player.y + 5, 1);							
 				shellRight.launchMode = FlxEmitterMode.SQUARE;
 				shellRight.velocity.set(1000 + player.velocity.x, 300, 1000 + player.velocity.x, 300);				
 				shellRight.angle.set(-90,90);	
@@ -107,7 +124,7 @@ class PlayState extends FlxState
 				_explosionPixel = new FlxParticle();
 				_explosionPixel.makeGraphic(2, 10, FlxColor.WHITE);
 				_explosionPixel.visible = false;
-				var shellLeft = new FlxEmitter(player.x, player.y + 20, 1);								
+				var shellLeft = new FlxEmitter(player.x + 26, player.y + 5, 1);								
 				shellLeft.launchMode = FlxEmitterMode.SQUARE;
 				shellLeft.velocity.set( -1000 + player.velocity.x, 300, -1000 + player.velocity.x, 300);
 				shellLeft.angle.set(90,-90);
@@ -118,7 +135,7 @@ class PlayState extends FlxState
 			countFrame--;
 		}
 		
-		//FlxG.overlap(grpBullet, grpEnemy, bulletHitEnemy);
+		FlxG.overlap(grpBullet, grpEnemy, bulletHitEnemy);
 		grpBullet.forEach(bulletTest);
 		grpEnemy.forEach(hitTest);
 	}
@@ -127,8 +144,11 @@ class PlayState extends FlxState
 	{
 		if (FlxG.pixelPerfectOverlap(E, player))
 		{
+			sndExplosion.play(true);
 			player.killPlayer();
 			player = FlxDestroyUtil.destroy(player);
+			_health--;
+			_hud.updateHUD(_health, _enemiesKilled);
 			startPlayer();
 		}
 	}
@@ -187,6 +207,10 @@ class PlayState extends FlxState
 				fe.add(_explosionPixel);
 			}
 			fe.start(true, 3);
+			
+			
+			_enemiesKilled++;
+			_hud.updateHUD(_health,_enemiesKilled);
 		}
 	}
 }
