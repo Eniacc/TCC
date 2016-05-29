@@ -48,9 +48,6 @@ class PlayState extends FlxState
 		add(backdrop = new FlxBackdrop(AssetPaths.background__jpg));
 		backdrop.velocity.set(0, 200);
 		
-		_hud = new HUD();
-		add(_hud);
-		
 		grpBullet = new FlxTypedGroup<PBullet>();
 		add(grpBullet);
 		
@@ -66,6 +63,9 @@ class PlayState extends FlxState
 		
 		sndBullet = FlxG.sound.load(AssetPaths.shot1__wav);
 		sndExplosion = FlxG.sound.load(AssetPaths.explosion1__ogg);
+		
+		_hud = new HUD();
+		add(_hud);
 		
 		super.create();
 	}
