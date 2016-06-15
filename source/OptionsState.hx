@@ -26,8 +26,10 @@ class OptionsState extends FlxState
 	private var txtMusicVolumeAmt:FlxText;
 	private var btnVolumeDown:FlxButton;
 	private var btnVolumeUp:FlxButton;
+	private var txtClearData:FlxText;
 	private var btnClearData:FlxButton;
 	private var btnBack:FlxButton;
+	private var btnControls:FlxButton;
 	#if desktop
 	private var txtFullscreen:FlxText;
 	private var btnFullScreen:FlxButton;
@@ -55,7 +57,7 @@ class OptionsState extends FlxState
 		txtTitle.screenCenter(FlxAxes.X);
 		add(txtTitle);
 		
-		txtMusicVolume = new FlxText(0, txtTitle.y + txtTitle.height + 30, 0, "Music Volume", 20);
+		txtMusicVolume = new FlxText(0, txtTitle.y + txtTitle.height + 20, 0, "Music Volume", 20);
         txtMusicVolume.setBorderStyle(SHADOW, FlxColor.GRAY, 1, 1);
 		txtMusicVolume.alignment = CENTER;
 		txtMusicVolume.screenCenter(FlxAxes.X);
@@ -88,27 +90,43 @@ class OptionsState extends FlxState
 		txtMusicVolumeAmt.screenCenter(FlxAxes.X);
 		add(txtMusicVolumeAmt);
 		
+		txtClearData = new FlxText(0, barMusicVolume.y + barMusicVolume.height + 20, 0, "Clear Data", 20);
+        txtClearData.setBorderStyle(SHADOW, FlxColor.GRAY, 1, 1);
+		txtClearData.alignment = CENTER;
+		txtClearData.screenCenter(FlxAxes.X);
+		add(txtClearData);
+		
+		btnClearData = new FlxButton(0, txtClearData.y + txtClearData.height + 15, "Clear Data", clickClearData);
+		btnClearData.x = FlxG.width / 2 - btnClearData.width / 2;
+		//btnClearData.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		add(btnClearData);
+		
 		#if desktop
 		
-		txtFullscreen = new FlxText(0, barMusicVolume.y + barMusicVolume.height + 30, 0, "Fullscreen", 20);
+		txtFullscreen = new FlxText(0, btnClearData.y + btnClearData.height + 20, 0, "Fullscreen", 20);
         txtFullscreen.setBorderStyle(SHADOW, FlxColor.GRAY, 1, 1);
 		txtFullscreen.alignment = CENTER;
 		txtFullscreen.screenCenter(FlxAxes.X);
 		add(txtFullscreen);
 		
 		
-		btnFullScreen = new FlxButton(0, txtFullscreen.y + txtFullscreen.height + 20, FlxG.fullscreen ? "No" : "Yes", clickFullscreen);
+		btnFullScreen = new FlxButton(0, txtFullscreen.y + txtFullscreen.height + 15, FlxG.fullscreen ? "No" : "Yes", clickFullscreen);
 		btnFullScreen.x = FlxG.width / 2 - btnFullScreen.width / 2;
 		add(btnFullScreen);
 		
 		#end
 		
 		btnBack = new FlxButton(0, 0, "Back", clickBack);	
-		btnBack.x = (FlxG.width / 2) - (btnBack.width / 2);
+		btnBack.x = (FlxG.width / 2) - btnBack.width - 10;
 		btnBack.y = FlxG.height - btnBack.height - 20;
 		add(btnBack);
 		
-		// create and bind our save object to "flixel-tutorial"
+		btnControls = new FlxButton(0, 0, "Controls", clickControls);	
+		btnControls.x = (FlxG.width / 2) + 10;
+		btnControls.y = FlxG.height - btnControls.height - 20;
+		add(btnControls);
+		
+		// create and bind our save object to "shmup-sandbox"
 		_save = new FlxSave();
 		_save.bind("shmup-sandbox");
 		
@@ -150,13 +168,12 @@ class OptionsState extends FlxState
 		txtMusicVolumeAmt.text = vol + "%";
 	}
 	
-	private function clickBack():Void
+	private function clickClearData():Void
 	{
-		_save.close();
-		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
-		{
-			FlxG.switchState(new MenuState());
-		});
+		_save.erase();
+		FlxG.sound.volume = .5;
+		updateVolume();
+		FlxG.fullscreen = false;
 	}
 	
 	#if desktop
@@ -167,4 +184,22 @@ class OptionsState extends FlxState
 		_save.data.fullscreen = FlxG.fullscreen;
 	}
 	#end
+	
+	private function clickBack():Void
+	{
+		_save.close();
+		FlxG.camera.fade(FlxColor.BLACK, .10, false, function()
+		{
+			FlxG.switchState(new MenuState());
+		});
+	}
+	
+	private function clickControls():Void
+	{
+		_save.close();
+		FlxG.camera.fade(FlxColor.BLACK, .10, false, function()
+		{
+			FlxG.switchState(new ControlsState());
+		});
+	}
 }
