@@ -53,7 +53,7 @@ class MenuState extends FlxState
 		btnExit.loadGraphic(AssetPaths.Exit__png);
 		btnExit.x = (FlxG.width / 2) - (btnExit.width / 2);
 		btnExit.y = FlxG.height - btnExit.height - 50;
-		//btnExit.loadGraphic(AssetPaths.button__png, true, 20, 20);
+		btnExit.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnExit);
 		#end
 
@@ -64,28 +64,28 @@ class MenuState extends FlxState
 		#if desktop
 		btnOptions.y = btnExit.y - btnOptions.height - 5;
 		#end
-		//btnOptions.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		btnOptions.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnOptions);
 		
 		btnShipEditor = new FlxButton(0, 0, null, clickShipEditor);
 		btnShipEditor.loadGraphic(AssetPaths.Ship_Editor__png);
 		btnShipEditor.x = (FlxG.width / 2) - (btnShipEditor.width / 2);
 		btnShipEditor.y = btnOptions.y - btnShipEditor.height - 5;
-		//btnEditor.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		btnShipEditor.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnShipEditor);
 		
 		btnStageEditor = new FlxButton(0, 0, null, clickStageEditor);
 		btnStageEditor.loadGraphic(AssetPaths.Stage_Editor__png);
 		btnStageEditor.x = (FlxG.width / 2) - (btnStageEditor.width / 2);
 		btnStageEditor.y = btnShipEditor.y - btnStageEditor.height - 5;
-		//btnEditor.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		btnStageEditor.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnStageEditor);
 
 		btnPlay = new FlxButton(0, 0, null, clickPlay);
 		btnPlay.loadGraphic(AssetPaths.btnPlay__png);
 		btnPlay.x = (FlxG.width / 2) - (btnPlay.width / 2);
 		btnPlay.y = btnStageEditor.y - btnPlay.height - 5;	
-		//btnPlay.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		btnPlay.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnPlay);
 		
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);
@@ -99,19 +99,31 @@ class MenuState extends FlxState
 	}
 	
 	private function clickPlay():Void {
-		FlxG.switchState(new PlayState());
+		FlxG.camera.fade(FlxColor.BLACK, .10, false, function()
+		{
+			FlxG.switchState(new PlayState());
+		});
 	}
 	
 	private function clickStageEditor():Void {
-		FlxG.switchState(new StageMenuState());
+		FlxG.camera.fade(FlxColor.BLACK, .10, false, function()
+		{
+			FlxG.switchState(new StageMenuState());
+		});
 	}
 	
 	private function clickShipEditor():Void {
-		FlxG.switchState(new ShipMenuState());
+		FlxG.camera.fade(FlxColor.BLACK, .10, false, function()
+		{
+			FlxG.switchState(new ShipMenuState());
+		});
 	}
 	 
 	private function clickOptions():Void {
-		FlxG.switchState(new OptionsState());
+		FlxG.camera.fade(FlxColor.BLACK, .10, false, function()
+		{
+			FlxG.switchState(new OptionsState());
+		});
 	}
 	
 	#if desktop

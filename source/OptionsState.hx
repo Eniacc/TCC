@@ -21,9 +21,9 @@ class OptionsState extends FlxState
 	private var backdrop:FlxBackdrop;
 	private var logo:FlxSprite;
 	private var txtTitle:FlxText;
-	private var barMusicVolume:FlxBar;
-	private var txtMusicVolume:FlxText;
-	private var txtMusicVolumeAmt:FlxText;
+	private var barVolume:FlxBar;
+	private var txtVolume:FlxText;
+	private var txtVolumeAmp:FlxText;
 	private var btnVolumeDown:FlxButton;
 	private var btnVolumeUp:FlxButton;
 	private var txtClearData:FlxText;
@@ -57,40 +57,40 @@ class OptionsState extends FlxState
 		txtTitle.screenCenter(FlxAxes.X);
 		add(txtTitle);
 		
-		txtMusicVolume = new FlxText(0, txtTitle.y + txtTitle.height + 20, 0, "Music Volume", 20);
-        txtMusicVolume.setBorderStyle(SHADOW, FlxColor.GRAY, 1, 1);
-		txtMusicVolume.alignment = CENTER;
-		txtMusicVolume.screenCenter(FlxAxes.X);
-		add(txtMusicVolume);
+		txtVolume = new FlxText(0, txtTitle.y + txtTitle.height + 20, 0, "Music Volume", 20);
+        txtVolume.setBorderStyle(SHADOW, FlxColor.GRAY, 1, 1);
+		txtVolume.alignment = CENTER;
+		txtVolume.screenCenter(FlxAxes.X);
+		add(txtVolume);
 		
 		// the volume buttons will be smaller than 'default' buttons
-		btnVolumeDown = new FlxButton(366, txtMusicVolume.y + txtMusicVolume.height + 10, "-", clickVolumeDown);
+		btnVolumeDown = new FlxButton(366, txtVolume.y + txtVolume.height + 10, "-", clickVolumeDown);
 		btnVolumeDown.label = new FlxText(0, 0, btnVolumeDown.width, "-");
 		btnVolumeDown.label.setFormat(null,15,0x333333,"center");
 		btnVolumeDown.loadGraphic(AssetPaths.button__png, true, 30,30);
-		//btnVolumeDown.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		btnVolumeDown.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnVolumeDown);
 		
 		btnVolumeUp = new FlxButton(FlxG.width - 396, btnVolumeDown.y, "+", clickVolumeUp);
 		btnVolumeUp.label = new FlxText(0, 0, btnVolumeUp.width, "+");
 		btnVolumeUp.label.setFormat(null,15,0x333333,"center");
 		btnVolumeUp.loadGraphic(AssetPaths.button__png, true, 30,30);
-		//btnVolumeUp.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		btnVolumeUp.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnVolumeUp);
 		
-		barMusicVolume = new FlxBar(btnVolumeDown.x + btnVolumeDown.width + 4, btnVolumeDown.y, LEFT_TO_RIGHT, Std.int(FlxG.width - 800), Std.int(btnVolumeUp.height));
-		barMusicVolume.createFilledBar(0xff464646, FlxColor.WHITE, true, FlxColor.WHITE);
-		add(barMusicVolume);
+		barVolume = new FlxBar(btnVolumeDown.x + btnVolumeDown.width + 4, btnVolumeDown.y, LEFT_TO_RIGHT, Std.int(FlxG.width - 800), Std.int(btnVolumeUp.height));
+		barVolume.createFilledBar(0xff464646, FlxColor.WHITE, true, FlxColor.WHITE);
+		add(barVolume);
 		
-		txtMusicVolumeAmt = new FlxText(0, 0, 200, (FlxG.sound.volume * 100) + "%", 15);
-		txtMusicVolumeAmt.alignment = CENTER;
-		txtMusicVolumeAmt.borderStyle = FlxTextBorderStyle.OUTLINE;
-		txtMusicVolumeAmt.borderColor = 0xff464646;
-		txtMusicVolumeAmt.y = barMusicVolume.y + (barMusicVolume.height / 2) - (txtMusicVolumeAmt.height / 2);
-		txtMusicVolumeAmt.screenCenter(FlxAxes.X);
-		add(txtMusicVolumeAmt);
+		txtVolumeAmp = new FlxText(0, 0, 200, (FlxG.sound.volume * 100) + "%", 15);
+		txtVolumeAmp.alignment = CENTER;
+		txtVolumeAmp.borderStyle = FlxTextBorderStyle.OUTLINE;
+		txtVolumeAmp.borderColor = 0xff464646;
+		txtVolumeAmp.y = barVolume.y + (barVolume.height / 2) - (txtVolumeAmp.height / 2);
+		txtVolumeAmp.screenCenter(FlxAxes.X);
+		add(txtVolumeAmp);
 		
-		txtClearData = new FlxText(0, barMusicVolume.y + barMusicVolume.height + 20, 0, "Clear Data", 20);
+		txtClearData = new FlxText(0, barVolume.y + barVolume.height + 20, 0, "Clear Data", 20);
         txtClearData.setBorderStyle(SHADOW, FlxColor.GRAY, 1, 1);
 		txtClearData.alignment = CENTER;
 		txtClearData.screenCenter(FlxAxes.X);
@@ -98,7 +98,7 @@ class OptionsState extends FlxState
 		
 		btnClearData = new FlxButton(0, txtClearData.y + txtClearData.height + 15, "Clear Data", clickClearData);
 		btnClearData.x = FlxG.width / 2 - btnClearData.width / 2;
-		//btnClearData.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		btnClearData.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnClearData);
 		
 		#if desktop
@@ -112,6 +112,7 @@ class OptionsState extends FlxState
 		
 		btnFullScreen = new FlxButton(0, txtFullscreen.y + txtFullscreen.height + 15, FlxG.fullscreen ? "No" : "Yes", clickFullscreen);
 		btnFullScreen.x = FlxG.width / 2 - btnFullScreen.width / 2;
+		btnFullScreen.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnFullScreen);
 		
 		#end
@@ -119,11 +120,13 @@ class OptionsState extends FlxState
 		btnBack = new FlxButton(0, 0, "Back", clickBack);	
 		btnBack.x = (FlxG.width / 2) - btnBack.width - 10;
 		btnBack.y = FlxG.height - btnBack.height - 20;
+		btnBack.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnBack);
 		
 		btnControls = new FlxButton(0, 0, "Controls", clickControls);	
 		btnControls.x = (FlxG.width / 2) + 10;
 		btnControls.y = FlxG.height - btnControls.height - 20;
+		btnControls.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnControls);
 		
 		// create and bind our save object to "shmup-sandbox"
@@ -164,8 +167,8 @@ class OptionsState extends FlxState
 	private function updateVolume():Void
 	{
 		var vol:Int = Math.round(FlxG.sound.volume * 100);
-		barMusicVolume.value = vol;
-		txtMusicVolumeAmt.text = vol + "%";
+		barVolume.value = vol;
+		txtVolumeAmp.text = vol + "%";
 	}
 	
 	private function clickClearData():Void

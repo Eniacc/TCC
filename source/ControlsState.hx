@@ -73,6 +73,7 @@ class ControlsState extends FlxState
 		btnBack = new FlxButton(0, 0, "Back", clickBack);	
 		btnBack.x = (FlxG.width / 2) - (btnBack.width / 2);
 		btnBack.y = FlxG.height - btnBack.height - 20;
+		btnBack.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnBack);
 		
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);
