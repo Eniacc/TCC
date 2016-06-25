@@ -12,9 +12,11 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import haxe.Constraints.Function;
+//import ibwwg.FlxScrollableArea;
 import model.Path;
 import model.Wave;
 import model.Waypoint;
+import openfl.Lib;
 
 /**
  * ...
@@ -35,6 +37,8 @@ class Boxer extends FlxSpriteGroup
 	var btDrag:FlxSprite;
 	var btRange:FlxRect;
 	var dragging:Bool = false;
+	
+	//var scrollable:FlxScrollableArea;
 
 	public function new(?X:Float = 0, ?Y:Float = 0)
 	{

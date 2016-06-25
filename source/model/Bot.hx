@@ -30,6 +30,7 @@ class Bot extends Ship
 	{
 		super();
 		sprite = new FlxSprite(0, 0, AssetPaths.Bot__png);
+		//sprite = new FlxSprite(0, 0);
 		add(sprite);
 		waypoints = new FlxTypedGroup<Waypoint>();
 		//debug.color = 0x0000FF;
@@ -45,7 +46,7 @@ class Bot extends Ship
 	override public function update(elapsed:Float):Void 
 	{
 		super.update(elapsed);
-		sprite.color = 0xFF0000;
+		//sprite.color = 0xFF0000;
 	}
 	
 	function gotoWaypoint(currentWaypoint:Int) 
@@ -54,20 +55,30 @@ class Bot extends Ship
 		//x = wp.x;
 		//y = wp.y;
 		//angle = wp.rotation;
-		rateOfFire = wp.rateOfFire;
-		firing = wp.fire;
-		speed = wp.speed;// * FlxG.updateFramerate;
-		wait = wp.wait;
+		//rateOfFire = wp.rateOfFire;
+		//firing = wp.fire;
+		//speed = wp.speed;// * FlxG.updateFramerate;
+		//wait = wp.wait;
 		//speed / getDistance(wp.x, wp.y)
 		//debug.text = (Std.string(speed) + " / " + Std.string(getDistance(wp.x, wp.y)) + " = " + Std.string(speed / getDistance(wp.x, wp.y)));
 		//FlxG.log.add(debug.text);
 		//var time:Float = speed / getDistance(wp.x, wp.y);
-		debug.text = "Spd " + Std.string(speed).substr(0, 5) + "\nRot " + Std.string(wp.rotation) + "°\n";
+		//debug.text = "Spd " + Std.string(speed).substr(0, 5) + "\nRot " + Std.string(wp.rotation) + "°\n";
 		//trace(wp.x, wp.offsetX);
 		var botX:Float = reference.x + wp.xPer * reference.width - sprite.width * .5;
 		var botY:Float = reference.y + wp.yPer * reference.height - sprite.height * .5;
-		FlxTween.tween(sprite, {x: botX, y: botY , angle: wp.rotation}, speed, {onComplete: nextWaypoint});
-		FlxTween.tween(debug, {x: botX, y: botY}, speed);
+		FlxTween.tween(sprite, {x: botX, y: botY , angle: wp.rotation}, speed, {onComplete: getParams});
+		//FlxTween.tween(debug, {x: botX, y: botY}, speed);
+	}
+	
+	function getParams(tween:FlxTween) 
+	{
+		var wp:Waypoint = waypoints.members[currentWaypoint];
+		rateOfFire = wp.rateOfFire;
+		firing = wp.fire;
+		speed = wp.speed; // * FlxG.updateFramerate;
+		wait = wp.wait <= 0 ? .01 : wp.wait;
+		FlxTween.tween(sprite, { }, wait, { onComplete: nextWaypoint } );
 	}
 	
 	function nextWaypoint(tween:FlxTween) 
@@ -77,6 +88,13 @@ class Bot extends Ship
 		//FlxG.log.add('Goto Waypoint: ' + currentWaypoint);
 		//debug.text = Std.string(currentWaypoint);
 		gotoWaypoint(currentWaypoint);
+	}
+	
+	public function setGraphic(sprite:FlxSprite)
+	{
+		//FlxG.log.add("Set graphic");
+		FlxG.log.add("Set graphic"+" "+ sprite.width +" "+ sprite.height);
+		this.sprite.pixels = sprite.pixels;
 	}
 	
 	//function getDistance(gx:Int, gy:Int) 

@@ -170,8 +170,9 @@ class EditorState extends FlxState
 	function spawnTest() 
 	{
 		var bot:Bot = new Bot();
+		bot.setGraphic(selectionView.spriteBox);
 		bot.waypoints = waves.members[currentWave].members[currentPath];
-		bot.reference = new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
+		bot.reference = stage.gameStage.getHitbox();// new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
 		//trace(bot.reference);
 		bot.awake();
 		stage.add(bot);

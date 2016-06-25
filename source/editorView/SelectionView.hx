@@ -3,6 +3,7 @@ import fileIO.FileIO;
 import flixel.FlxSprite;
 import flixel.addons.ui.FlxButtonPlus;
 import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -20,6 +21,8 @@ class SelectionView extends FlxSpriteGroup
 	public var spriteBox:FlxSprite;
 	//public var urlBox:FlxText;
 	public var btSelect:FlxButtonPlus;
+	
+	private var defaultSprite:FlxSprite;
 	
 	public var fileIO:FileIO;
 	
@@ -53,11 +56,26 @@ class SelectionView extends FlxSpriteGroup
 		btSelect.updateInactiveButtonColors([0xFF000022, 0xFF000022]);
 		add(btSelect);
 		trace('bt', btSelect.x, btSelect.y, btSelect.width, btSelect.height);
+		
+		defaultSprite = new FlxSprite(0, 0, AssetPaths.Bot__png);
+		setSprite(defaultSprite.pixels);
 	}
 	
-	function setSprite(bitmapData:BitmapData, url:String)
+	function setSprite(bitmapData:BitmapData, url:String = "")
 	{
-		spriteBox.pixels = bitmapData;
+		var imgWidth:Float = background.width / bitmapData.width;
+		var imgHeight:Float = background.height / bitmapData.height;
+		
+		var scale:Float = imgWidth <= imgHeight ? imgWidth : imgHeight;
+		
+		if (scale > 1) scale = 1;
+		
+		spriteBox.scale = new FlxPoint(scale, scale);
 		//urlBox.text = url;
+		
+		spriteBox.x = (background.x + background.width / 2) - bitmapData.width/2;
+		spriteBox.y = (background.y + (background.height - btSelect.height) / 2) - bitmapData.height/2;
+		
+		spriteBox.pixels = bitmapData;
 	}
 }
