@@ -1,4 +1,5 @@
 package editorView;
+import flixel.FlxG;
 import flixel.FlxG.FlxRenderMethod;
 import flixel.FlxSprite;
 import flixel.addons.ui.FlxInputText;
@@ -101,6 +102,7 @@ class WaypointView extends FlxSpriteGroup
 	override public function update(elapsed:Float):Void 
 	{
 		super.update(elapsed);
+		
 		if (waypoint != null)
 		{
 			waypoint.xPer = xField.value / 100;
@@ -111,6 +113,14 @@ class WaypointView extends FlxSpriteGroup
 			waypoint.rateOfFire = rateOfFireField.value;
 			waypoint.numShips = Std.int(numShipsField.value);
 			waypoint.interval = intervalField.value;
+			
+			if (Math.isNaN(waypoint.xPer)) waypoint.xPer = Waypoint.defaultXPer; 
+			if (Math.isNaN(waypoint.yPer)) waypoint.yPer= Waypoint.defaultYPer; 
+			if (Math.isNaN(waypoint.rotation)) waypoint.rotation = Waypoint.defaultrotation; 
+			if (Math.isNaN(waypoint.speed)) waypoint.speed = Waypoint.defaultSpeed; 
+			if (Math.isNaN(waypoint.wait)) waypoint.wait = Waypoint.defaultWait; 
+			//if (Math.isNaN(waypoint.numShips)) waypoint.numShips = Waypoint.defaultNumShip; 
+			if (Math.isNaN(waypoint.interval)) waypoint.interval = Waypoint.defaultInterval; 
 		}
 	}
 	

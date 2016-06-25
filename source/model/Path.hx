@@ -8,6 +8,8 @@ import flixel.group.FlxGroup.FlxTypedGroup;
  */
 class Path extends FlxTypedGroup<Waypoint>
 {
+	public var spriteURL:String = "";
+	
 	public function new()
 	{
 		super();

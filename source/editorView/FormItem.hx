@@ -3,6 +3,7 @@ package editorView;
 import flixel.addons.text.FlxTextField;
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUICheckBox;
+import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxRect;
@@ -53,7 +54,7 @@ class FormItem extends FlxSpriteGroup
 	public function enable()
 	{
 		content.backgroundColor = FlxColor.WHITE;
-		content.maxLength = 4;
+		content.maxLength = 999;
 	}
 	public function disable()
 	{

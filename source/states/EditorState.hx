@@ -7,6 +7,7 @@ import editorView.StageView;
 import editorView.TopBar;
 import editorView.WaveBoxer;
 import editorView.WaypointView;
+import fileIO.JsonIO;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -56,12 +57,38 @@ class EditorState extends FlxState
 		add(waypointView);
 		
 		selectionView = new SelectionView(332, 40);
+		selectionView.callbackSetPathURL = setPathURL;
 		add(selectionView);
 		
 		topBar = new TopBar(0, 0);
+		topBar.callbackExport = exportJson;
+		topBar.callbackImport = importJson;
+		topBar.callbackNew = newStage;
 		add(topBar);
 		
 		testCreate();
+	}
+	
+	function setPathURL(url:String) 
+	{
+		var path:Path = waves.members[currentWave].members[currentPath];
+		path.spriteURL = url;
+	}
+	
+	function exportJson() 
+	{
+		var jsonIO:JsonIO = new JsonIO(null);
+		jsonIO.save(waves);
+	}
+	
+	function importJson() 
+	{
+		
+	}
+	
+	function newStage() 
+	{
+		FlxG.switchState(new EditorState());
 	}
 	
 	function displayWaypointData(waypoint:Waypoint) 
@@ -117,13 +144,14 @@ class EditorState extends FlxState
 		selectPath(0);
 	}
 	
-	function selectPath(index:Int) 
+	function selectPath(index:Int)
 	{
 		pathBoxer.loadPaths(waves.members[currentWave]);
 		trace('SELECT PATH', index);
 		currentPath = index;
 		pathBoxer.setSelected(currentPath);
 		stage.loadPath(waves.members[currentWave].members[index]);
+		selectionView.fileIO.loadUrl(waves.members[currentWave].members[index].spriteURL);
 	}
 	
 	function testCreate() 
@@ -140,7 +168,6 @@ class EditorState extends FlxState
 					var waypoint:Waypoint = new Waypoint();
 					waypoint.xPer = FlxG.random.float(0, 1);
 					waypoint.yPer = FlxG.random.float(0, 1);
-					waypoint.fire = FlxG.random.bool();
 					waypoint.rotation = FlxG.random.int(0, 360);
 					waypoint.speed = FlxG.random.float(0.3,3);
 					waypoint.wait = FlxG.random.int(0, 2);

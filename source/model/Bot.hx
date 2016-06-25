@@ -75,7 +75,6 @@ class Bot extends Ship
 	{
 		var wp:Waypoint = waypoints.members[currentWaypoint];
 		rateOfFire = wp.rateOfFire;
-		firing = wp.fire;
 		speed = wp.speed; // * FlxG.updateFramerate;
 		wait = wp.wait <= 0 ? .01 : wp.wait;
 		FlxTween.tween(sprite, { }, wait, { onComplete: nextWaypoint } );

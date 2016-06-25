@@ -126,6 +126,9 @@ class StageView extends FlxSpriteGroup
 		wp.yPer = point.y;
 		wp.rotation = 0;
 		wp.speed = 1;
+		wp.wait = .1;
+		wp.numShips = 1;
+		wp.interval = 0;
 		p.add(wp);
 		
 		trace(	"mouseX: "+ FlxG.mouse.x,

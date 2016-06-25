@@ -1,4 +1,5 @@
 package fileIO;
+import flixel.FlxG;
 import haxe.Constraints.Function;
 import openfl.display.BitmapData;
 #if flash
@@ -10,12 +11,14 @@ import openfl.net.FileReference;
 #elseif (cpp || neko)
 import systools.Dialogs;
 #end
+import openfl.net.FileFilter;
+import openfl.net.URLRequest;
 
 /**
  * ...
  * @author Oelson TCS
  */
-class FileIO
+class SpriteIO
 {
 	private var callback:Function;
 
@@ -25,11 +28,13 @@ class FileIO
 	}
 	
 	
-	public function browseSprite() 
+	public function browse() 
 	{
 		#if flash
 			var fr:FileReference = new FileReference();
-			fr.browse();
+			var filters:Array<FileFilter> = new Array<FileFilter>();
+			filters.push(new FileFilter("Image File", "*.png;*.jpg;*.jpeg;*.bmp"));
+			fr.browse(filters);
 			fr.addEventListener(Event.SELECT, onSelect);
 		#elseif (cpp || neko)
 			trace("Enter Neko");
@@ -42,9 +47,18 @@ class FileIO
 	}
 	
 	#if flash
+	public function loadUrl(url:String)
+	{
+		var urlReq:URLRequest = new URLRequest(url);
+		var loader:Loader = new Loader();
+		loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImgLoad);
+		loader.load(urlReq);
+	}
+	
 	private function onSelect(e:Event):Void 
 	{
 		var fr:FileReference = cast(e.target, FileReference);
+		FlxG.log.add(fr.);
 		fr.addEventListener(Event.COMPLETE, onLoad);
 		fr.load();
 	}
@@ -64,6 +78,7 @@ class FileIO
 		var loaderInfo:LoaderInfo = e.target;
 		loaderInfo.removeEventListener(Event.COMPLETE, onImgLoad);
 		var bmp:Bitmap = cast(loaderInfo.content, Bitmap);
+		FlxG.log.add('img '+loaderInfo.url);
 		callback(bmp.bitmapData, loaderInfo.url);
 	}
 	#elseif (cpp || neko)
@@ -80,7 +95,7 @@ class FileIO
 			#end
 			
 			if (img != null) 
-			{					
+			{
 				callback(img, arr[0]);
 			}
 		}
