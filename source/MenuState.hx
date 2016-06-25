@@ -13,6 +13,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import openfl.system.System;
+import states.EditorState;
 
 class MenuState extends FlxState
 {
@@ -108,7 +109,7 @@ class MenuState extends FlxState
 	private function clickStageEditor():Void {
 		FlxG.camera.fade(FlxColor.BLACK, .10, false, function()
 		{
-			FlxG.switchState(new StageMenuState());
+			FlxG.switchState(new EditorState());
 		});
 	}
 	

@@ -1,0 +1,36 @@
+package model;
+
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+
+/**
+ * ...
+ * @author Oelson TCS
+ */
+class Path extends FlxTypedSpriteGroup<Bot>
+{
+
+	public var waypoints:FlxTypedGroup<Waypoint>;
+	
+	public function new(X:Float=0, Y:Float=0, MaxSize:Int=0) 
+	{
+		super(X, Y, MaxSize);
+		waypoints = new FlxTypedGroup<Waypoint>();
+	}
+	
+	public function addWaypoint(w:Waypoint)
+	{
+		w.offsetX = this.x;
+		w.offsetY = this.y;
+		waypoints.add(w);
+	}
+	
+	public function spawnBots()
+	{
+		var bot:Bot = new Bot();
+		add(bot);
+		
+		bot.waypoints = waypoints;
+		bot.awake();
+	}
+}

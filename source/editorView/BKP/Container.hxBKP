@@ -1,0 +1,36 @@
+package editorView;
+
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.group.FlxSpriteGroup;
+
+/**
+ * ...
+ * @author Oelson TCS
+ */
+class Container extends FlxSpriteGroup
+{
+
+	private var XRatio:Float;
+	private var YRatio:Float;
+	private var HeightRatio:Float;
+	private var WidthRatio:Float;
+	
+	public function new(?Xp:Float = 0, ?Yp:Float = 0, ?Hp:Float = 100, ?Wp:Float = 100)
+	{
+		super();
+		
+		this.XRatio = Xp / 100;
+		this.YRatio = Yp / 100;
+		this.HeightRatio = Hp / 100;
+		this.WidthRatio= Wp / 100;
+		
+		this.x = FlxG.width * XRatio;
+		this.y = FlxG.height * YRatio;
+		
+		var background:FlxSprite = new FlxSprite();
+		background.makeGraphic(Std.int(FlxG.width * WidthRatio), Std.int(FlxG.height * HeightRatio));
+		add(background);
+	}
+	
+}
