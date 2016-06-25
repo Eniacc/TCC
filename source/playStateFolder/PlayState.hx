@@ -18,6 +18,7 @@ import openfl.display.FPS;
 import playStateFolder.Player;
 import playStateFolder.HUD;
 import flixel.addons.display.FlxBackdrop;
+import flixel.FlxSubState;
 
 class PlayState extends FlxState
 {
@@ -36,6 +37,10 @@ class PlayState extends FlxState
 	private var _health:Int = 3;
 	private var _enemiesKilled:Int = 0;
 	private var _hud:HUD;
+	private var overlay:OverlayState;
+	private var subStateColor:FlxColor;
+	private var borderLeft:FlxSprite;
+	private var borderRight:FlxSprite;
 
 	private var fps:FPS = new FPS();
 	//private var weapon:FlxWeapon = new FlxWeapon("arma", null, Bullet);
@@ -43,13 +48,22 @@ class PlayState extends FlxState
 	private var _explosionPixel:FlxParticle;
 	 
 	override public function create():Void
-	{		
+	{
 		
 		add(backdrop = new FlxBackdrop(AssetPaths.background__jpg));
 		backdrop.velocity.set(0, 200);
 		
 		grpBullet = new FlxTypedGroup<PBullet>();
 		add(grpBullet);
+		
+		borderLeft = new FlxSprite();
+		borderLeft.makeGraphic(332, 720, 0xFF000022);
+		add(borderLeft);		
+		
+		borderRight = new FlxSprite();
+		borderRight.makeGraphic(332, 720, 0xFF000022);
+		borderRight.x = Registry.maxXShip;
+		add(borderRight);
 		
 		startPlayer();
 		
@@ -62,7 +76,7 @@ class PlayState extends FlxState
 		//trace(FlxG.overlap(player, grpEnemy));
 		
 		sndBullet = FlxG.sound.load(AssetPaths.shot1__wav);
-		sndExplosion = FlxG.sound.load(AssetPaths.explosion1__ogg);
+		sndExplosion = FlxG.sound.load(AssetPaths.explosion1__mp3);
 		
 		_hud = new HUD();
 		add(_hud);
@@ -93,10 +107,20 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		
+		var isMenu:Bool = (FlxG.keys.anyPressed(["ESCAPE"]));
+		if (isMenu)
+			openMenu();
+		
 		if (_health == 0)
-			FlxG.switchState(new MenuState());
+			gameOver();
 			
-		FlxSpriteUtil.bound(player);
+		if (_enemiesKilled == 10)
+			stageComplete();		
+		
+		// Define área em que a nave pode se mover
+		FlxSpriteUtil.bound(player, Registry.minXShip, Registry.maxXShip, Registry.minYShip, Registry.maxYShip);
+		
+		
 		//trace(fps.currentFPS); //Show FPS
 		var shoot:Bool = (player.gamePad != null && player.gamePad.anyPressed([FlxGamepadInputID.RIGHT_TRIGGER])) ? true : FlxG.keys.anyPressed(["SPACE"]);
 		if (shoot)
@@ -212,5 +236,40 @@ class PlayState extends FlxState
 			_enemiesKilled++;
 			_hud.updateHUD(_health,_enemiesKilled);
 		}
+	}
+	
+	private function openMenu() {
+			
+		subStateColor = 0x99808080;
+		
+		overlay = new OverlayState(subStateColor);
+		overlay.isPersistant = true;
+		overlay.score = 0;
+		overlay.endGameStatus = -1;
+		openSubState(overlay);
+	}
+	
+	private function stageComplete() {
+			
+		subStateColor = 0x99808080;
+		
+		overlay = new OverlayState(subStateColor);
+		overlay.isPersistant = true;
+		overlay.score = 0;
+		overlay.endGameStatus = 1;
+		overlay.score = _enemiesKilled;
+		openSubState(overlay);
+	}
+	
+	private function gameOver() {
+			
+		subStateColor = 0x99808080;
+		
+		overlay = new OverlayState(subStateColor);
+		overlay.isPersistant = true;
+		overlay.score = 0;
+		overlay.endGameStatus = 0;
+		overlay.score = _enemiesKilled;
+		openSubState(overlay);
 	}
 }
