@@ -14,6 +14,7 @@ import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import openfl.system.System;
 import states.EditorState;
+import flash.system.System;
 
 class MenuState extends FlxState
 {
@@ -22,9 +23,9 @@ class MenuState extends FlxState
 	private var txtTitle:FlxText;
 	private var btnPlay:FlxButton;
 	private var btnStageEditor:FlxButton;
-	private var btnShipEditor:FlxButton;
+	//private var btnShipEditor:FlxButton;
 	private var btnOptions:FlxButton;
-	#if desktop
+	#if (desktop || flash)
 	private var btnExit:FlxButton;
 	#end
 	
@@ -35,21 +36,14 @@ class MenuState extends FlxState
 		
 		logo = new FlxSprite();
 		
+		// Add game logo
 		logo.loadGraphic(AssetPaths.logo__png);
 		logo.x = (FlxG.width / 2) - (logo.width / 2);
 		logo.y = 120;
 		logo.antialiasing = true;
 		add(logo);
 		
-		/*
-		txtTitle = new FlxText(0, 0, 0, "SHMUP EDITOR", 90);
-		txtTitle.alignment = CENTER;
-		txtTitle.screenCenter(X);
-		txtTitle.y = 150;
-		add(txtTitle);
-		*/
-		
-		#if desktop
+		#if (desktop || flash)
 		btnExit = new FlxButton(0, 0, null, clickExit);
 		btnExit.loadGraphic(AssetPaths.Exit__png);
 		btnExit.x = (FlxG.width / 2) - (btnExit.width / 2);
@@ -62,23 +56,23 @@ class MenuState extends FlxState
 		btnOptions.loadGraphic(AssetPaths.Options__png);
 		btnOptions.x = (FlxG.width / 2) - (btnOptions.width / 2);
 		btnOptions.y = FlxG.height - btnOptions.height - 40;
-		#if desktop
+		#if (desktop || flash)
 		btnOptions.y = btnExit.y - btnOptions.height - 5;
 		#end
 		btnOptions.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnOptions);
-		
+		/*
 		btnShipEditor = new FlxButton(0, 0, null, clickShipEditor);
 		btnShipEditor.loadGraphic(AssetPaths.Ship_Editor__png);
 		btnShipEditor.x = (FlxG.width / 2) - (btnShipEditor.width / 2);
 		btnShipEditor.y = btnOptions.y - btnShipEditor.height - 5;
 		btnShipEditor.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnShipEditor);
-		
+		*/
 		btnStageEditor = new FlxButton(0, 0, null, clickStageEditor);
 		btnStageEditor.loadGraphic(AssetPaths.Stage_Editor__png);
 		btnStageEditor.x = (FlxG.width / 2) - (btnStageEditor.width / 2);
-		btnStageEditor.y = btnShipEditor.y - btnStageEditor.height - 5;
+		btnStageEditor.y = btnOptions.y - btnStageEditor.height - 5;
 		btnStageEditor.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnStageEditor);
 
@@ -127,7 +121,7 @@ class MenuState extends FlxState
 		});
 	}
 	
-	#if desktop
+	#if (desktop || flash)
 	private function clickExit():Void {
 		System.exit(0);
 	}

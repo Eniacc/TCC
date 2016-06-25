@@ -30,7 +30,7 @@ class OptionsState extends FlxState
 	private var btnClearData:FlxButton;
 	private var btnBack:FlxButton;
 	private var btnControls:FlxButton;
-	#if desktop
+	#if (desktop || flash)
 	private var txtFullscreen:FlxText;
 	private var btnFullScreen:FlxButton;
 	#end
@@ -82,7 +82,7 @@ class OptionsState extends FlxState
 		barVolume.createFilledBar(0xff464646, FlxColor.WHITE, true, FlxColor.WHITE);
 		add(barVolume);
 		
-		txtVolumeAmp = new FlxText(0, 0, 200, (FlxG.sound.volume * 100) + "%", 15);
+		txtVolumeAmp = new FlxText(0, 10, 200, (FlxG.sound.volume * 100) + "%", 15);
 		txtVolumeAmp.alignment = CENTER;
 		txtVolumeAmp.borderStyle = FlxTextBorderStyle.OUTLINE;
 		txtVolumeAmp.borderColor = 0xff464646;
@@ -101,7 +101,7 @@ class OptionsState extends FlxState
 		btnClearData.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnClearData);
 		
-		#if desktop
+		#if (desktop || flash)
 		
 		txtFullscreen = new FlxText(0, btnClearData.y + btnClearData.height + 20, 0, "Fullscreen", 20);
         txtFullscreen.setBorderStyle(SHADOW, FlxColor.GRAY, 1, 1);
@@ -179,7 +179,7 @@ class OptionsState extends FlxState
 		FlxG.fullscreen = false;
 	}
 	
-	#if desktop
+	#if (desktop || flash)
 	private function clickFullscreen():Void
 	{
 		FlxG.fullscreen = !FlxG.fullscreen;

@@ -34,9 +34,9 @@ class PlayState extends FlxState
 	private var sndExplosion:FlxSound;
 	private var countFrame:Float = 0;
 	private var backdrop:FlxBackdrop;
-	private var _health:Int = 3;
-	private var _enemiesKilled:Int = 0;
-	private var _hud:HUD;
+	private var health:Int = 3;
+	private var enemiesKilled:Int = 0;
+	private var hud:HUD;
 	private var overlay:OverlayState;
 	private var subStateColor:FlxColor;
 	private var borderLeft:FlxSprite;
@@ -78,8 +78,8 @@ class PlayState extends FlxState
 		sndBullet = FlxG.sound.load(AssetPaths.shot1__wav);
 		sndExplosion = FlxG.sound.load(AssetPaths.explosion1__mp3);
 		
-		_hud = new HUD();
-		add(_hud);
+		hud = new HUD();
+		add(hud);
 		
 		super.create();
 	}
@@ -99,7 +99,15 @@ class PlayState extends FlxState
 	{
 		player = FlxDestroyUtil.destroy(player);
 		grpBullet = FlxDestroyUtil.destroy(grpBullet);
-		grpEnemy = FlxDestroyUtil.destroy(grpEnemy);
+		grpEnemy = FlxDestroyUtil.destroy(grpEnemy);		
+		sndBullet = FlxDestroyUtil.destroy(sndBullet);
+		sndExplosion = FlxDestroyUtil.destroy(sndExplosion);
+		backdrop = FlxDestroyUtil.destroy(backdrop);
+		hud = FlxDestroyUtil.destroy(hud);
+		overlay = FlxDestroyUtil.destroy(overlay);
+		borderLeft = FlxDestroyUtil.destroy(borderLeft);
+		borderRight = FlxDestroyUtil.destroy(borderRight);
+		
 		super.destroy();
 	}
 
@@ -111,10 +119,10 @@ class PlayState extends FlxState
 		if (isMenu)
 			openMenu();
 		
-		if (_health == 0)
+		if (health == 0)
 			gameOver();
 			
-		if (_enemiesKilled == 10)
+		if (enemiesKilled == 10)
 			stageComplete();		
 		
 		// Define área em que a nave pode se mover
@@ -171,8 +179,8 @@ class PlayState extends FlxState
 			sndExplosion.play(true);
 			player.killPlayer();
 			player = FlxDestroyUtil.destroy(player);
-			_health--;
-			_hud.updateHUD(_health, _enemiesKilled);
+			health--;
+			hud.updateHUD(health, enemiesKilled);
 			startPlayer();
 		}
 	}
@@ -233,8 +241,8 @@ class PlayState extends FlxState
 			fe.start(true, 3);
 			
 			
-			_enemiesKilled++;
-			_hud.updateHUD(_health,_enemiesKilled);
+			enemiesKilled++;
+			hud.updateHUD(health,enemiesKilled);
 		}
 	}
 	
@@ -257,7 +265,7 @@ class PlayState extends FlxState
 		overlay.isPersistant = true;
 		overlay.score = 0;
 		overlay.endGameStatus = 1;
-		overlay.score = _enemiesKilled;
+		overlay.score = enemiesKilled;
 		openSubState(overlay);
 	}
 	
@@ -269,7 +277,7 @@ class PlayState extends FlxState
 		overlay.isPersistant = true;
 		overlay.score = 0;
 		overlay.endGameStatus = 0;
-		overlay.score = _enemiesKilled;
+		overlay.score = enemiesKilled;
 		openSubState(overlay);
 	}
 }
