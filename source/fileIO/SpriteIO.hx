@@ -58,7 +58,7 @@ class SpriteIO
 	private function onSelect(e:Event):Void 
 	{
 		var fr:FileReference = cast(e.target, FileReference);
-		FlxG.log.add(fr.);
+		//FlxG.log.add(fr.name);
 		fr.addEventListener(Event.COMPLETE, onLoad);
 		fr.load();
 	}
@@ -78,7 +78,7 @@ class SpriteIO
 		var loaderInfo:LoaderInfo = e.target;
 		loaderInfo.removeEventListener(Event.COMPLETE, onImgLoad);
 		var bmp:Bitmap = cast(loaderInfo.content, Bitmap);
-		FlxG.log.add('img '+loaderInfo.url);
+		//FlxG.log.add('img '+loaderInfo.url);
 		callback(bmp.bitmapData, loaderInfo.url);
 	}
 	#elseif (cpp || neko)

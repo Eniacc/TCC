@@ -53,7 +53,7 @@ class WaypointView extends FlxSpriteGroup
 		xField = new FormItem(marginRect, "Horizontal %");
 		yField = new FormItem(marginRect, "Vertical %");
 		rotationField = new FormItem(marginRect, "Rotation");
-		speedField = new FormItem(marginRect, "Speed");
+		speedField = new FormItem(marginRect, "Time");
 		waitField = new FormItem(marginRect, "Wait");
 		rateOfFireField = new FormItem(marginRect, "Rate of Fire");
 		numShipsField = new FormItem(marginRect, "Ships");

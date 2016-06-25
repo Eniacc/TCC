@@ -81,7 +81,7 @@ class SelectionView extends FlxSpriteGroup
 		
 		spriteBox.pixels = bitmapData;
 		
-		FlxG.log.add(url);
-		if(url != "") callbackSetPathURL(url);
+		//FlxG.log.add(url);
+		//if(url != "") callbackSetPathURL(url);
 	}
 }

@@ -50,16 +50,21 @@ class JsonIO
 		fr.removeEventListener(Event.COMPLETE, onLoad);
 		
 		var loader:Loader = new Loader();
-		loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImgLoad);
+		loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onJSONLoad);
+		FlxG.log.add("onSelect1");
 		loader.loadBytes(fr.data);
+		FlxG.log.add("onSelect2");
 	}
 	
-	private function onImgLoad(e:Event):Void 
+	private function onJSONLoad(e:Event):Void 
 	{
 		var loaderInfo:LoaderInfo = e.target;
-		loaderInfo.removeEventListener(Event.COMPLETE, onImgLoad);
-		var bmp:Bitmap = cast(loaderInfo.content, Bitmap);
-		callback(bmp.bitmapData, loaderInfo.url);
+		loaderInfo.removeEventListener(Event.COMPLETE, onJSONLoad);
+		FlxG.log.add("Cast1");
+		var json:String = cast(loaderInfo.content, String);
+		FlxG.log.add("Cast2");
+		load(json);
+		FlxG.log.add("Cast3");
 	}
 	
 	public function save(waves:FlxTypedGroup<Wave>)
@@ -99,20 +104,27 @@ class JsonIO
 		}
 		json += "]}";
 		
-		//var waver:FlxTypedGroup<Wave> = new FlxTypedGroup<Wave>();
-		//var wave:Wave = new Wave();
-		//var path:Path = new Path();
-		//var wp:Waypoint = new Waypoint();
-		//wp.xPer = 39;
-		//wp.yPer = 59;
-		//path.add(wp);
-		//wave.add(path);
-		//waver.add(wave);
-		//json = Json.stringify(waver, replacer,"     ");
-		var jsonDyn:Dynamic = Json.parse(json);
-		var jsonCheck:String = Json.stringify(jsonDyn, null, "    ");
-		FlxG.log.add("json");
-		FlxG.log.add(jsonCheck);
+		//var jsonDyn:Dynamic = Json.parse(json);
+		//var jsonCheck:String = Json.stringify(jsonDyn, null, "   \n");
+		//FlxG.log.add("json");
+		//FlxG.log.add(jsonCheck);
+		
+		var fr:FileReference = new FileReference();
+		fr.save(json, "fase.json");
+	}
+	
+	public function load(json:String)
+	{
+		try
+		{
+			var json:Dynamic = Json.parse(json);
+			
+		}
+		catch (msg:String)
+		{
+			FlxG.log.add("Error " + msg);
+		}
+		
 	}
 	
 	private function replacer(key:Dynamic, value:Dynamic):Dynamic {

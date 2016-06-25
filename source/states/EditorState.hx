@@ -57,7 +57,7 @@ class EditorState extends FlxState
 		add(waypointView);
 		
 		selectionView = new SelectionView(332, 40);
-		selectionView.callbackSetPathURL = setPathURL;
+		//selectionView.callbackSetPathURL = setPathURL;
 		add(selectionView);
 		
 		topBar = new TopBar(0, 0);
@@ -83,7 +83,8 @@ class EditorState extends FlxState
 	
 	function importJson() 
 	{
-		
+		var jsonIO:JsonIO = new JsonIO(null);
+		jsonIO.browse();
 	}
 	
 	function newStage() 
@@ -151,7 +152,7 @@ class EditorState extends FlxState
 		currentPath = index;
 		pathBoxer.setSelected(currentPath);
 		stage.loadPath(waves.members[currentWave].members[index]);
-		selectionView.fileIO.loadUrl(waves.members[currentWave].members[index].spriteURL);
+		//selectionView.fileIO.loadUrl(waves.members[currentWave].members[index].spriteURL);
 	}
 	
 	function testCreate() 
