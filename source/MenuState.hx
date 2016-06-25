@@ -22,7 +22,7 @@ class MenuState extends FlxState
 	private var txtTitle:FlxText;
 	private var btnPlay:FlxButton;
 	private var btnStageEditor:FlxButton;
-	private var btnShipEditor:FlxButton;
+	//private var btnShipEditor:FlxButton;
 	private var btnOptions:FlxButton;
 	#if desktop
 	private var btnExit:FlxButton;
@@ -67,18 +67,18 @@ class MenuState extends FlxState
 		#end
 		btnOptions.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnOptions);
-		
+		/*
 		btnShipEditor = new FlxButton(0, 0, null, clickShipEditor);
 		btnShipEditor.loadGraphic(AssetPaths.Ship_Editor__png);
 		btnShipEditor.x = (FlxG.width / 2) - (btnShipEditor.width / 2);
 		btnShipEditor.y = btnOptions.y - btnShipEditor.height - 5;
 		btnShipEditor.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnShipEditor);
-		
+		*/
 		btnStageEditor = new FlxButton(0, 0, null, clickStageEditor);
 		btnStageEditor.loadGraphic(AssetPaths.Stage_Editor__png);
 		btnStageEditor.x = (FlxG.width / 2) - (btnStageEditor.width / 2);
-		btnStageEditor.y = btnShipEditor.y - btnStageEditor.height - 5;
+		btnStageEditor.y = btnOptions.y - btnStageEditor.height - 5;
 		btnStageEditor.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(btnStageEditor);
 
