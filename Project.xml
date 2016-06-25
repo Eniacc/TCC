@@ -40,6 +40,10 @@
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
+	
+	<haxelib name="systools" />
+	
+	<ndll name="systools" haxelib="systools"/>
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape" />-->
