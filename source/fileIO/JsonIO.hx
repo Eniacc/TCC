@@ -154,7 +154,6 @@ class JsonIO
 		{
 			FlxG.log.add("Error " + msg);
 		}
-		
 	}
 	
 	private function replacer(key:Dynamic, value:Dynamic):Dynamic {

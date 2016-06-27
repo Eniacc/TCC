@@ -94,8 +94,14 @@ class EditorState extends FlxState
 	
 	function importJson() 
 	{
-		var jsonIO:JsonIO = new JsonIO(null);
+		var jsonIO:JsonIO = new JsonIO(loadWaves);
 		jsonIO.browse();
+	}
+	
+	function loadWaves(json:Dynamic)
+	{
+		this.waves = JsonIO.gamify(json);
+		waveBoxer.loadWaves(this.waves);
 	}
 	
 	function newStage():Void
@@ -209,17 +215,5 @@ class EditorState extends FlxState
 	override public function update(elapsed:Float):Void 
 	{
 		super.update(elapsed);
-		//if (FlxG.keys.justPressed.SPACE) spawnTest();
 	}
-	
-	//function spawnTest() 
-	//{
-		//var bot:Bot = new Bot();
-		//bot.setGraphic(selectionView.spriteBox);
-		//bot.waypoints = waves.members[currentWave].members[currentPath];
-		//bot.reference = stage.gameStage.getHitbox();// new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
-		////trace(bot.reference);
-		//bot.awake();
-		//stage.add(bot);
-	//}
 }

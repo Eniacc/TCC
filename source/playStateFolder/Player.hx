@@ -127,6 +127,12 @@ class Player extends Ship
 		//}
 	//}
 	
+	override public function kill():Void 
+	{
+		killPlayer();
+		super.kill();
+	}
+	
 	public function killPlayer():Void
 	{
 		sprite.alive = false;

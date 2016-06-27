@@ -105,6 +105,7 @@ class Bot extends Ship
 		tween.cancel();
 		wait.destroy();
 		shootTimer.destroy();
+		botPath = null;
 		super.kill();
 	}
 	

@@ -23,7 +23,7 @@ class GameStageView extends FlxSpriteGroup
 	private var waves:FlxTypedGroup<Wave>;
 	private var currentWave:Int = 0;
 	private var timer:Timer;
-	private var bots:FlxTypedSpriteGroup<Bot>;
+	public var bots:FlxTypedSpriteGroup<Bot>;
 	public var callbackStageComplete:Function;
 	public var callbackGameOver:Function;
 	
@@ -42,6 +42,8 @@ class GameStageView extends FlxSpriteGroup
 		gameArea.makeGraphic(Std.int(Registry.gameWidth * scale), Std.int(Registry.gameHeight * scale), 0xFF000055);
 		gameArea.updateHitbox();
 		add(gameArea);
+		
+		add(Registry.bulletPool);
 	}
 	
 	public function showHelp() 
@@ -65,6 +67,7 @@ class GameStageView extends FlxSpriteGroup
 	function loadWave(index:Int) 
 	{
 		currentWave = index;
+		trace("CURRENT WAVE", bots.countLiving());
 		if (currentWave >= waves.members.length) callbackStageComplete();
 		else{
 			for (p in waves.members[index])
@@ -122,5 +125,11 @@ class GameStageView extends FlxSpriteGroup
 				loadWave(currentWave);
 			}
 		}
+	}
+	
+	override public function destroy():Void 
+	{
+		remove(Registry.bulletPool);
+		super.destroy();
 	}
 }
