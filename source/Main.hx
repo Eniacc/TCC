@@ -22,7 +22,7 @@ class Main extends Sprite
 		
 		Registry.init();
 		
-		addChild(new FlxGame(1280, 720, StageSelectState));
+		addChild(new FlxGame(1280, 720, MenuState));
 		
 		if (_save.data.volume != null) {
 			FlxG.sound.volume = _save.data.volume;

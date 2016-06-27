@@ -61,7 +61,7 @@ class SelectionView extends FlxSpriteGroup
 		//add(btSelect);
 		trace('bt', btSelect.x, btSelect.y, btSelect.width, btSelect.height);
 		
-		defaultSprite = new FlxSprite(0, 0, AssetPaths.Bot__png);
+		defaultSprite = new FlxSprite(0, 0, AssetPaths.Enemy1__png);
 		setSprite(defaultSprite.pixels);
 	}
 	
