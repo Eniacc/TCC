@@ -29,7 +29,7 @@ class PlayState extends FlxState
 	
 	private var player:Player;
 	private var grpEnemy:FlxTypedGroup<Enemy>;
-	private var grpBullet:FlxTypedGroup<PBullet>;
+	private var grpBullet:FlxTypedGroup<Bullet>;
 	private var sndBullet:FlxSound;
 	private var sndExplosion:FlxSound;
 	private var countFrame:Float = 0;
@@ -53,7 +53,7 @@ class PlayState extends FlxState
 		add(backdrop = new FlxBackdrop(AssetPaths.background__jpg));
 		backdrop.velocity.set(0, 200);
 		
-		grpBullet = new FlxTypedGroup<PBullet>();
+		grpBullet = new FlxTypedGroup<Bullet>();
 		add(grpBullet);
 		
 		borderLeft = new FlxSprite();
@@ -86,7 +86,8 @@ class PlayState extends FlxState
 	
 	function startPlayer()
 	{
-		player = new Player(640, 600);
+		//player = new Player(640, 600);
+		player = new Player(0, 600);
 		player.antialiasing = true;
 		add(player);
 	}
@@ -126,46 +127,46 @@ class PlayState extends FlxState
 			stageComplete();		
 		
 		// Define área em que a nave pode se mover
-		FlxSpriteUtil.bound(player, Registry.minXShip, Registry.maxXShip, Registry.minYShip, Registry.maxYShip);
+		//FlxSpriteUtil.bound(player, Registry.minXShip, Registry.maxXShip, Registry.minYShip, Registry.maxYShip);
 		
 		
 		//trace(fps.currentFPS); //Show FPS
-		var shoot:Bool = (player.gamePad != null && player.gamePad.anyPressed([FlxGamepadInputID.RIGHT_TRIGGER])) ? true : FlxG.keys.anyPressed(["SPACE"]);
-		if (shoot)
-		{
-			if (countFrame <= 0)
-			{
-				//grpBullet.add(new PBullet(player.x + 12.5, player.y + 5));
-				grpBullet.add(new PBullet(player.x + 22.5, player.y + 5));
-				//FlxG.camera.shake(0.001, 0.1, null, true, 2);
-				FlxG.camera.shake(0.001, 0.1, null, true, null);
-				sndBullet.play(true);
-				countFrame = player.rof;
-				
-				_explosionPixel = new FlxParticle();
-				_explosionPixel.makeGraphic(2, 10, FlxColor.WHITE);
-				_explosionPixel.visible = false;
-				var shellRight = new FlxEmitter(player.x + 30, player.y + 5, 1);							
-				shellRight.launchMode = FlxEmitterMode.SQUARE;
-				shellRight.velocity.set(1000 + player.velocity.x, 300, 1000 + player.velocity.x, 300);				
-				shellRight.angle.set(-90,90);	
-				add(shellRight);
-				shellRight.add(_explosionPixel);
-				shellRight.start(true, 1);
-				
-				_explosionPixel = new FlxParticle();
-				_explosionPixel.makeGraphic(2, 10, FlxColor.WHITE);
-				_explosionPixel.visible = false;
-				var shellLeft = new FlxEmitter(player.x + 26, player.y + 5, 1);								
-				shellLeft.launchMode = FlxEmitterMode.SQUARE;
-				shellLeft.velocity.set( -1000 + player.velocity.x, 300, -1000 + player.velocity.x, 300);
-				shellLeft.angle.set(90,-90);
-				add(shellLeft);
-				shellLeft.add(_explosionPixel);
-				shellLeft.start(true, 1);
-			}
-			countFrame--;
-		}
+		//var shoot:Bool = (player.gamePad != null && player.gamePad.anyPressed([FlxGamepadInputID.RIGHT_TRIGGER])) ? true : FlxG.keys.anyPressed(["SPACE"]);
+		//if (shoot)
+		//{
+			//if (countFrame <= 0)
+			//{
+				////grpBullet.add(new PBullet(player.x + 12.5, player.y + 5));
+				//grpBullet.add(new Bullet(player.x + 22.5, player.y + 5));
+				////FlxG.camera.shake(0.001, 0.1, null, true, 2);
+				//FlxG.camera.shake(0.001, 0.1, null, true, null);
+				//sndBullet.play(true);
+				//countFrame = player.rof;
+				//
+				//_explosionPixel = new FlxParticle();
+				//_explosionPixel.makeGraphic(2, 10, FlxColor.WHITE);
+				//_explosionPixel.visible = false;
+				//var shellRight = new FlxEmitter(player.x + 30, player.y + 5, 1);							
+				//shellRight.launchMode = FlxEmitterMode.SQUARE;
+				//shellRight.velocity.set(1000 + player.velocity.x, 300, 1000 + player.velocity.x, 300);				
+				//shellRight.angle.set(-90,90);	
+				//add(shellRight);
+				//shellRight.add(_explosionPixel);
+				//shellRight.start(true, 1);
+				//
+				//_explosionPixel = new FlxParticle();
+				//_explosionPixel.makeGraphic(2, 10, FlxColor.WHITE);
+				//_explosionPixel.visible = false;
+				//var shellLeft = new FlxEmitter(player.x + 26, player.y + 5, 1);								
+				//shellLeft.launchMode = FlxEmitterMode.SQUARE;
+				//shellLeft.velocity.set( -1000 + player.velocity.x, 300, -1000 + player.velocity.x, 300);
+				//shellLeft.angle.set(90,-90);
+				//add(shellLeft);
+				//shellLeft.add(_explosionPixel);
+				//shellLeft.start(true, 1);
+			//}
+			//countFrame--;
+		//}
 		
 		FlxG.overlap(grpBullet, grpEnemy, bulletHitEnemy);
 		grpBullet.forEach(bulletTest);
@@ -185,7 +186,7 @@ class PlayState extends FlxState
 		}
 	}
 	
-	private function bulletTest(B:PBullet)
+	private function bulletTest(B:Bullet)
 	{
 		if (!B.isOnScreen(FlxG.camera)) destroyBullet(B);
 		grpEnemy.forEach(function(E:Enemy) {
@@ -196,14 +197,14 @@ class PlayState extends FlxState
 		trace('Objects: '+(grpEnemy.length+grpBullet.length+1)+' FPS: '+fps.currentFPS);
 	}
 	
-	private function destroyBullet(B:PBullet)
+	private function destroyBullet(B:Bullet)
 	{
 		B.kill();
 		B.destroy();
 		grpBullet.remove(B);
 	}
 	
-	private function bulletHitEnemy(B:PBullet, E:Enemy)
+	private function bulletHitEnemy(B:Bullet, E:Enemy)
 	{
 		if (E.alive && E.exists && B.alive && B.exists)
 		{

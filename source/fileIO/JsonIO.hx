@@ -1,5 +1,6 @@
 package fileIO;
 import editorView.PathBoxer;
+import flash.net.URLRequest;
 import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import haxe.Constraints.Function;
@@ -13,6 +14,11 @@ import openfl.display.LoaderInfo;
 import openfl.events.Event;
 import openfl.net.FileFilter;
 import openfl.net.FileReference;
+import openfl.net.URLLoader;
+
+#if (cpp||neko)
+import systools.Dialogs;
+#end
 
 /**
  * ...
@@ -25,14 +31,18 @@ class JsonIO
 	public function new(callback:Function) 
 	{
 		this.callback = callback;
+		
+		#if sys
+		trace("yup");
+		#end
 	}
 	
-	
+	#if flash
 	public function browse() 
 	{
 		var fr:FileReference = new FileReference();
 		var filters:Array<FileFilter> = new Array<FileFilter>();
-		filters.push(new FileFilter("JSON File", "*.json"));
+		filters.push(new FileFilter("JSON File", "*.json;*.txt"));
 		fr.browse(filters);
 		fr.addEventListener(Event.SELECT, onSelect);
 	}
@@ -49,23 +59,44 @@ class JsonIO
 		var fr:FileReference = e.target;
 		fr.removeEventListener(Event.COMPLETE, onLoad);
 		
-		var loader:Loader = new Loader();
-		loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onJSONLoad);
-		FlxG.log.add("onSelect1");
-		loader.loadBytes(fr.data);
-		FlxG.log.add("onSelect2");
+		//var json:String = cast(loaderInfo.content, String);
+		trace('onLoad:',fr.data);
+		var json:String = fr.data.toString();
+		trace('onLoad:',json);
+		load(json);
 	}
 	
-	private function onJSONLoad(e:Event):Void 
+	#elseif(cpp || neko)
+	public function browse() 
 	{
-		var loaderInfo:LoaderInfo = e.target;
-		loaderInfo.removeEventListener(Event.COMPLETE, onJSONLoad);
-		FlxG.log.add("Cast1");
-		var json:String = cast(loaderInfo.content, String);
-		FlxG.log.add("Cast2");
-		load(json);
-		FlxG.log.add("Cast3");
+		trace("Enter Neko");
+		var filters:FILEFILTERS = {count:2, descriptions: ["Image files"], extensions: ["*.png;*.jpg;*.jpeg;"]};
+		trace("Enter Neko2");
+		var result:Array<String> = Dialogs.openFile("Select a sprite!", "Sprite Image", filters);
+		trace("Enter Neko3");
+		onSelect(result);
 	}
+	
+	private function onSelect(arr:Array<String>):Void
+	{
+		trace("Enter Neko onSelect");
+		trace(arr);
+		//if (arr != null && arr.length > 0)
+		//{
+			//var img =
+			//#if lime_legacy
+				//BitmapData.load(arr[0]);
+			//#else
+				//BitmapData.fromFile(arr[0]);
+			//#end
+			//
+			//if (img != null) 
+			//{
+				//callback(img, arr[0]);
+			//}
+		//}
+	}
+	#end
 	
 	public function save(waves:FlxTypedGroup<Wave>)
 	{
@@ -104,13 +135,16 @@ class JsonIO
 		}
 		json += "]}";
 		
-		//var jsonDyn:Dynamic = Json.parse(json);
-		//var jsonCheck:String = Json.stringify(jsonDyn, null, "   \n");
-		//FlxG.log.add("json");
-		//FlxG.log.add(jsonCheck);
+		var jsonDyn:Dynamic = Json.parse(json);
+		var jsonCheck:String = Json.stringify(jsonDyn, null, "   ");
+		FlxG.log.add("json");
+		FlxG.log.add(jsonCheck);
+		trace(jsonCheck);
 		
+		#if flash
 		var fr:FileReference = new FileReference();
 		fr.save(json, "fase.json");
+		#end
 	}
 	
 	public function load(json:String)
@@ -118,7 +152,7 @@ class JsonIO
 		try
 		{
 			var json:Dynamic = Json.parse(json);
-			
+			trace('load:',json);
 		}
 		catch (msg:String)
 		{

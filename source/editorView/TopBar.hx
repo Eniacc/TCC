@@ -7,6 +7,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import haxe.Constraints.Function;
+import states.MenuState;
 
 /**
  * ...
@@ -91,6 +92,6 @@ class TopBar extends FlxSpriteGroup
 	
 	function gotoTitle() 
 	{
-		FlxG.switchState(new MenuState());
+		FlxG.switchState(new states.MenuState());
 	}
 }

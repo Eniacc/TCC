@@ -23,7 +23,7 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 		txtHealth = new FlxText(0, 50, 0, "3 / 3", 30);
 		txtHealth.setBorderStyle(SHADOW, FlxColor.GRAY, 1, 1);
 		txtHealth.x = (332 / 2) - (txtHealth.width / 2);
-		add(txtHealth);
+		//add(txtHealth);
 		
 		// Add Score number to the HUD
 		txtScore = new FlxText(0, 50, 0, "SCORE: 0", 30);

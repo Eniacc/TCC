@@ -2,10 +2,10 @@ package editorView;
 
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
-import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
+import haxe.Constraints.Function;
 
 /**
  * ...
@@ -13,6 +13,10 @@ import flixel.util.FlxSpriteUtil;
  */
 class BottomBar extends FlxSpriteGroup
 {
+	var btPlay:FlxButton;
+	var playing:Bool = false;
+	public var callbackPlayStop:Function;
+	
 	public function new(?X:Float = 0, ?Y:Float = 0) 
 	{
 		super();
@@ -25,20 +29,23 @@ class BottomBar extends FlxSpriteGroup
 		FlxSpriteUtil.drawRect(background, 0, 0, 1280, 40, FlxColor.TRANSPARENT, {thickness:5});
 		add(background);
 		
-		//var btUp:FlxButton = new FlxButton(0, 0, "NEW", selectUp);
-		//btUp.makeGraphic(83, 40, 0xFF000055);
-		//btUp.setPosition(0, background.height - btUp.height);
-		//btUp.label = new FlxText(0, 0, btUp.width, "NEW", 20);
-		//btUp.label.alignment = FlxTextAlign.CENTER;
-		//FlxSpriteUtil.drawRect(btUp, 0, 0, btUp.width, btUp.height, FlxColor.TRANSPARENT, {thickness:5});
-		//add(btUp);
-		//
-		//var btDown:FlxButton = new FlxButton(0, 0, "REMOVE", selectDown);
-		//btDown.makeGraphic(83, 40, 0xFF000055);
-		//btDown.setPosition(btUp.width, background.height - btDown.height);
-		//btDown.label = new FlxText(0, 0, btUp.width, "REMOVE", 20);
-		//btDown.label.alignment = FlxTextAlign.CENTER;
-		//FlxSpriteUtil.drawRect(btDown, 0, 0, btDown.width, btDown.height, FlxColor.TRANSPARENT, {thickness:5});
-		//add(btDown);
+		btPlay = new FlxButton(0, 0, "", playStopHandler);
+		btPlay.loadGraphic(AssetPaths.btplay__png);
+		btPlay.setPosition(background.width - btPlay.width, 0);
+		add(btPlay);
+	}
+	
+	function playStopHandler() 
+	{
+		if (!playing)
+		{
+			playing = true;
+			btPlay.loadGraphic(AssetPaths.btsop__png);
+			callbackPlayStop(true);
+		}else{
+			playing = false;
+			btPlay.loadGraphic(AssetPaths.btplay__png);
+			callbackPlayStop(false);
+		}
 	}
 }

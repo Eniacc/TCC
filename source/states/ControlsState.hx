@@ -1,4 +1,4 @@
-package;
+package states;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -85,7 +85,7 @@ class ControlsState extends FlxState
 	{
 		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
 		{
-			FlxG.switchState(new OptionsState());
+			FlxG.switchState(new states.OptionsState());
 		});
 	}
 }

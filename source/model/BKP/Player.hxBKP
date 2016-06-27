@@ -16,9 +16,9 @@ class Player extends Ship
 	public function new(?X:Float = 0, ?Y:Float = 0) 
 	{
 		super();
-		
+		controlSpeed = speed = 50;
 		sprite = new FlxSprite();
-		sprite.loadGraphic(AssetPaths.ShipSpritesheet__png, true, 100, 62);
+		sprite.loadGraphic(AssetPaths.RedShipSprite__png, true, 100, 62);
 		sprite.x = X - sprite.width * .5;
 		sprite.y = Y - sprite.height * .5;
 		add(sprite);
@@ -34,7 +34,7 @@ class Player extends Ship
 	private function controla()
 	{
 		//Controls here
-		firing = FlxG.keys.pressed.SPACE;
+		if (FlxG.keys.pressed.SPACE) fire(2000);
 		if (FlxG.keys.pressed.SHIFT) controlSpeed = speed * .5;
 		else controlSpeed = speed;
 		if (FlxG.keys.pressed.LEFT) sprite.x -= controlSpeed;

@@ -8,6 +8,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
+import states.MenuState;
 
 /**
  * ...
@@ -53,7 +54,7 @@ class StageMenuState extends FlxState
 	{
 		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
 		{
-			FlxG.switchState(new MenuState());
+			FlxG.switchState(new states.MenuState());
 		});
 	}
 }

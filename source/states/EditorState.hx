@@ -14,7 +14,6 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxRect;
 import model.Bot;
 import model.Path;
-import model.Player;
 import model.Wave;
 import model.Waypoint;
 
@@ -43,6 +42,7 @@ class EditorState extends FlxState
 		add(stage);
 		
 		bottomBar = new BottomBar(0, 680);
+		bottomBar.callbackPlayStop = playStopPath;
 		add(bottomBar);
 		
 		waveBoxer = new WaveBoxer(addWave, removeWave, selectWave, 0, 40);
@@ -92,9 +92,14 @@ class EditorState extends FlxState
 		FlxG.switchState(new EditorState());
 	}
 	
-	function displayWaypointData(waypoint:Waypoint) 
+	function displayWaypointData(waypoint:Waypoint, index:Int = 0) 
 	{
-		waypointView.loadWaypoint(waypoint);
+		waypointView.loadWaypoint(waypoint, index);
+	}
+	
+	function playStopPath(play:Bool = false)
+	{
+		stage.test(play);
 	}
 	
 	function addWave()
@@ -172,16 +177,16 @@ class EditorState extends FlxState
 					waypoint.rotation = FlxG.random.int(0, 360);
 					waypoint.speed = FlxG.random.float(0.3,3);
 					waypoint.wait = FlxG.random.int(0, 2);
-					waypoint.rateOfFire = FlxG.random.int(0, 5);
+					waypoint.rateOfFire = FlxG.random.float(0, 2);
 					path.add(waypoint);
-					trace("Waypoints:" + path.length);
+					//trace("Waypoints:" + path.length);
 				}
 				//path.spawnBots();
 				wave.add(path);
-				trace("Paths:" + wave.length);
+				//trace("Paths:" + wave.length);
 			}
 			waves.add(wave);
-			trace("Waves:" + waves.length);
+			//trace("Waves:" + waves.length);
 		}
 		
 		waveBoxer.loadWaves(waves);
@@ -192,17 +197,17 @@ class EditorState extends FlxState
 	override public function update(elapsed:Float):Void 
 	{
 		super.update(elapsed);
-		if (FlxG.keys.justPressed.SPACE) spawnTest();
+		//if (FlxG.keys.justPressed.SPACE) spawnTest();
 	}
 	
-	function spawnTest() 
-	{
-		var bot:Bot = new Bot();
-		bot.setGraphic(selectionView.spriteBox);
-		bot.waypoints = waves.members[currentWave].members[currentPath];
-		bot.reference = stage.gameStage.getHitbox();// new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
-		//trace(bot.reference);
-		bot.awake();
-		stage.add(bot);
-	}
+	//function spawnTest() 
+	//{
+		//var bot:Bot = new Bot();
+		//bot.setGraphic(selectionView.spriteBox);
+		//bot.waypoints = waves.members[currentWave].members[currentPath];
+		//bot.reference = stage.gameStage.getHitbox();// new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
+		////trace(bot.reference);
+		//bot.awake();
+		//stage.add(bot);
+	//}
 }

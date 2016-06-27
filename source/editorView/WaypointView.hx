@@ -80,7 +80,7 @@ class WaypointView extends FlxSpriteGroup
 		add(formGroup);
 	}
 	
-	public function loadWaypoint(waypoint:Waypoint)
+	public function loadWaypoint(waypoint:Waypoint, index:Int = 0)
 	{
 		this.waypoint = waypoint;
 		if (waypoint != null)
@@ -94,6 +94,8 @@ class WaypointView extends FlxSpriteGroup
 			rateOfFireField.value = waypoint.rateOfFire;
 			numShipsField.value = waypoint.numShips;
 			intervalField.value = waypoint.interval;
+			
+			numShipsField.visible = intervalField.visible = index == 0;
 		}else{
 			for (i in 0...formGroup.length) formGroup.members[i].disable();
 		}
@@ -119,7 +121,7 @@ class WaypointView extends FlxSpriteGroup
 			if (Math.isNaN(waypoint.rotation)) waypoint.rotation = Waypoint.defaultrotation; 
 			if (Math.isNaN(waypoint.speed)) waypoint.speed = Waypoint.defaultSpeed; 
 			if (Math.isNaN(waypoint.wait)) waypoint.wait = Waypoint.defaultWait; 
-			//if (Math.isNaN(waypoint.numShips)) waypoint.numShips = Waypoint.defaultNumShip; 
+			if (waypoint.numShips < 1) waypoint.numShips = Waypoint.defaultNumShip; 
 			if (Math.isNaN(waypoint.interval)) waypoint.interval = Waypoint.defaultInterval; 
 		}
 	}

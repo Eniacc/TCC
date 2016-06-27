@@ -8,11 +8,11 @@ import openfl.display.Loader;
 import openfl.display.LoaderInfo;
 import openfl.events.Event;
 import openfl.net.FileReference;
+import openfl.net.FileFilter;
+import openfl.net.URLRequest;
 #elseif (cpp || neko)
 import systools.Dialogs;
 #end
-import openfl.net.FileFilter;
-import openfl.net.URLRequest;
 
 /**
  * ...
@@ -78,6 +78,7 @@ class SpriteIO
 		var loaderInfo:LoaderInfo = e.target;
 		loaderInfo.removeEventListener(Event.COMPLETE, onImgLoad);
 		var bmp:Bitmap = cast(loaderInfo.content, Bitmap);
+		
 		//FlxG.log.add('img '+loaderInfo.url);
 		callback(bmp.bitmapData, loaderInfo.url);
 	}

@@ -7,6 +7,7 @@ import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
+import states.MenuState;
 
 /**
  * ...
@@ -100,7 +101,7 @@ class OverlayState extends FlxSubState
 	private function clickExitGame():Void {
 		FlxG.camera.fade(FlxColor.BLACK, .10, false, function()
 		{
-			FlxG.switchState(new MenuState());
+			FlxG.switchState(new states.MenuState());
 		});
 	}
 }

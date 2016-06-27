@@ -6,11 +6,14 @@ import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
+import flixel.util.FlxTimer;
 import gameView.GameStageView;
 import haxe.Constraints.Function;
 import lime.graphics.PixelFormat;
+import model.Bot;
 import model.Path;
 import model.Wave;
 import model.Waypoint;
@@ -27,11 +30,13 @@ class StageView extends FlxSpriteGroup
 	var waypoints:FlxTypedSpriteGroup<Waypoint> = new FlxTypedSpriteGroup<Waypoint>();
 	
 	var backGround:FlxSprite;
-	public var gameStage:GameStageView;
+	var gameStage:GameStageView;
 	var dif:FlxPoint;
 	
 	public var selectedWaypoint:Waypoint;
 	public var callbackSelected:Function;
+	
+	var bots:FlxTypedSpriteGroup<Bot> = new FlxTypedSpriteGroup<Bot>();
 	
 	public function new(?X:Float = 0, ?Y:Float = 0)
 	{
@@ -55,6 +60,7 @@ class StageView extends FlxSpriteGroup
 		add(lines);
 		
 		add(waypoints);
+		add(bots);
 		
 		dif = new FlxPoint(backGround.x - gameStage.x, backGround.y - gameStage.y);
 	}
@@ -74,7 +80,7 @@ class StageView extends FlxSpriteGroup
 	override public function update(elapsed:Float):Void
 	{
 		
-		if (FlxG.mouse.overlaps(this))
+		if (FlxG.mouse.overlaps(backGround))
 		{
 			if (FlxG.mouse.justPressed)
 			{
@@ -91,7 +97,7 @@ class StageView extends FlxSpriteGroup
 			{
 				selectedWaypoint.xPer = getPer(FlxG.mouse.x, FlxG.mouse.y).x;
 				selectedWaypoint.yPer = getPer(FlxG.mouse.x, FlxG.mouse.y).y;
-				callbackSelected(selectedWaypoint);
+				callbackSelected(selectedWaypoint, p.members.indexOf(selectedWaypoint));
 			}
 		}
 		
@@ -141,7 +147,7 @@ class StageView extends FlxSpriteGroup
 				"wp.xPer * gameStage.width: "+wp.xPer * gameStage.width);
 		loadPath(p);
 		
-		callbackSelected(wp);
+		callbackSelected(wp, p.members.indexOf(wp));
 	}
 	
 	function removeWaypoint(selectedWaypoint:Waypoint)
@@ -176,5 +182,47 @@ class StageView extends FlxSpriteGroup
 			waypoints.members[i].x = wpx + backGround.x - wp.width * .5;
 			waypoints.members[i].y = wpy + backGround.y - wp.height;
 		}
+	}
+	
+	public function test(play:Bool) 
+	{
+		if (play)
+		{
+			if (p.length > 0)
+			{
+				//bots.revive();
+				spawn();
+				if (p.members[0].numShips > 1)
+				{
+					var timer:FlxTimer = new FlxTimer();
+					timer.start(p.members[0].interval, spawn, p.members[0].numShips - 1);
+				}
+			}
+		}else{
+			//bots.kill();
+			for (i in 0...bots.length)
+			{
+				bots.members[i].kill();
+				bots.members[i].destroy();
+			}
+			bots.clear();
+		}
+	}
+	
+	function spawn(timer:FlxTimer = null) 
+	{
+		//var bot:Bot = bots.recycle(Bot, botFactory);
+		var bot:Bot = new Bot();
+		//bot.setGraphic(selectionView.spriteBox);
+		bot.waypoints = p;
+		bot.reference = gameStage.getHitbox();// new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
+		//trace(bot.reference);
+		bot.awake();
+		bots.add(bot);
+	}
+	
+	function botFactory() 
+	{
+		return new Bot();
 	}
 }
