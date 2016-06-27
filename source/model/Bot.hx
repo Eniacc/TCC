@@ -23,6 +23,9 @@ class Bot extends Ship
 	private var wait:FlxTimer;
 	private var shootTimer:FlxTimer;
 	
+	public var scoreValue:Int = 50;
+	private var scoreTimer:FlxTimer;
+	
 	public function new(inEditor:Bool = false)
 	{
 		super();
@@ -34,6 +37,7 @@ class Bot extends Ship
 		
 		wait = new FlxTimer();
 		shootTimer = new FlxTimer();
+		scoreTimer = new FlxTimer();
 	}
 	
 	override public function update(elapsed:Float):Void 
@@ -44,6 +48,8 @@ class Bot extends Ship
 	public function awake()
 	{
 		gotoWaypoint(getNextWaypoint(null));
+		scoreValue = 50;
+		scoreTimer.start(1, function(timer:FlxTimer){scoreValue--; }, scoreValue);
 	}
 	
 	function gotoWaypoint(wp:Waypoint) 
@@ -106,6 +112,7 @@ class Bot extends Ship
 		tween.cancel();
 		wait.destroy();
 		shootTimer.destroy();
+		scoreTimer.destroy();
 		botPath = null;
 		super.kill();
 	}

@@ -11,6 +11,7 @@ import flixel.system.FlxSound;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 import gameView.GameStageView;
+import model.Bot;
 import model.Bullet;
 import openfl.display.FPS;
 import playStateFolder.HUD;
@@ -64,9 +65,6 @@ class PlayState extends FlxState
 		sndBullet = FlxG.sound.load(AssetPaths.shot1__wav);
 		sndExplosion = FlxG.sound.load(AssetPaths.explosion1__mp3);
 		
-		hud = new HUD();
-		add(hud);
-		
 		Registry.inEditor = false;
 		
 		gameStage = new GameStageView();
@@ -76,6 +74,8 @@ class PlayState extends FlxState
 		gameStage.callbackGameOver = gameOver;
 		gameStage.loadGame();
 		
+		add(Registry.bulletPool);
+		
 		borderLeft = new FlxSprite();
 		borderLeft.makeGraphic(332, 720, 0xFF000022);
 		add(borderLeft);		
@@ -84,6 +84,9 @@ class PlayState extends FlxState
 		borderRight.makeGraphic(332, 720, 0xFF000022);
 		borderRight.x = Registry.maxXShip;
 		add(borderRight);
+		
+		hud = new HUD();
+		add(hud);
 		
 		super.create();
 	}
@@ -121,32 +124,32 @@ class PlayState extends FlxState
 		
 		if (FlxG.keys.anyPressed(["ESCAPE"])) openMenu();
 		
-		//Registry.bulletPool.forEachAlive(function(B:Bullet)
-		//{
-			//gameStage.bots.forEachAlive(function(bot:Bot)
-			//{
-				//if(B.owner == "Player" && B.overlaps(bot))
-				//{
-					//B.kill();
-					//bot.kill();
-				//}
-			//});
-			
-			//if (B.owner == "Enemy" && FlxG.pixelPerfectOverlap(B,player))
-			//{
-				//trace("OVERLAP");
-				//B.kill();
-				//player.killPlayer();
-				//gameOver();
-			//}
-		//});
-		
-		Registry.bulletPool.forEach(function(B:Bullet) {
-			if (FlxG.pixelPerfectOverlap(B, player))
+		Registry.bulletPool.forEachAlive(function(B:Bullet)
+		{
+			gameStage.bots.forEachAlive(function(bot:Bot)
 			{
-				trace("OVERLAP");
+				if(B.owner == "Player" && B.overlaps(bot))
+				{
+					B.kill();
+					bot.kill();
+					hud.updateHUD(3, hud.score+bot.scoreValue);
+				}
+			});
+			
+			if (B.owner == "Enemy" && B.overlaps(player))
+			{
+				B.kill();
+				player.killPlayer();
+				gameOver();
 			}
 		});
+		
+		//Registry.bulletPool.forEach(function(B:Bullet) {
+			//if (B.overlaps(player))
+			//{
+				//trace("OVERLAP1");
+			//}
+		//});
 		
 		//FlxG.overlap(gameStage.bots, player, enemyHit);
 		//FlxG.overlap(Registry.bulletPool, gameStage.bots, bulletHitEnemy);
@@ -257,7 +260,7 @@ class PlayState extends FlxState
 		
 		overlay = new OverlayState(subStateColor);
 		overlay.isPersistant = true;
-		overlay.score = 0;
+		overlay.score = hud.score;
 		overlay.endGameStatus = -1;
 		openSubState(overlay);
 	}
@@ -268,9 +271,8 @@ class PlayState extends FlxState
 		
 		overlay = new OverlayState(subStateColor);
 		overlay.isPersistant = true;
-		overlay.score = 0;
+		overlay.score = hud.score;
 		overlay.endGameStatus = 1;
-		overlay.score = enemiesKilled;
 		openSubState(overlay);
 	}
 	
@@ -280,9 +282,8 @@ class PlayState extends FlxState
 		
 		overlay = new OverlayState(subStateColor);
 		overlay.isPersistant = true;
-		overlay.score = 0;
+		overlay.score = hud.score;
 		overlay.endGameStatus = 0;
-		overlay.score = enemiesKilled;
 		openSubState(overlay);
 	}
 }

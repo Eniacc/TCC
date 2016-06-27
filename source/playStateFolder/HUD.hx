@@ -15,6 +15,8 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 	private var txtMoney:FlxText;
 	private var sprHealth:FlxSprite;
 	private var sprMoney:FlxSprite;
+	
+	public var score:Int = 0;
 
 	public function new() {
 		super();
@@ -34,6 +36,7 @@ class HUD extends FlxTypedGroup<FlxSprite> {
 
 	public function updateHUD(health:Int, score:Int):Void {
 		txtHealth.text = Std.string(health) + " / 3";
+		this.score = score;
 		txtScore.text = "SCORE: " + Std.string(score);
 	}
 }
