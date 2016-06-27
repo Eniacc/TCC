@@ -25,15 +25,19 @@ class WaveBoxer extends Boxer
 	{
 		clearBoxes();
 		
-		for (i in 0...waves.members.length)
+		//for (i in 0...waves.members.length)
+		waves.forEachExists(function(w:Wave)
 		{
 			var box:Box = new Box();
-			var paths:FlxTypedGroup<Path> = waves.members[i];
+			//var paths:FlxTypedGroup<Path> = waves.members[i];
+			var paths:FlxTypedGroup<Path> = w;
 			//box.paths = waves.members[i];
-			for (j in 0...paths.members.length)
+			//for (j in 0...paths.members.length)
+			paths.forEachExists(function(p:Path)
 			{
-				var path:Path = paths.members[j];
-				box.paths.add(path);
+				//var path:Path = paths.members[j];
+				//box.paths.add(path);
+				box.paths.add(p);
 				//box.waypoints = path.members;
 				//for (k in 0...path.members.length)
 				//{
@@ -42,8 +46,8 @@ class WaveBoxer extends Boxer
 					//wpPoint.makeGraphic(10, 10, FlxColor.RED);
 					//box.waypoints.add(wpPoint);
 				//}
-			}
+			});
 			addBox(box);
-		}
+		});
 	}
 }

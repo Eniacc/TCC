@@ -24,13 +24,15 @@ class PathBoxer extends Boxer
 	{
 		clearBoxes();
 		
-		for (j in 0...paths.members.length)
+		//for (j in 0...paths.members.length)
+		paths.forEachExists(function(p:Path)
 		{
 			var box:Box = new Box();
 			//var path:Path = paths.members[j];
 			//var boxPaths:FlxTypedGroup<Path> = new FlxTypedGroup<Path>();
 			//boxPaths.add(paths.members[j]);
-			box.paths.add(paths.members[j]);
+			//box.paths.add(paths.members[j]);
+			box.paths.add(p);
 			//for (k in 0...path.members.length)
 			//{
 				//var waypoint:Waypoint = path.members[k];
@@ -39,6 +41,6 @@ class PathBoxer extends Boxer
 				//box.waypoints.add(wpPoint);
 			//}
 			addBox(box);
-		}
+		});
 	}
 }

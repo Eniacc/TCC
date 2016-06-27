@@ -1,4 +1,6 @@
 package;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import model.Wave;
 
 /**
  * ...
@@ -12,6 +14,8 @@ class Registry
 	public static var maxXShip = minXShip + gameWidth;
 	public static var minYShip = 0;
 	public static var maxYShip = 720;
+	public static var stage:FlxTypedGroup<Wave>;
+	public static var inEditor:Bool = false;
 
 	public function new() 
 	{

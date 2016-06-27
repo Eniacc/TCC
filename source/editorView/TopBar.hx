@@ -18,6 +18,7 @@ class TopBar extends FlxSpriteGroup
 	public var callbackNew:Function;
 	public var callbackImport:Function;
 	public var callbackExport:Function;
+	public var callbackExit:Function;
 	
 	public function new(?X:Float = 0, ?Y:Float = 0) 
 	{
@@ -92,6 +93,6 @@ class TopBar extends FlxSpriteGroup
 	
 	function gotoTitle() 
 	{
-		FlxG.switchState(new states.MenuState());
+		callbackExit();
 	}
 }

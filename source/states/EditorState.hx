@@ -5,6 +5,7 @@ import editorView.PathBoxer;
 import editorView.SelectionView;
 import editorView.StageView;
 import editorView.TopBar;
+import editorView.WarningSubState;
 import editorView.WaveBoxer;
 import editorView.WaypointView;
 import fileIO.JsonIO;
@@ -37,7 +38,9 @@ class EditorState extends FlxState
 
 	override public function create():Void
 	{
-		stage = new StageView(664, 40);
+		Registry.inEditor = true;
+		
+		stage = new StageView(664, 40, .7);
 		stage.callbackSelected = displayWaypointData;
 		add(stage);
 		
@@ -62,11 +65,19 @@ class EditorState extends FlxState
 		
 		topBar = new TopBar(0, 0);
 		topBar.callbackExport = exportJson;
-		topBar.callbackImport = importJson;
-		topBar.callbackNew = newStage;
+		topBar.callbackImport = function(){openSubState(new WarningSubState(0x99808080, "You'll lose any unsaved data!\nContinue?", importJson)); }
+		topBar.callbackNew = function(){openSubState(new WarningSubState(0x99808080, "You'll lose any unsaved data!\nContinue?", newStage)); }
+		topBar.callbackExit = function(){openSubState(new WarningSubState(0x99808080, "You'll lose any unsaved data!\nContinue?", gotoTitle)); }
 		add(topBar);
 		
-		testCreate();
+		//testCreate();
+		waves = new FlxTypedGroup<Wave>();
+		addWave();
+	}
+	
+	function gotoTitle() 
+	{
+		FlxG.switchState(new states.MenuState());
 	}
 	
 	function setPathURL(url:String) 
@@ -87,7 +98,7 @@ class EditorState extends FlxState
 		jsonIO.browse();
 	}
 	
-	function newStage() 
+	function newStage():Void
 	{
 		FlxG.switchState(new EditorState());
 	}
@@ -124,19 +135,19 @@ class EditorState extends FlxState
 	function removeWave()
 	{
 		waves.remove(waves.members[currentWave], true);
-		if (currentWave > waves.length - 1) currentWave--;
-		if (waves.length <= 0) addWave();
+		if (currentWave > waves.members.length - 1) currentWave--;
+		if (waves.members.length <= 0) addWave();
 		else selectWave(currentWave);
 	}
 	
 	function removePath()
 	{
 		var paths:FlxTypedGroup<Path> = waves.members[currentWave];
-		trace(paths.length);
+		trace(paths.length, paths.members.length);
 		paths.remove(paths.members[currentPath], true);
-		trace(paths.length);
-		if (currentPath > paths.length - 1) currentPath--;
-		if (paths.length <= 0) addPath();
+		trace(paths.length, paths.members.length);
+		if (currentPath > paths.members.length - 1) currentPath--;
+		if (paths.members.length <= 0) addPath();
 		else selectPath(currentPath);
 	}
 	
@@ -158,6 +169,7 @@ class EditorState extends FlxState
 		pathBoxer.setSelected(currentPath);
 		stage.loadPath(waves.members[currentWave].members[index]);
 		//selectionView.fileIO.loadUrl(waves.members[currentWave].members[index].spriteURL);
+		bottomBar.setPlay(false);
 	}
 	
 	function testCreate() 

@@ -48,4 +48,10 @@ class BottomBar extends FlxSpriteGroup
 			callbackPlayStop(false);
 		}
 	}
+	
+	public function setPlay(play:Bool = false)
+	{
+		playing = !play;
+		playStopHandler();
+	}
 }

@@ -22,7 +22,7 @@ class Ship extends FlxSpriteGroup
 	{
 		super();
 		bullets = new FlxTypedSpriteGroup<Bullet>();
-		add(bullets);
+		//add(bullets);
 	}
 	
 	public function fire(speed:Float)
@@ -33,21 +33,25 @@ class Ship extends FlxSpriteGroup
 		bullet.speed = speed;
 		bullet.angle = sprite.angle;
 		bullet.velocity.set(Math.cos((bullet.angle-90) * Math.PI / 180) * speed, Math.sin((bullet.angle-90) * Math.PI / 180) * speed);
-		//bullet.setRotation(sprite.angle);
-		add(bullet);
 		trace(bullets.length, sprite.angle, speed);
+		add(bullet);
 	}
 	
 	function bulletFactory():Bullet
 	{
+		trace("Bullet Factory");
 		return new Bullet();
 	}
 	
-	public function move()
+	override public function kill():Void 
 	{
-		
+		trace("killShip");
+		bullets.forEach(function(b:Bullet){
+			b.kill();
+			remove(b);
+		});
+		super.kill();
 	}
-	
 	override public function update(elapsed:Float):Void 
 	{
 		super.update(elapsed);

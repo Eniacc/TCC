@@ -89,28 +89,19 @@ class Boxer extends FlxSpriteGroup
 		//removeBox(boxes.members[currentSelected]);
 	}
 	
-	function selectUp() 
-	{
-		trace('SELECT UP');
-		currentSelected--;
-		setSelected(currentSelected);
-		callbackSelect(currentSelected);
-	}
-	
-	function selectDown() 
-	{
-		trace('SELECT DOWN');
-		currentSelected++;
-		setSelected(currentSelected);
-		callbackSelect(currentSelected);
-	}
-	
+	//public function setSelected(box:Box) 
 	public function setSelected(currentSelected:Int) 
 	{
+		//boxes.forEachExists(function(b:Box)
+		//{
+			//b.selection.visible = false;
+		//});
+		//
+		//box.selection.visible = true;
 		if (currentSelected < 0) currentSelected = 0;
 		else if (currentSelected >= boxes.length) currentSelected = boxes.length - 1;
 		this.currentSelected = currentSelected;
-		for (i in 0...boxes.length)
+		for (i in 0...boxes.members.length)
 		{
 			boxes.members[i].selection.visible = i == currentSelected;
 		}
@@ -126,7 +117,9 @@ class Boxer extends FlxSpriteGroup
 	
 	public function removeBox(box:Box)
 	{
-		boxes.remove(box, true);
+		trace('boxes', boxes.length, boxes.members.length, boxes.members.indexOf(box));
+		if(boxes.members.length > 1) boxes.remove(box, true);
+		//boxes.remove(box);
 	}
 	
 	public function clearBoxes() 
@@ -152,16 +145,21 @@ class Boxer extends FlxSpriteGroup
 				}
 				else if(FlxG.mouse.overlaps(boxes))
 				{
-					for (i in 0...boxes.length)
+					//boxes.forEachExists(function(box:Box)
+					for (i in 0...boxes.members.length)
 					{
 						if (FlxG.mouse.overlaps(boxes.members[i]))
 						{
+							//setSelected(box);
+							//callbackSelect(boxes.members.indexOf(box));
+							//break;
 							currentSelected = i;
-							setSelected(i);
-							callbackSelect(i);
+							setSelected(currentSelected);
+							callbackSelect(currentSelected);
 							break;
 						}
 					}
+					//);
 				}
 			}
 		}

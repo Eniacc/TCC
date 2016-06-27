@@ -2,11 +2,17 @@ package gameView;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxRect;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
+import haxe.Constraints.Function;
+import haxe.Timer;
+import model.Bot;
+import model.Path;
+import model.Wave;
 
 /**
  * ...
@@ -14,6 +20,13 @@ import flixel.util.FlxSpriteUtil;
  */
 class GameStageView extends FlxSpriteGroup
 {
+	private var waves:FlxTypedGroup<Wave>;
+	private var currentWave:Int = 0;
+	private var timer:Timer;
+	private var bots:FlxTypedSpriteGroup<Bot>;
+	public var callbackStageComplete:Function;
+	public var callbackGameOver:Function;
+	
 	private var gameArea:FlxSprite;
 	//private var offscreen:FlxSprite;
 	
@@ -38,5 +51,76 @@ class GameStageView extends FlxSpriteGroup
 		text.x = gameArea.width / 2 - text.width / 2;
 		text.y = gameArea.height - text.height;
 		add(text);
+	}
+	
+	public function loadGame()
+	{
+		waves = Registry.stage;
+		bots = new FlxTypedSpriteGroup<Bot>();
+		add(bots);
+		gameArea.visible = false;
+		loadWave(0);
+	}
+	
+	function loadWave(index:Int) 
+	{
+		currentWave = index;
+		if (currentWave >= waves.members.length) callbackStageComplete();
+		else{
+			for (p in waves.members[index])
+			{
+				spawnPath(p);
+			}
+		}
+	}
+	
+	private function spawnPath(p:Path) 
+	{
+		spawnBot(p);
+		trace("spawin!11!");
+		var numShips:Int = p.getFirstAlive().numShips;
+		if (numShips > 1)
+		{
+			timer = new Timer(Std.int(p.getFirstAlive().interval * 1000));
+			timer.run = function spawnBot() {
+				var bot:Bot = bots.recycle(Bot, botFactory);
+				bot.speed = .001;
+				bot.botPath = p;
+				bot.reference = this.getHitbox();// new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
+				bot.awake();
+				
+				if (bots.countLiving() >= p.getFirstAlive().numShips && timer != null) timer.stop();
+			};
+		}
+	}
+	
+	function spawnBot(p:Path=null)
+	{
+		var bot:Bot = bots.recycle(Bot, botFactory);
+		bot.speed = .001;
+		bot.botPath = p;
+		bot.reference = this.getHitbox();// new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
+		bot.awake();
+		
+		if (bots.countLiving() >= p.getFirstAlive().numShips && timer != null) timer.stop();
+	};
+	
+	function botFactory() 
+	{
+		return new Bot(Registry.inEditor);
+	}
+	
+	override public function update(elapsed:Float):Void 
+	{
+		super.update(elapsed);
+		
+		if (!Registry.inEditor)
+		{
+			if(bots.countLiving() <= 0)
+			{
+				currentWave++;
+				loadWave(currentWave);
+			}
+		}
 	}
 }

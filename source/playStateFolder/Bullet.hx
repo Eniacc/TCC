@@ -12,7 +12,7 @@ class Bullet extends FlxSprite
 {
 	public var speed(default, set):Float = 2000;
 	
-	public function new(X:Float=0, Y:Float=0, rotation:Float = 0, speed:Float = 2000) 
+	public function new(X:Float=0, Y:Float=0) 
 	{
 		super(X, Y);
 		this.speed = speed;
@@ -22,34 +22,12 @@ class Bullet extends FlxSprite
 		animation.add("fly", [1]);
 		//animation.play("fire");
 		animation.play("fly");
-		
-		//setRotation(rotation);
-	}
-	
-	public function setRotation(rotation:Float) 
-	{
-		angle = rotation;
-		trace('setRotation', rotation);
-		//velocity.rotate(FlxPoint.weak(0, 0), rotation);
-	}
-	
-	private function movement()
-	{
-		animation.play("fly");
-		//FlxAngle.rotatePoint(0, speed, 0, 0, 0, velocity);
-		velocity.set(Math.cos(angle) * speed, Math.sin(angle) * speed);
-	}
-	
-	override public function destroy():Void
-	{
-		
 	}
 	
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 		if (!isOnScreen()) kill();
-		//movement();
 	}
 	
 	function set_speed(value:Float):Float 

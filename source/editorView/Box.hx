@@ -55,21 +55,19 @@ class Box extends FlxSpriteGroup
 		{
 			var path:Path = paths.members[i];
 			//trace(path.length);
-			for (j in 0...path.length)
+			//for (j in 0...path.length)
+			var prevWp:Waypoint = null;
+			path.forEachAlive(function(wp:Waypoint)
 			{
-				var wp:Waypoint = path.members[j];
-				if (wp != null)
-				{
-					FlxSpriteUtil.drawCircle(waypoints, wp.xPer * background.width, wp.yPer * background.height, 5, FlxColor.RED);
+				FlxSpriteUtil.drawCircle(waypoints, wp.xPer * background.width, wp.yPer * background.height, 5, FlxColor.RED);
 				
-					if (j > 0)
-					{
-						var prevWp:Waypoint  = path.members[j - 1];
-						var wp:Waypoint = path.members[j];
-						FlxSpriteUtil.drawLine(waypoints, prevWp.xPer * background.width, prevWp.yPer * background.height, wp.xPer * background.width, wp.yPer * background.height);
-					}
+				if (prevWp != null)
+				{
+					FlxSpriteUtil.drawLine(waypoints, prevWp.xPer * background.width, prevWp.yPer * background.height, wp.xPer * background.width, wp.yPer * background.height);
 				}
-			}
+				
+				prevWp = wp;
+			});
 		}
 		
 		//waypoints.pixels = paths.members[0].members[0].pixels;

@@ -1,5 +1,6 @@
 package playStateFolder;
 
+import editorView.StageView;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -14,6 +15,7 @@ import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSpriteUtil;
+import gameView.GameStageView;
 import openfl.display.FPS;
 import playStateFolder.Player;
 import playStateFolder.HUD;
@@ -46,7 +48,9 @@ class PlayState extends FlxState
 	//private var weapon:FlxWeapon = new FlxWeapon("arma", null, Bullet);
 
 	private var _explosionPixel:FlxParticle;
-	 
+	
+	private var gameStage:GameStageView;
+	
 	override public function create():Void
 	{
 		
@@ -80,6 +84,15 @@ class PlayState extends FlxState
 		
 		hud = new HUD();
 		add(hud);
+		
+		Registry.inEditor = false;
+		
+		gameStage = new GameStageView();
+		gameStage.x = Registry.minXShip;
+		add(gameStage);
+		gameStage.callbackStageComplete = stageComplete;
+		gameStage.callbackGameOver = gameOver;
+		gameStage.loadGame();
 		
 		super.create();
 	}

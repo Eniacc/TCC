@@ -8,7 +8,6 @@ import flixel.FlxSprite;
  */
 class Waypoint extends FlxSprite
 {
-
 	public static var defaultXPer:Float = 0;
 	public static var defaultYPer:Float = 0;
 	public static var defaultrotation:Float = 0;
@@ -36,7 +35,7 @@ class Waypoint extends FlxSprite
 		animation.add('normal', [0], 1, false);
 		animation.add('selected', [1], 1, false);
 		animation.add('starter', [2], 1, false);
-		
+
 		animation.play('starter');
 	}
 	

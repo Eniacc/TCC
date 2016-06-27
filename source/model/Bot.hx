@@ -2,13 +2,11 @@ package model;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxRect;
-import flixel.system.FlxAssets.FlxGraphicAsset;
-import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
+import flixel.tweens.misc.VarTween;
 import flixel.util.FlxTimer;
+import model.Path;
 
 /**
  * ...
@@ -16,26 +14,25 @@ import flixel.util.FlxTimer;
  */
 class Bot extends Ship
 {
-	public var waypoints:FlxTypedGroup<Waypoint>;
+	public var botPath:Path;
 	public var reference:FlxRect;
-	private var currentWaypoint:Int = 0;
-	private var wait:Float;
+	private var currentWaypoint:Waypoint;
+	private var inEditor:Bool;
 	
-	var timer:FlxTimer;
-
-	public function new()
+	private var tween:VarTween;
+	private var wait:FlxTimer;
+	private var shootTimer:FlxTimer;
+	
+	public function new(inEditor:Bool = false)
 	{
 		super();
+		this.inEditor = inEditor;
 		sprite = new FlxSprite(0, 0, AssetPaths.Bot__png);
 		add(sprite);
-		waypoints = new FlxTypedGroup<Waypoint>();
+		botPath = new Path();
 		
-		timer = new FlxTimer();
-	}
-	
-	public function awake()
-	{
-		gotoWaypoint(0);
+		wait = new FlxTimer();
+		shootTimer = new FlxTimer();
 	}
 	
 	override public function update(elapsed:Float):Void 
@@ -43,34 +40,57 @@ class Bot extends Ship
 		super.update(elapsed);
 	}
 	
-	function gotoWaypoint(currentWaypoint:Int) 
+	public function awake()
 	{
-		var wp:Waypoint = waypoints.members[currentWaypoint];
-		var botX:Float = reference.x + wp.xPer * reference.width - sprite.width * .5;
-		var botY:Float = reference.y + wp.yPer * reference.height - sprite.height * .5;
-		FlxTween.tween(sprite, {x: botX, y: botY , angle: wp.rotation}, speed, {onComplete: getParams});
+		gotoWaypoint(getNextWaypoint(null));
+	}
+	
+	function gotoWaypoint(wp:Waypoint) 
+	{
+		if (wp == null)
+		{
+			this.kill();
+		}else{
+			currentWaypoint = wp;
+			var botX:Float = reference.x + wp.xPer * reference.width - sprite.width * .5;
+			var botY:Float = reference.y + wp.yPer * reference.height - sprite.height * .5;
+			tween = FlxTween.tween(sprite, {x: botX, y: botY , angle: wp.rotation}, speed, {onComplete: getParams});
+		}
 	}
 	
 	function getParams(tween:FlxTween) 
 	{
-		var wp:Waypoint = waypoints.members[currentWaypoint];
-		rateOfFire = wp.rateOfFire;
-		speed = wp.speed; // * FlxG.updateFramerate;
-		wait = wp.wait <= 0 ? .01 : wp.wait;
-		//if(rateOfFire > 0 ) timer.start(rateOfFire, shoot, 0);
-		FlxTween.tween(sprite, { }, wait, { onComplete: nextWaypoint } );
+		rateOfFire = currentWaypoint.rateOfFire;
+		speed = currentWaypoint.speed; // * FlxG.updateFramerate;
+		if (rateOfFire > 0) shootTimer.start(rateOfFire, shoot, 0);
+		else shootTimer.cancel();
+		
+		wait.start(currentWaypoint.wait <= 0 ? .01 : currentWaypoint.wait, gotoNextWaypoint);
 	}
 	
-	function nextWaypoint(tween:FlxTween) 
+	function gotoNextWaypoint(timer:FlxTimer) 
 	{
-		currentWaypoint++;		
-		if (currentWaypoint >= waypoints.length) currentWaypoint = 0;
-		gotoWaypoint(currentWaypoint);
+		gotoWaypoint(getNextWaypoint(currentWaypoint));
+	}
+	
+	function getNextWaypoint(current:Waypoint):Waypoint
+	{
+		if (current == null) return botPath.getFirstAlive();
+		
+		var index:Int = botPath.members.indexOf(current) + 1;
+		if (index >= botPath.members.length)
+		{
+			if (inEditor) return botPath.getFirstAlive();
+			return null;
+		}
+		
+		var next:Waypoint = botPath.members[index];
+		if (next.alive) return next;
+		else return getNextWaypoint(next);
 	}
 	
 	function shoot(timer:FlxTimer = null) 
 	{
-		trace('SHOOT');
 		fire(50);
 	}
 	
@@ -82,11 +102,9 @@ class Bot extends Ship
 	
 	override public function kill():Void 
 	{
-		timer.cancel();
-		timer.destroy();
-		timer.active = false;
-		timer.onComplete = null;
-		trace(timer.active);
+		tween.cancel();
+		wait.destroy();
+		shootTimer.destroy();
 		super.kill();
 	}
 	

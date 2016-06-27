@@ -6,6 +6,8 @@ import flixel.util.FlxSave;
 import openfl.display.Sprite;
 import playStateFolder.PlayState;
 import states.EditorState;
+import states.MenuState;
+import states.StageSelectState;
 
 class Main extends Sprite
 {
@@ -17,7 +19,7 @@ class Main extends Sprite
 		_save.bind("shmup-sandbox");
 		
 		super();
-		addChild(new FlxGame(1280, 720, PlayState));
+		addChild(new FlxGame(1280, 720, MenuState));
 		
 		if (_save.data.volume != null) {
 			FlxG.sound.volume = _save.data.volume;

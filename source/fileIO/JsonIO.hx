@@ -42,7 +42,7 @@ class JsonIO
 	{
 		var fr:FileReference = new FileReference();
 		var filters:Array<FileFilter> = new Array<FileFilter>();
-		filters.push(new FileFilter("JSON File", "*.json;*.txt"));
+		filters.push(new FileFilter("JSON File", "*.json;"));
 		fr.browse(filters);
 		fr.addEventListener(Event.SELECT, onSelect);
 	}
@@ -60,20 +60,17 @@ class JsonIO
 		fr.removeEventListener(Event.COMPLETE, onLoad);
 		
 		//var json:String = cast(loaderInfo.content, String);
-		trace('onLoad:',fr.data);
+		//trace('onLoad:',fr.data);
 		var json:String = fr.data.toString();
-		trace('onLoad:',json);
+		//trace('onLoad:',json);
 		load(json);
 	}
 	
 	#elseif(cpp || neko)
 	public function browse() 
 	{
-		trace("Enter Neko");
-		var filters:FILEFILTERS = {count:2, descriptions: ["Image files"], extensions: ["*.png;*.jpg;*.jpeg;"]};
-		trace("Enter Neko2");
-		var result:Array<String> = Dialogs.openFile("Select a sprite!", "Sprite Image", filters);
-		trace("Enter Neko3");
+		var filters:FILEFILTERS = {count:1, descriptions: ["JSON File"], extensions: ["*.json"]};
+		var result:Array<String> = Dialogs.openFile("Select a stage!", "JSON File", filters);
 		onSelect(result);
 	}
 	
@@ -137,9 +134,7 @@ class JsonIO
 		
 		var jsonDyn:Dynamic = Json.parse(json);
 		var jsonCheck:String = Json.stringify(jsonDyn, null, "   ");
-		FlxG.log.add("json");
-		FlxG.log.add(jsonCheck);
-		trace(jsonCheck);
+		//trace(jsonCheck);
 		
 		#if flash
 		var fr:FileReference = new FileReference();
@@ -151,8 +146,9 @@ class JsonIO
 	{
 		try
 		{
-			var json:Dynamic = Json.parse(json);
-			trace('load:',json);
+			var jsond:Dynamic = Json.parse(json);
+			//trace('load:', json);
+			callback(jsond);
 		}
 		catch (msg:String)
 		{
@@ -167,5 +163,52 @@ class JsonIO
 			return value;
 		}
 		return "";
+	}
+	
+	static public function gamify(json:Dynamic):FlxTypedGroup<Wave>
+	{
+		var waves:FlxTypedGroup<Wave> = new FlxTypedGroup<Wave>();
+		//trace(json);
+		
+		var jstage:{waves:Array<Dynamic>} = json;
+		for (stage in jstage.waves)
+		{
+			//trace(stage);
+			var realWave:Wave = new Wave();
+			var jwaves:{wave:Array<Dynamic>} = stage;
+			for (wave in jwaves.wave)
+			{
+				//trace(wave);
+				var realPath:Path = new Path();
+				var jpaths:{path:Array<Dynamic>} = wave;
+				for (path in jpaths.path)
+				{
+					//trace(path);
+					var jwaypoints:{waypoint:Dynamic} = path;
+					var waypoint:{	xPer:Float,
+									yPer:Float,
+									rotation:Float,
+									wait:Float,
+									speed:Float,
+									rateOfFire:Float,
+									numShips:Int,
+									interval:Float } = jwaypoints.waypoint;
+					var wp:Waypoint = new Waypoint();
+					wp.xPer = waypoint.xPer;
+					wp.yPer = waypoint.yPer;
+					wp.rotation = waypoint.rotation;
+					wp.wait = waypoint.wait;
+					wp.speed = waypoint.speed;
+					wp.rateOfFire = waypoint.rateOfFire;
+					wp.numShips = waypoint.numShips;
+					wp.interval = waypoint.interval;
+					realPath.add(wp);
+				}
+				realWave.add(realPath);
+			}
+			waves.add(realWave);
+		}
+		
+		return waves;
 	}
 }
