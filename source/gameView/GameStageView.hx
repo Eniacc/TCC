@@ -83,10 +83,14 @@ class GameStageView extends FlxSpriteGroup
 		else{
 			for (p in waves.members[index])
 			{
-				//currentPath = p;
-				totalWaveBots += p.getFirstAlive().numShips;
-				//spawnPath(currentPath);
-				p.spawnBots(spawnBot);
+				if (p.getFirstAlive() != null)
+				{
+					totalWaveBots += p.getFirstAlive().numShips;
+					//spawnPath(currentPath);
+					p.spawnBots(spawnBot);
+				}else{
+					callbackStageComplete();
+				}
 			}
 		}
 	}

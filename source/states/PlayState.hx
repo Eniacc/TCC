@@ -31,6 +31,7 @@ class PlayState extends FlxState
 	//private var grpEnemy:FlxTypedGroup<Enemy>;
 	private var grpBullet:FlxTypedGroup<Bullet>;
 	private var sndBullet:FlxSound;
+	private var music:FlxSound;
 	private var sndExplosion:FlxSound;
 	private var countFrame:Float = 0;
 	private var backdrop:FlxBackdrop;
@@ -66,6 +67,9 @@ class PlayState extends FlxState
 		
 		sndBullet = FlxG.sound.load(AssetPaths.shot1__wav);
 		sndExplosion = FlxG.sound.load(AssetPaths.explosion1__mp3);
+		music = FlxG.sound.load(AssetPaths.Battle_Normal__mp3);
+		music.volume = .5;
+		music.play();
 		
 		Registry.inEditor = false;
 		
@@ -75,6 +79,7 @@ class PlayState extends FlxState
 		gameStage.callbackStageComplete = stageComplete;
 		gameStage.callbackGameOver = gameOver;
 		gameStage.loadGame();
+		//add(gameStage.bots);
 		
 		startPlayer();
 		
@@ -115,6 +120,7 @@ class PlayState extends FlxState
 		player = FlxDestroyUtil.destroy(player);
 		grpBullet = FlxDestroyUtil.destroy(grpBullet);
 		sndBullet = FlxDestroyUtil.destroy(sndBullet);
+		music = FlxDestroyUtil.destroy(music);
 		sndExplosion = FlxDestroyUtil.destroy(sndExplosion);
 		backdrop = FlxDestroyUtil.destroy(backdrop);
 		hud = FlxDestroyUtil.destroy(hud);
@@ -137,7 +143,7 @@ class PlayState extends FlxState
 			{
 				gameStage.bots.forEachAlive(function(bot:Bot)
 				{
-					if(B.owner == "Player" && B.overlaps(bot))
+					if(B.owner == "Player" && B.overlaps(bot.sprite))
 					{
 						B.kill();
 						bot.kill();
@@ -146,7 +152,7 @@ class PlayState extends FlxState
 					}
 				});
 				
-				if (B.owner == "Enemy" && B.overlaps(player))
+				if (B.owner == "Enemy" && B.overlaps(player.sprite))
 				{
 					B.kill();
 					killPlayer();
@@ -156,12 +162,13 @@ class PlayState extends FlxState
 			
 			gameStage.bots.forEachAlive(function(bot:Bot)
 			{
-				if (bot.overlaps(player))
+				if (bot.sprite.overlaps(player.sprite))
 				{
 					bot.kill();
 					killPlayer();
 					sndExplosion.play(true);
 				}
+				//trace(FlxG.pixelPerfectOverlap(bot.sprite, player.sprite));
 			});
 		}
 		
