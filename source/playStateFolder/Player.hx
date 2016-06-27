@@ -163,7 +163,7 @@ class Player extends Ship
 			firing += elapsed;
 			if (firing >= rateOfFire)
 			{
-				fire(500);
+				fire(500, "Player");
 				firing = 0;
 			}
 		}else if (FlxG.keys.justReleased.SPACE) firing = 0;

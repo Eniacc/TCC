@@ -27,6 +27,7 @@ class Waypoint extends FlxSprite
 	//if Starter
 	@:isVar public var numShips(get, set):Int;
 	@:isVar public var interval(get, set):Float;
+	public var numSpawned:Int = 0;
 	
 	public function new() 
 	{

@@ -27,7 +27,8 @@ class Bot extends Ship
 	{
 		super();
 		this.inEditor = inEditor;
-		sprite = new FlxSprite(0, 0, AssetPaths.Bot__png);
+		//sprite = new FlxSprite(0, 0, AssetPaths.Bot__png);
+		sprite = new FlxSprite(0, 0, AssetPaths.Enemy1__png);
 		add(sprite);
 		botPath = new Path();
 		
@@ -91,7 +92,7 @@ class Bot extends Ship
 	
 	function shoot(timer:FlxTimer = null) 
 	{
-		fire(50);
+		fire(50, "Enemy");
 	}
 	
 	public function setGraphic(sprite:FlxSprite)

@@ -19,6 +19,9 @@ class Main extends Sprite
 		_save.bind("shmup-sandbox");
 		
 		super();
+		
+		Registry.init();
+		
 		addChild(new FlxGame(1280, 720, StageSelectState));
 		
 		if (_save.data.volume != null) {

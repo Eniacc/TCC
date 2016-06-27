@@ -5,7 +5,9 @@ import fileIO.JsonIO;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
+import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import playStateFolder.PlayState;
@@ -16,6 +18,9 @@ import playStateFolder.PlayState;
  */
 class StageSelectState extends FlxState
 {
+	var faseList:FlxSpriteGroup;
+	var listBG:FlxSprite;
+	
 	override public function create():Void
 	{
 		super.create();
@@ -25,7 +30,7 @@ class StageSelectState extends FlxState
 		//message.color = 0xFF000055;
 		add(message);
 		
-		var listBG:FlxSprite = new FlxSprite();
+		listBG = new FlxSprite();
 		listBG.makeGraphic(800, 500);
 		listBG.setPosition(FlxG.width / 2 - listBG.width / 2, message.y + message.height + 50);
 		FlxSpriteUtil.drawRect(listBG, 0, 0, listBG.width, listBG.height, FlxColor.TRANSPARENT, {thickness:5});
@@ -37,24 +42,28 @@ class StageSelectState extends FlxState
 		
 		var btPlay:EditorButton = new EditorButton(0, 0, "PLAY", playStageHandler);
 		btPlay.setPosition(FlxG.width - btPlay.width, FlxG.height - btPlay.height);
-		add(btPlay);
+		//add(btPlay);
 		
 		var btBack:EditorButton = new EditorButton(0, 0, "BACK", backToMenu);
 		btBack.setPosition(0, FlxG.height - btBack.height);
 		add(btBack);
 		
-		for (i in 0...6)
-		{
-			var fase:FlxText = new FlxText(0, 0, 0, "Fase " + i, 20);
-			fase.setPosition(listBG.x + listBG.width / 2 - fase.width / 2, listBG.y + fase.height * i + 10);
-			fase.color = FlxColor.BLACK;
-			add(fase);
-		}
+		faseList = new FlxSpriteGroup();
+		add(faseList);
+		
+		updateList();
+		//for (i in 0...6)
+		//{
+			//var fase:FlxText = new FlxText(0, 0, 0, "Fase " + i, 20);
+			//fase.setPosition(listBG.x + listBG.width / 2 - fase.width / 2, listBG.y + fase.height * i + 10);
+			//fase.color = FlxColor.BLACK;
+			//add(fase);
+		//}
 	}
 	
 	function playStageHandler() 
 	{
-		
+		FlxG.switchState(new PlayState());
 	}
 	
 	function backToMenu() 
@@ -62,15 +71,38 @@ class StageSelectState extends FlxState
 		FlxG.switchState(new MenuState());
 	}
 	
-	function playStage(json:Dynamic) 
+	function loadStage(json:Dynamic) 
 	{
-		Registry.stage = JsonIO.gamify(json);
-		FlxG.switchState(new PlayState());
+		Registry.save.data.stages.push(json);
+		updateList();
+	}
+	
+	function updateList() 
+	{
+		faseList.clear();
+		
+		for (i in 0...Registry.save.data.stages.length)
+		{
+			//var fase:FlxButton = new FlxButton(0, 0, "Fase " + i, function(){
+			var fase:EditorButton = new EditorButton(0, 0, "Fase " + i, function(){
+				Registry.stage = JsonIO.gamify(Registry.save.data.stages[i]);
+				FlxG.switchState(new PlayState());
+			});
+			fase.setPosition(listBG.x + listBG.width / 2 - fase.width / 2, listBG.y + fase.height * i + 10);
+			faseList.add(fase);
+			
+			var remove:FlxButton = new FlxButton(0, 0, "Remove", function(){
+				Registry.save.data.stages.splice(i, 1);
+				updateList();
+			});
+			remove.setPosition(fase.x + fase.width, fase.y);
+			faseList.add(remove);
+		}
 	}
 	
 	function importStage() 
 	{
-		var jsonIO:JsonIO = new JsonIO(playStage);
+		var jsonIO:JsonIO = new JsonIO(loadStage);
 		jsonIO.browse();
 	}
 	

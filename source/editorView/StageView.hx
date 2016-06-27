@@ -19,6 +19,7 @@ import model.Bot;
 import model.Path;
 import model.Wave;
 import model.Waypoint;
+import playStateFolder.Bullet;
 
 /**
  * ...
@@ -62,6 +63,9 @@ class StageView extends FlxSpriteGroup
 		
 		add(p);
 		add(bots);
+		
+		Registry.bulletPool = new FlxTypedSpriteGroup<Bullet>();
+		add(Registry.bulletPool);
 		
 		dif = new FlxPoint(backGround.x - gameStage.x, backGround.y - gameStage.y);
 	}

@@ -11,6 +11,7 @@ import flixel.util.FlxDestroyUtil;
 class Bullet extends FlxSprite
 {
 	public var speed(default, set):Float = 2000;
+	public var owner:String;
 	
 	public function new(X:Float=0, Y:Float=0) 
 	{

@@ -22,9 +22,10 @@ class Ship extends FlxSpriteGroup
 		super();
 	}
 	
-	public function fire(speed:Float)
+	public function fire(speed:Float, owner:String)
 	{
 		var bullet:Bullet = Registry.bulletPool.recycle(Bullet, bulletFactory);
+		bullet.owner = owner;
 		bullet.x = sprite.x - this.x + sprite.width / 2 - bullet.width / 2;
 		bullet.y = sprite.y - this.y + sprite.height / 2 - bullet.height / 2;
 		bullet.speed = speed;

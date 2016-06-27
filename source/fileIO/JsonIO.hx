@@ -100,16 +100,16 @@ class JsonIO
 		//var json:String = Json.stringify(waves);
 		var json:String;
 		json = "{\"waves\":[";
-		for (i in 0...waves.length)
+		for (i in 0...waves.members.length)
 		{
 			//json.waves[i] = "Wave" + i;
 			json += "{\"wave\":[";
 			var wave:Wave = waves.members[i];
-			for (j in 0...wave.length)
+			for (j in 0...wave.members.length)
 			{
 				json += "{\"path\":[";
 				var path:Path = wave.members[j];
-				for (k in 0...path.length)
+				for (k in 0...path.members.length)
 				{
 					var wp:Waypoint = path.members[k];
 					json += "{\"waypoint\":{";
@@ -122,13 +122,13 @@ class JsonIO
 					json += ",\"numShips\":" + wp.numShips;
 					json += ",\"interval\":" + wp.interval;
 					json += "}}";
-					if (k < path.length - 1) json += ",";
+					if (k < path.members.length - 1) json += ",";
 				}
 				json += "]}";
-				if (j < wave.length - 1) json += ",";
+				if (j < wave.members.length - 1) json += ",";
 			}
 			json += "]}";
-			if (i < waves.length - 1) json += ",";
+			if (i < waves.members.length - 1) json += ",";
 		}
 		json += "]}";
 		

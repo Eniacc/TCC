@@ -17,8 +17,8 @@ class EditorButton extends FlxButton
 		super(X, Y, Text, OnClick);
 		
 		label = new FlxText(0, 0, 0, Text, 20);
+		makeGraphic(Std.int(label.width + 10), 40, 0xFF000055);
 		label.alignment = FlxTextAlign.CENTER;
-		makeGraphic(Std.int(label.width), 40, 0xFF000055);
 		FlxSpriteUtil.drawRect(this, 0, 0, width, height, FlxColor.TRANSPARENT, {thickness:5});
 	}
 	

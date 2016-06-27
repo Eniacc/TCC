@@ -1,6 +1,7 @@
 package;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.util.FlxSave;
 import model.Wave;
 import playStateFolder.Bullet;
 
@@ -17,12 +18,23 @@ class Registry
 	public static var minYShip = 0;
 	public static var maxYShip = 720;
 	public static var stage:FlxTypedGroup<Wave>;
-	public static var bulletPool:FlxTypedSpriteGroup<Bullet> = new FlxTypedSpriteGroup<Bullet>();
+	public static var bulletPool:FlxTypedSpriteGroup<Bullet>;
 	public static var inEditor:Bool = false;
+	public static var save:FlxSave;
 
 	public function new() 
 	{
 		
+	}
+	
+	public static function init()
+	{
+		save = new FlxSave();
+		save.bind("saveShmupEditor");
+		if (save.data.stages == null)
+		{
+			save.data.stages = new Array<Dynamic>();
+		}
 	}
 	
 }

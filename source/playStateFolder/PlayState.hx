@@ -128,22 +128,30 @@ class PlayState extends FlxState
 		
 		if (FlxG.keys.anyPressed(["ESCAPE"])) openMenu();
 		
-		Registry.bulletPool.forEachAlive(function(B:Bullet)
-		{
-			gameStage.bots.forEachAlive(function(bot:Bot)
-			{
-				if(B.overlaps(bot))
-				{
-					B.kill();
-					bot.kill();
-				}
-			});
+		//Registry.bulletPool.forEachAlive(function(B:Bullet)
+		//{
+			//gameStage.bots.forEachAlive(function(bot:Bot)
+			//{
+				//if(B.owner == "Player" && B.overlaps(bot))
+				//{
+					//B.kill();
+					//bot.kill();
+				//}
+			//});
 			
-			if (player.overlaps(B))
+			//if (B.owner == "Enemy" && FlxG.pixelPerfectOverlap(B,player))
+			//{
+				//trace("OVERLAP");
+				//B.kill();
+				//player.killPlayer();
+				//gameOver();
+			//}
+		//});
+		
+		Registry.bulletPool.forEach(function(B:Bullet) {
+			if (FlxG.pixelPerfectOverlap(B, player))
 			{
-				B.kill();
-				player.killPlayer();
-				gameOver();
+				trace("OVERLAP");
 			}
 		});
 		
