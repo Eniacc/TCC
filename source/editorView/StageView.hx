@@ -19,7 +19,7 @@ import model.Bot;
 import model.Path;
 import model.Wave;
 import model.Waypoint;
-import playStateFolder.Bullet;
+import model.Bullet;
 
 /**
  * ...

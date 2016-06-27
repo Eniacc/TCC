@@ -10,7 +10,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
-import playStateFolder.PlayState;
+import states.PlayState;
 
 /**
  * ...

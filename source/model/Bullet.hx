@@ -1,4 +1,4 @@
-package playStateFolder ;
+package model ;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.math.FlxAngle;

@@ -3,7 +3,7 @@ package model;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
-import playStateFolder.Bullet;
+import model.Bullet;
 
 /**
  * ...

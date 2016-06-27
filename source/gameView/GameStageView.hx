@@ -10,7 +10,7 @@ import haxe.Timer;
 import model.Bot;
 import model.Path;
 import model.Wave;
-import playStateFolder.Bullet;
+import model.Bullet;
 
 /**
  * ...

@@ -1,10 +1,8 @@
 package states;
 
 import flixel.addons.display.FlxBackdrop;
-import shipStateFolder.ShipMenuState;
-import stageEditorFolder.StageMenuState;
 import flixel.util.FlxColor;
-import playStateFolder.PlayState;
+import states.PlayState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -107,12 +105,12 @@ class MenuState extends FlxState
 		});
 	}
 	
-	private function clickShipEditor():Void {
-		FlxG.camera.fade(FlxColor.BLACK, .10, false, function()
-		{
-			FlxG.switchState(new ShipMenuState());
-		});
-	}
+	//private function clickShipEditor():Void {
+		//FlxG.camera.fade(FlxColor.BLACK, .10, false, function()
+		//{
+			//FlxG.switchState(new ShipMenuState());
+		//});
+	//}
 	 
 	private function clickOptions():Void {
 		FlxG.camera.fade(FlxColor.BLACK, .10, false, function()

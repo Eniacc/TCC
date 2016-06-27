@@ -4,7 +4,7 @@ import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.util.FlxSave;
 import openfl.display.Sprite;
-import playStateFolder.PlayState;
+import states.PlayState;
 import states.EditorState;
 import states.MenuState;
 import states.StageSelectState;

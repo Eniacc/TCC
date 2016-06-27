@@ -3,7 +3,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.util.FlxSave;
 import model.Wave;
-import playStateFolder.Bullet;
+import model.Bullet;
 
 /**
  * ...

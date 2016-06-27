@@ -1,28 +1,21 @@
-package playStateFolder;
+package states;
 
-import editorView.StageView;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.effects.particles.FlxEmitter;
+import flixel.addons.display.FlxBackdrop;
 import flixel.effects.particles.FlxParticle;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.system.FlxSound;
-import flixel.text.FlxText;
-import flixel.ui.FlxButton;
-import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
-import flixel.util.FlxSpriteUtil;
 import gameView.GameStageView;
-import model.Bot;
+import model.Bullet;
 import openfl.display.FPS;
-import playStateFolder.Player;
 import playStateFolder.HUD;
-import flixel.addons.display.FlxBackdrop;
-import flixel.FlxSubState;
+import playStateFolder.OverlayState;
+import playStateFolder.Player;
 
 class PlayState extends FlxState
 {
