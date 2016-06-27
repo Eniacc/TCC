@@ -139,11 +139,11 @@ class StageView extends FlxSpriteGroup
 		var point:FlxPoint = getPer(FlxG.mouse.x, FlxG.mouse.y);
 		wp.xPer = point.x;
 		wp.yPer = point.y;
-		wp.rotation = 0;
+		wp.rotation = Waypoint.defaultrotation;
 		wp.speed = 1;
-		wp.wait = .1;
-		wp.numShips = 1;
-		wp.interval = 0;
+		wp.wait = Waypoint.defaultWait;
+		wp.numShips = Waypoint.defaultNumShip;
+		wp.interval = Waypoint.defaultInterval;
 		
 		trace(	"mouseX: "+ FlxG.mouse.x,
 				"backGround.x: "+ backGround.x,

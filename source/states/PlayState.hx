@@ -5,11 +5,13 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.display.FlxBackdrop;
+import flixel.addons.editors.tiled.TiledMap.FlxTiledAsset;
 import flixel.effects.particles.FlxParticle;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxSound;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
+import flixel.util.FlxTimer;
 import gameView.GameStageView;
 import model.Bot;
 import model.Bullet;
@@ -47,6 +49,8 @@ class PlayState extends FlxState
 	
 	private var gameStage:GameStageView;
 	
+	private var reviveTimer:FlxTimer;
+	
 	override public function create():Void
 	{
 		
@@ -55,8 +59,6 @@ class PlayState extends FlxState
 		
 		//grpBullet = new FlxTypedGroup<Bullet>();
 		//add(grpBullet);
-		
-		startPlayer();
 		
 		//add(new FlxText(100, 100, 200, "Xbox360 Controller " + ((player.gamePad == null) ? "NOT FOUND" : "FOUND")));
 		
@@ -74,6 +76,8 @@ class PlayState extends FlxState
 		gameStage.callbackGameOver = gameOver;
 		gameStage.loadGame();
 		
+		startPlayer();
+		
 		add(Registry.bulletPool);
 		
 		borderLeft = new FlxSprite();
@@ -88,13 +92,16 @@ class PlayState extends FlxState
 		hud = new HUD();
 		add(hud);
 		
+		reviveTimer = new FlxTimer();
+		
 		super.create();
 	}
 	
 	function startPlayer()
 	{
 		//player = new Player(640, 600);
-		player = new Player(0, 600);
+		player = new Player();
+		player.sprite.setPosition(gameStage.width / 2 - player.sprite.width / 2, 600);
 		player.antialiasing = true;
 		add(player);
 	}
@@ -124,25 +131,39 @@ class PlayState extends FlxState
 		
 		if (FlxG.keys.anyPressed(["ESCAPE"])) openMenu();
 		
-		Registry.bulletPool.forEachAlive(function(B:Bullet)
+		if (player.sprite.alive)
 		{
-			gameStage.bots.forEachAlive(function(bot:Bot)
+			Registry.bulletPool.forEachAlive(function(B:Bullet)
 			{
-				if(B.owner == "Player" && B.overlaps(bot))
+				gameStage.bots.forEachAlive(function(bot:Bot)
+				{
+					if(B.owner == "Player" && B.overlaps(bot))
+					{
+						B.kill();
+						bot.kill();
+						sndExplosion.play(true);
+						hud.updateHUD(3, hud.score+bot.scoreValue);
+					}
+				});
+				
+				if (B.owner == "Enemy" && B.overlaps(player))
 				{
 					B.kill();
-					bot.kill();
-					hud.updateHUD(3, hud.score+bot.scoreValue);
+					killPlayer();
+					//gameOver();
 				}
 			});
 			
-			if (B.owner == "Enemy" && B.overlaps(player))
+			gameStage.bots.forEachAlive(function(bot:Bot)
 			{
-				B.kill();
-				player.killPlayer();
-				gameOver();
-			}
-		});
+				if (bot.overlaps(player))
+				{
+					bot.kill();
+					killPlayer();
+					sndExplosion.play(true);
+				}
+			});
+		}
 		
 		//Registry.bulletPool.forEach(function(B:Bullet) {
 			//if (B.overlaps(player))
@@ -158,27 +179,38 @@ class PlayState extends FlxState
 		//grpEnemy.forEach(hitTest);
 	}
 	
-	function bulletHitPlayer(obj1:FlxObject, obj2:FlxObject) 
+	function killPlayer()
 	{
-		trace("BULLET-PLAYER HIT: ", obj1, obj2);
-		obj1.kill();
-		obj2.kill();
-		gameOver();
+		player.killPlayer();
+		sndExplosion.play(true);
+		hud.updateHUD(3, 0);
+		reviveTimer.start(1, function(timer:FlxTimer){
+			player.sprite.setPosition(gameStage.width / 2 - player.sprite.width / 2, 600);
+			player.revivePlayer(); 
+		});
 	}
 	
-	function bulletHitEnemy(obj1:FlxObject, obj2:FlxObject) 
-	{
-		trace("BULLET-ENEMY HIT: ", obj1, obj2);
-		obj1.kill();
-		obj2.kill();
-	}
-	
-	function enemyHit(obj1:FlxObject, obj2:FlxObject) 
-	{
-		trace("DIRECT HIT: ", obj1, obj2);
-		//player.killPlayer();
-		gameOver();
-	}
+	//function bulletHitPlayer(obj1:FlxObject, obj2:FlxObject) 
+	//{
+		//trace("BULLET-PLAYER HIT: ", obj1, obj2);
+		//obj1.kill();
+		//obj2.kill();
+		//gameOver();
+	//}
+	//
+	//function bulletHitEnemy(obj1:FlxObject, obj2:FlxObject) 
+	//{
+		//trace("BULLET-ENEMY HIT: ", obj1, obj2);
+		//obj1.kill();
+		//obj2.kill();
+	//}
+	//
+	//function enemyHit(obj1:FlxObject, obj2:FlxObject) 
+	//{
+		//trace("DIRECT HIT: ", obj1, obj2);
+		////player.killPlayer();
+		//gameOver();
+	//}
 	
 	//private function hitTest(E:Enemy)
 	//{

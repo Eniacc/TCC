@@ -10,7 +10,7 @@ class Waypoint extends FlxSprite
 {
 	public static var defaultXPer:Float = 0;
 	public static var defaultYPer:Float = 0;
-	public static var defaultrotation:Float = 0;
+	public static var defaultrotation:Float = 180;
 	public static var defaultRateOfFire:Float = 0;
 	public static var defaultSpeed:Float = .01;
 	public static var defaultWait:Float = .01;

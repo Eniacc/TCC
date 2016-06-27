@@ -127,16 +127,16 @@ class Player extends Ship
 		//}
 	//}
 	
-	override public function kill():Void 
-	{
-		killPlayer();
-		super.kill();
-	}
-	
 	public function killPlayer():Void
 	{
 		sprite.alive = false;
 		sprite.animation.play("destroy");
+	}
+	
+	public function revivePlayer()
+	{
+		sprite.alive = true;
+		sprite.animation.play("lr");
 	}
 	
 	override public function destroy():Void

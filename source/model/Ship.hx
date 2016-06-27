@@ -3,6 +3,7 @@ package model;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
+import flixel.system.FlxSound;
 import model.Bullet;
 
 /**
@@ -15,11 +16,13 @@ class Ship extends FlxSpriteGroup
 	public var rateOfFire:Float = 1;
 	public var speed:Float = .1;
 	public var sprite:FlxSprite;
+	public var sndBullet:FlxSound;
 	
 
 	public function new() 
 	{
 		super();
+		sndBullet = FlxG.sound.load(AssetPaths.shot1__wav);
 	}
 	
 	public function fire(speed:Float, owner:String)
@@ -32,6 +35,7 @@ class Ship extends FlxSpriteGroup
 		bullet.angle = sprite.angle;
 		bullet.velocity.set(Math.cos((bullet.angle-90) * Math.PI / 180) * speed, Math.sin((bullet.angle-90) * Math.PI / 180) * speed);
 		trace(Registry.bulletPool.length);
+		sndBullet.play(true);
 	}
 	
 	function bulletFactory():Bullet
