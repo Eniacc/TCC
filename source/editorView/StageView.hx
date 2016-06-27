@@ -173,7 +173,7 @@ class StageView extends FlxSpriteGroup
 		selectedWaypoint.kill();
 		remove(selectedWaypoint);
 		p.members.push(p.members.splice(p.members.indexOf(selectedWaypoint), 1)[0]);
-		callbackSelected(null);
+		callbackSelected(null , -1);
 	}
 	
 	function getPer(xPoint:Float = 0, yPoint:Float = 0):FlxPoint

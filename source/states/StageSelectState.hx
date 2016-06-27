@@ -71,21 +71,29 @@ class StageSelectState extends FlxState
 		FlxG.switchState(new MenuState());
 	}
 	
+	function importStage() 
+	{
+		var jsonIO:JsonIO = new JsonIO(loadStage);
+		jsonIO.browse();
+	}
+	
 	function loadStage(json:Dynamic) 
 	{
-		Registry.save.data.stages.push(json);
+		Registry.save.data.stages.push({"name":Registry.stageName, "json":json});
 		updateList();
 	}
 	
 	function updateList() 
 	{
 		faseList.clear();
-		
+		trace(Registry.save.data.stages);
 		for (i in 0...Registry.save.data.stages.length)
 		{
 			//var fase:FlxButton = new FlxButton(0, 0, "Fase " + i, function(){
-			var fase:EditorButton = new EditorButton(0, 0, "Fase " + i, function(){
-				Registry.stage = JsonIO.gamify(Registry.save.data.stages[i]);
+
+			var fase:EditorButton = new EditorButton(0, 0, Registry.save.data.stages[i].name, function(){
+				trace(Registry.save.data.stages[i].name, Registry.save.data.stages[i].json);
+				Registry.stage = JsonIO.gamify(Registry.save.data.stages[i].json);
 				FlxG.switchState(new PlayState());
 			});
 			fase.setPosition(listBG.x + listBG.width / 2 - fase.width / 2, listBG.y + fase.height * i + 10);
@@ -99,11 +107,4 @@ class StageSelectState extends FlxState
 			faseList.add(remove);
 		}
 	}
-	
-	function importStage() 
-	{
-		var jsonIO:JsonIO = new JsonIO(loadStage);
-		jsonIO.browse();
-	}
-	
 }

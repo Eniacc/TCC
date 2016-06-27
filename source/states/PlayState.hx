@@ -106,7 +106,7 @@ class PlayState extends FlxState
 	{
 		//player = new Player(640, 600);
 		player = new Player();
-		player.sprite.setPosition(gameStage.width / 2 - player.sprite.width / 2, 600);
+		player.sprite.setPosition(gameStage.x + gameStage.width / 2 - player.sprite.width / 2, 600);
 		player.antialiasing = true;
 		add(player);
 	}
@@ -192,7 +192,7 @@ class PlayState extends FlxState
 		sndExplosion.play(true);
 		hud.updateHUD(3, 0);
 		reviveTimer.start(1, function(timer:FlxTimer){
-			player.sprite.setPosition(gameStage.width / 2 - player.sprite.width / 2, 600);
+			player.sprite.setPosition(gameStage.x + gameStage.width / 2 - player.sprite.width / 2, 600);
 			player.revivePlayer(); 
 		});
 	}

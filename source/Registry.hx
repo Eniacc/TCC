@@ -17,6 +17,7 @@ class Registry
 	public static var maxXShip = minXShip + gameWidth;
 	public static var minYShip = 0;
 	public static var maxYShip = 720;
+	public static var stageName:String;
 	public static var stage:FlxTypedGroup<Wave>;
 	public static var bulletPool:FlxTypedSpriteGroup<Bullet>;
 	public static var inEditor:Bool = false;

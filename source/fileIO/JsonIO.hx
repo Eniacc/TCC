@@ -62,7 +62,8 @@ class JsonIO
 		//var json:String = cast(loaderInfo.content, String);
 		//trace('onLoad:',fr.data);
 		var json:String = fr.data.toString();
-		//trace('onLoad:',json);
+		Registry.stageName = fr.name.split(".")[0];
+		//trace('onLoad:',fr.name);
 		load(json);
 	}
 	
