@@ -32,7 +32,8 @@ class FormItem extends FlxSpriteGroup
 		this.label.alignment = FlxTextAlign.RIGHT;
 		
 		content = new FlxInputText(fitRect.width - fitRect.x - 100, 0, 100, "0", 20);
-		//content.filterMode = FlxInputText.ONLY_ALPHANUMERIC;
+		//content.customFilterPattern = new EReg("^\\d+(\\.\\d+)*$","");
+		content.customFilterPattern = new EReg("[^0-9.]","");
 		enable();
 		
 		add(this.label);
@@ -41,8 +42,7 @@ class FormItem extends FlxSpriteGroup
 	
 	function get_value():Float 
 	{
-		value = Std.parseFloat(content.text);
-		return value;
+		return Std.parseFloat(content.text);
 	}
 	
 	function set_value(value:Float):Float 
