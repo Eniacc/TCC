@@ -15,7 +15,7 @@ class Waypoint extends FlxSprite
 	public static var defaultSpeed:Float = .01;
 	public static var defaultWait:Float = .01;
 	public static var defaultNumShip:Int = 1;
-	public static var defaultInterval:Float = .01;
+	public static var defaultInterval:Float = 1;
 	
 	@:isVar public var xPer(get, set):Float;
 	@:isVar public var yPer(get, set):Float;

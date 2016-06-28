@@ -58,7 +58,7 @@ class SelectionView extends FlxSpriteGroup
 		btSelect.borderColor = FlxColor.BLACK;
 		btSelect.updateActiveButtonColors([0xFF000055, 0xFF000055]);
 		btSelect.updateInactiveButtonColors([0xFF000022, 0xFF000022]);
-		add(btSelect);
+		//add(btSelect);
 		trace('bt', btSelect.x, btSelect.y, btSelect.width, btSelect.height);
 		
 		defaultSprite = new FlxSprite(0, 0, AssetPaths.Enemy1__png);

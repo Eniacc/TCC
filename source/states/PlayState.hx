@@ -143,7 +143,7 @@ class PlayState extends FlxState
 			{
 				gameStage.bots.forEachAlive(function(bot:Bot)
 				{
-					if(B.owner == "Player" && B.overlaps(bot.sprite))
+					if(B.alive && bot.alive && B.owner == "Player" && B.overlaps(bot.sprite))
 					{
 						B.kill();
 						bot.kill();
@@ -152,7 +152,7 @@ class PlayState extends FlxState
 					}
 				});
 				
-				if (B.owner == "Enemy" && B.overlaps(player.sprite))
+				if (B.alive && player.sprite.alive && B.owner == "Enemy" && B.overlaps(player.sprite))
 				{
 					B.kill();
 					killPlayer();
