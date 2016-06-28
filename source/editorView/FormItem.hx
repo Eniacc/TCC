@@ -32,7 +32,6 @@ class FormItem extends FlxSpriteGroup
 		this.label.alignment = FlxTextAlign.RIGHT;
 		
 		content = new FlxInputText(fitRect.width - fitRect.x - 100, 0, 100, "0", 20);
-		//content.customFilterPattern = new EReg("^\\d+(\\.\\d+)*$","");
 		content.customFilterPattern = new EReg("[^0-9.]","");
 		enable();
 		

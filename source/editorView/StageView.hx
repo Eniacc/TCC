@@ -136,14 +136,35 @@ class StageView extends FlxSpriteGroup
 	{
 		//var wp:Waypoint = new Waypoint();
 		var wp:Waypoint = p.recycle(Waypoint, waypointFactory);
+		p.members.push(p.members.splice(p.members.indexOf(wp), 1)[0]);
+		
 		var point:FlxPoint = getPer(FlxG.mouse.x, FlxG.mouse.y);
 		wp.xPer = point.x;
 		wp.yPer = point.y;
-		wp.rotation = Waypoint.defaultrotation;
-		wp.speed = 1;
-		wp.wait = Waypoint.defaultWait;
-		wp.numShips = Waypoint.defaultNumShip;
-		wp.interval = Waypoint.defaultInterval;
+		//wp.rotation = Waypoint.defaultrotation;
+		//wp.speed = 1;
+		//wp.wait = Waypoint.defaultWait;
+		//wp.numShips = Waypoint.defaultNumShip;
+		//wp.interval = Waypoint.defaultInterval;
+		//wp.rateOfFire = Waypoint.defaultRateOfFire;
+		
+		var prevWp:Waypoint = prevWpAlive(wp);
+		if (prevWp != null)
+		{
+			wp.rotation = prevWp.rotation;
+			wp.speed = 	prevWp.speed;
+			wp.wait = prevWp.wait;
+			wp.numShips = prevWp.numShips;
+			wp.interval = prevWp.interval;
+			wp.rateOfFire = prevWp.rateOfFire;
+		}else{
+			wp.rotation = Waypoint.defaultrotation;
+			wp.speed = 1;
+			wp.wait = Waypoint.defaultWait;
+			wp.numShips = Waypoint.defaultNumShip;
+			wp.interval = Waypoint.defaultInterval;
+			wp.rateOfFire = Waypoint.defaultRateOfFire;
+		}
 		
 		trace(	"mouseX: "+ FlxG.mouse.x,
 				"backGround.x: "+ backGround.x,
@@ -154,12 +175,24 @@ class StageView extends FlxSpriteGroup
 				"wp.xPer * backGround.width: " + wp.xPer * backGround.width,
 				"wp.xPer * gameStage.width: "+wp.xPer * gameStage.width);
 		
-		p.members.push(p.members.splice(p.members.indexOf(wp), 1)[0]);
-		
 		add(wp);
 		selectedWaypoint = wp;
 		
 		callbackSelected(wp, p.members.indexOf(wp));
+	}
+	
+	function prevWpAlive(currentWp:Waypoint):Waypoint
+	{
+		for (i in -(p.members.indexOf(currentWp) - 1)...1)
+		{
+			if (p.members[ -i].alive)
+			{
+				trace(p.members.indexOf(currentWp), -i);
+				return p.members[ -i];
+			}
+		}
+		
+		return null;
 	}
 	
 	function waypointFactory():Waypoint 
@@ -172,7 +205,7 @@ class StageView extends FlxSpriteGroup
 	{
 		selectedWaypoint.kill();
 		remove(selectedWaypoint);
-		p.members.push(p.members.splice(p.members.indexOf(selectedWaypoint), 1)[0]);
+		//p.members.push(p.members.splice(p.members.indexOf(selectedWaypoint), 1)[0]);
 		callbackSelected(null , -1);
 	}
 	
