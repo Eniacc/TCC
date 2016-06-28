@@ -24,12 +24,11 @@ class Main extends Sprite
 		
 		addChild(new FlxGame(1280, 720, MenuState));
 		
+		FlxG.sound.muteKeys = FlxG.sound.volumeDownKeys = FlxG.sound.volumeUpKeys = null;
+		
 		if (_save.data.volume != null) {
 			FlxG.sound.volume = _save.data.volume;
 		}
-
-		//FlxG.sound.playMusic(AssetPaths.Battle_Normal__ogg, 1, true);
-
 		_save.close();
 	}
 }
