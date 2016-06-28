@@ -37,11 +37,8 @@ class SpriteIO
 			fr.browse(filters);
 			fr.addEventListener(Event.SELECT, onSelect);
 		#elseif (cpp || neko)
-			trace("Enter Neko");
-			var filters: FILEFILTERS = {count:2, descriptions: ["Image files"], extensions: ["*.png;*.jpg;*.jpeg;"]};
-			trace("Enter Neko2");
+			var filters: FILEFILTERS = {count:1, descriptions: ["Image files"], extensions: ["*.png;*.jpg;*.jpeg;"]};
 			var result:Array<String> = Dialogs.openFile("Select a sprite!", "Sprite Image", filters);
-			trace("Enter Neko3");
 			onSelect(result);
 		#end
 	}
@@ -85,7 +82,6 @@ class SpriteIO
 	#elseif (cpp || neko)
 	private function onSelect(arr:Array<String>):Void
 	{
-		trace("Enter Neko onSelect");
 		if (arr != null && arr.length > 0)
 		{
 			var img =

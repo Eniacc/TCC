@@ -60,7 +60,9 @@ class EditorState extends FlxState
 		add(waypointView);
 		
 		selectionView = new SelectionView(332, 40);
-		//selectionView.callbackSetPathURL = setPathURL;
+		#if (cpp || neko)
+		selectionView.callbackSetPathURL = setPathURL;
+		#end
 		add(selectionView);
 		
 		topBar = new TopBar(0, 0);

@@ -69,7 +69,11 @@ class Bot extends Ship
 	{
 		rateOfFire = currentWaypoint.rateOfFire;
 		speed = currentWaypoint.speed; // * FlxG.updateFramerate;
-		if (rateOfFire > 0) shootTimer.start(rateOfFire, shoot, 0);
+		if (rateOfFire > 0)
+		{
+			shoot();
+			shootTimer.start(1 / rateOfFire, shoot, 0);
+		}
 		else shootTimer.cancel();
 		
 		wait.start(currentWaypoint.wait <= 0 ? .01 : currentWaypoint.wait, gotoNextWaypoint);

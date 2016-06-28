@@ -26,7 +26,7 @@ class SelectionView extends FlxSpriteGroup
 	
 	private var defaultSprite:FlxSprite;
 	
-	public var fileIO:SpriteIO;
+	public var spriteIO:SpriteIO;
 	
 	public var callbackSetPathURL:Function;
 	
@@ -37,7 +37,7 @@ class SelectionView extends FlxSpriteGroup
 		this.x = X;
 		this.y = Y;
 		
-		fileIO = new SpriteIO(setSprite);
+		spriteIO = new SpriteIO(setSprite);
 		
 		background = new FlxSprite();
 		background.makeGraphic(332, 220);
@@ -54,11 +54,11 @@ class SelectionView extends FlxSpriteGroup
 		//urlBox.set_clipRect(new FlxRect(urlBox.x, urlBox.y, background.width, 30));
 		//add(urlBox);
 
-		btSelect = new FlxButtonPlus(3, spriteBox.height-3, fileIO.browse, "Select", Std.int(background.width-6), 30);
+		btSelect = new FlxButtonPlus(3, spriteBox.height-3, spriteIO.browse, "Select", Std.int(background.width-6), 30);
 		btSelect.borderColor = FlxColor.BLACK;
 		btSelect.updateActiveButtonColors([0xFF000055, 0xFF000055]);
 		btSelect.updateInactiveButtonColors([0xFF000022, 0xFF000022]);
-		//add(btSelect);
+		add(btSelect);
 		trace('bt', btSelect.x, btSelect.y, btSelect.width, btSelect.height);
 		
 		defaultSprite = new FlxSprite(0, 0, AssetPaths.Enemy1__png);
@@ -81,7 +81,7 @@ class SelectionView extends FlxSpriteGroup
 		
 		spriteBox.pixels = bitmapData;
 		
-		//FlxG.log.add(url);
-		//if(url != "") callbackSetPathURL(url);
+		trace(url);
+		if(url != "") callbackSetPathURL(url);
 	}
 }

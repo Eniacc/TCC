@@ -18,6 +18,8 @@ import openfl.net.URLLoader;
 
 #if (cpp||neko)
 import systools.Dialogs;
+import sys.io.File;
+import sys.FileSystem;
 #end
 
 /**
@@ -77,22 +79,23 @@ class JsonIO
 	
 	private function onSelect(arr:Array<String>):Void
 	{
-		trace("Enter Neko onSelect");
-		trace(arr);
-		//if (arr != null && arr.length > 0)
-		//{
+		if (arr != null && arr.length > 0)
+		{
+			load(File.getContent(arr[0]));
+			
+			//load(Json.stringify(arr[0]));
 			//var img =
 			//#if lime_legacy
 				//BitmapData.load(arr[0]);
 			//#else
 				//BitmapData.fromFile(arr[0]);
 			//#end
-			//
+			
 			//if (img != null) 
 			//{
 				//callback(img, arr[0]);
 			//}
-		//}
+		}
 	}
 	#end
 	
@@ -140,6 +143,9 @@ class JsonIO
 		#if flash
 		var fr:FileReference = new FileReference();
 		fr.save(json, "fase.json");
+		#elseif(cpp || neko)
+		var path:String = Dialogs.saveFile("fase.json", "Save stage!", "");
+		if(path != null) File.saveContent(path, json);
 		#end
 	}
 	
