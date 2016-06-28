@@ -113,9 +113,7 @@ class JsonIO
 			{
 				json += "{\"path\":[";
 				var path:Path = wave.members[j];
-				for (k in 0...path.members.length)
-				{
-					var wp:Waypoint = path.members[k];
+				path.forEachAlive(function(wp:Waypoint){
 					json += "{\"waypoint\":{";
 					json += "\"xPer\":" + wp.xPer;
 					json += ",\"yPer\":" + wp.yPer;
@@ -126,8 +124,9 @@ class JsonIO
 					json += ",\"numShips\":" + wp.numShips;
 					json += ",\"interval\":" + wp.interval;
 					json += "}}";
-					if (k < path.members.length - 1) json += ",";
-				}
+					json += ",";
+				});
+				if(json.charAt(json.length-1) == ",") json = json.substr(0, json.length - 1); //Retira última vírgula
 				json += "]}";
 				if (j < wave.members.length - 1) json += ",";
 			}
