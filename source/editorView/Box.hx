@@ -5,7 +5,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
-import model.Path;
+import model.Pathway;
 import model.Waypoint;
 
 /**
@@ -18,7 +18,7 @@ class Box extends FlxSpriteGroup
 	public var stage:FlxSprite;
 	public var selection:FlxSprite;
 	
-	public var paths:FlxTypedGroup<Path>;
+	public var paths:FlxTypedGroup<Pathway>;
 	private var waypoints:FlxSprite;
 
 	public function new()
@@ -44,7 +44,7 @@ class Box extends FlxSpriteGroup
 		add(selection);
 		selection.visible = false;
 		
-		paths = new FlxTypedGroup<Path>();
+		paths = new FlxTypedGroup<Pathway>();
 	}
 	
 	override public function update(elapsed:Float):Void 
@@ -53,7 +53,7 @@ class Box extends FlxSpriteGroup
 		FlxSpriteUtil.fill(waypoints, FlxColor.TRANSPARENT);
 		for (i in 0...paths.length)
 		{
-			var path:Path = paths.members[i];
+			var path:Pathway = paths.members[i];
 			//trace(path.length);
 			//for (j in 0...path.length)
 			var prevWp:Waypoint = null;

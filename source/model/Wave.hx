@@ -6,7 +6,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
  * ...
  * @author Oelson TCS
  */
-class Wave extends FlxTypedGroup<Path>
+class Wave extends FlxTypedGroup<Pathway>
 {
 	public function new()
 	{

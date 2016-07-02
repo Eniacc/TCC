@@ -13,7 +13,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import haxe.Constraints.Function;
 //import ibwwg.FlxScrollableArea;
-import model.Path;
+import model.Pathway;
 import model.Wave;
 import model.Waypoint;
 import openfl.Lib;
@@ -49,6 +49,7 @@ class Boxer extends FlxSpriteGroup
 		
 		background = new FlxSprite();
 		background.makeGraphic(166, 680);
+		FlxSpriteUtil.drawRect(background, 0, 0, background.width, background.height, FlxColor.TRANSPARENT, {thickness:5});
 		add(background);
 		
 		boxes = new FlxTypedSpriteGroup<Box>();

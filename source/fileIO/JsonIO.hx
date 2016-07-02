@@ -5,7 +5,8 @@ import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import haxe.Constraints.Function;
 import haxe.Json;
-import model.Path;
+import haxe.io.Path;
+import model.Pathway;
 import model.Wave;
 import model.Waypoint;
 import openfl.display.Bitmap;
@@ -20,6 +21,7 @@ import openfl.net.URLLoader;
 import systools.Dialogs;
 import sys.io.File;
 import sys.FileSystem;
+import sys.FileStat;
 #end
 
 /**
@@ -81,6 +83,8 @@ class JsonIO
 	{
 		if (arr != null && arr.length > 0)
 		{
+			var path:Path = new Path(arr[0]);
+			Registry.stageName = path.file;
 			load(File.getContent(arr[0]));
 			
 			//load(Json.stringify(arr[0]));
@@ -101,18 +105,14 @@ class JsonIO
 	
 	public function save(waves:FlxTypedGroup<Wave>)
 	{
-		//var json:String = Json.stringify(waves);
 		var json:String;
 		json = "{\"waves\":[";
-		for (i in 0...waves.members.length)
+		waves.forEachAlive(function(wave:Wave)
 		{
-			//json.waves[i] = "Wave" + i;
 			json += "{\"wave\":[";
-			var wave:Wave = waves.members[i];
-			for (j in 0...wave.members.length)
+			wave.forEachAlive(function(path:Pathway)
 			{
 				json += "{\"path\":[";
-				var path:Path = wave.members[j];
 				path.forEachAlive(function(wp:Waypoint){
 					json += "{\"waypoint\":{";
 					json += "\"xPer\":" + wp.xPer;
@@ -126,18 +126,16 @@ class JsonIO
 					json += "}}";
 					json += ",";
 				});
-				if(json.charAt(json.length-1) == ",") json = json.substr(0, json.length - 1); //Retira última vírgula
+				json = removeExtraComma(json);
 				json += "]}";
-				if (j < wave.members.length - 1) json += ",";
-			}
+				json += ",";
+			});
+			json = removeExtraComma(json);
 			json += "]}";
-			if (i < waves.members.length - 1) json += ",";
-		}
+			json += ",";
+		});
+		json = removeExtraComma(json);
 		json += "]}";
-		
-		var jsonDyn:Dynamic = Json.parse(json);
-		var jsonCheck:String = Json.stringify(jsonDyn, null, "   ");
-		//trace(jsonCheck);
 		
 		#if flash
 		var fr:FileReference = new FileReference();
@@ -146,6 +144,12 @@ class JsonIO
 		var path:String = Dialogs.saveFile("fase.json", "Save stage!", "");
 		if(path != null) File.saveContent(path, json);
 		#end
+	}
+	
+	function removeExtraComma(json:String):String
+	{
+		if (json.charAt(json.length - 1) == ",") json = json.substr(0, json.length - 1);
+		return json;
 	}
 	
 	public function load(json:String)
@@ -184,7 +188,7 @@ class JsonIO
 			for (wave in jwaves.wave)
 			{
 				//trace(wave);
-				var realPath:Path = new Path();
+				var realPath:Pathway = new Pathway();
 				var jpaths:{path:Array<Dynamic>} = wave;
 				for (path in jpaths.path)
 				{

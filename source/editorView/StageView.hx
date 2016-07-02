@@ -16,7 +16,7 @@ import haxe.Constraints.Function;
 import haxe.Timer;
 import lime.graphics.PixelFormat;
 import model.Bot;
-import model.Path;
+import model.Pathway;
 import model.Wave;
 import model.Waypoint;
 import model.Bullet;
@@ -27,7 +27,7 @@ import model.Bullet;
  */
 class StageView extends FlxSpriteGroup
 {
-	var p:Path = new Path();
+	var p:Pathway = new Pathway();
 	
 	var lines:FlxSprite;
 	
@@ -40,6 +40,8 @@ class StageView extends FlxSpriteGroup
 	
 	var bots:FlxTypedSpriteGroup<Bot> = new FlxTypedSpriteGroup<Bot>();
 	var timer:Timer;
+	
+	var offs:FlxSprite = new FlxSprite();
 	
 	public function new(?X:Float = 0, ?Y:Float = 0, gameStageScale:Float = 1)
 	{
@@ -68,9 +70,12 @@ class StageView extends FlxSpriteGroup
 		add(Registry.bulletPool);
 		
 		dif = new FlxPoint(backGround.x - gameStage.x, backGround.y - gameStage.y);
+		
+		offs.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT);
+		add(offs);
 	}
 	
-	public function loadPath(p:Path)
+	public function loadPath(p:Pathway)
 	{
 		this.p.forEachAlive(function(wp:Waypoint){
 			remove(wp);
@@ -85,7 +90,7 @@ class StageView extends FlxSpriteGroup
 	
 	override public function update(elapsed:Float):Void
 	{
-		
+		FlxSpriteUtil.fill(offs, FlxColor.TRANSPARENT);
 		if (FlxG.mouse.overlaps(backGround) && bots.countLiving() <= 0)
 		{
 			if (FlxG.mouse.justPressed)
@@ -101,8 +106,11 @@ class StageView extends FlxSpriteGroup
 			
 			if (FlxG.mouse.pressed && selectedWaypoint != null)
 			{
+				trace(FlxG.mouse.x, selectedWaypoint.x);
 				selectedWaypoint.xPer = getPer(FlxG.mouse.x, FlxG.mouse.y).x;
 				selectedWaypoint.yPer = getPer(FlxG.mouse.x, FlxG.mouse.y).y;
+				FlxSpriteUtil.drawCircle(offs, (selectedWaypoint.xPer * gameStage.width) - dif.x, (selectedWaypoint.yPer * gameStage.height) - dif.y, 10, FlxColor.YELLOW);
+				//FlxSpriteUtil.drawCircle(lines, FlxG.mouse.x, FlxG.mouse.y, 10, FlxColor.YELLOW);
 				callbackSelected(selectedWaypoint, p.members.indexOf(selectedWaypoint));
 			}
 		}

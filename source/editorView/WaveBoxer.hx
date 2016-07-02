@@ -3,7 +3,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import haxe.Constraints.Function;
-import model.Path;
+import model.Pathway;
 import model.Wave;
 import model.Waypoint;
 
@@ -30,10 +30,10 @@ class WaveBoxer extends Boxer
 		{
 			var box:Box = new Box();
 			//var paths:FlxTypedGroup<Path> = waves.members[i];
-			var paths:FlxTypedGroup<Path> = w;
+			var paths:FlxTypedGroup<Pathway> = w;
 			//box.paths = waves.members[i];
 			//for (j in 0...paths.members.length)
-			paths.forEachExists(function(p:Path)
+			paths.forEachExists(function(p:Pathway)
 			{
 				//var path:Path = paths.members[j];
 				//box.paths.add(path);

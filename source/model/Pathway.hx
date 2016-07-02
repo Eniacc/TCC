@@ -9,7 +9,7 @@ import haxe.Timer;
  * ...
  * @author Oelson TCS
  */
-class Path extends FlxTypedSpriteGroup<Waypoint>
+class Pathway extends FlxTypedSpriteGroup<Waypoint>
 {
 	public var spriteURL:String = "";
 	

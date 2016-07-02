@@ -3,7 +3,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import haxe.Constraints.Function;
-import model.Path;
+import model.Pathway;
 import model.Waypoint;
 
 /**
@@ -20,12 +20,12 @@ class PathBoxer extends Boxer
 		this.callbackSelect = callbackSelect;
 	}
 	
-	public function loadPaths(paths:FlxTypedGroup<Path>)
+	public function loadPaths(paths:FlxTypedGroup<Pathway>)
 	{
 		clearBoxes();
 		
 		//for (j in 0...paths.members.length)
-		paths.forEachExists(function(p:Path)
+		paths.forEachExists(function(p:Pathway)
 		{
 			var box:Box = new Box();
 			//var path:Path = paths.members[j];

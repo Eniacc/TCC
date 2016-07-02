@@ -8,7 +8,7 @@ import flixel.util.FlxColor;
 import haxe.Constraints.Function;
 import haxe.Timer;
 import model.Bot;
-import model.Path;
+import model.Pathway;
 import model.Wave;
 import model.Bullet;
 
@@ -118,7 +118,7 @@ class GameStageView extends FlxSpriteGroup
 		//}
 	//}
 	
-	function spawnBot(p:Path)
+	function spawnBot(p:Pathway)
 	{
 		var bot:Bot = bots.recycle(Bot, botFactory);
 		bot.speed = .001;

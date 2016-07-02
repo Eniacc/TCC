@@ -43,36 +43,20 @@ class TopBar extends FlxSpriteGroup
 		
 		labelWave.color = labelPath.color = labelSprite.color = labelStage.color = FlxColor.BLACK;
 		
-		var btHome:FlxButton = new FlxButton(0, 0, "Title", gotoTitle);
-		btHome.makeGraphic(90, 40, 0xFF000055);
+		var btHome:EditorButton = new EditorButton(0, 0, "Title", gotoTitle);
 		btHome.setPosition(background.width - btHome.width, 0);
-		btHome.label = new FlxText(0, 0, btHome.width, "Title", 20);
-		btHome.label.alignment = FlxTextAlign.CENTER;
-		FlxSpriteUtil.drawRect(btHome, 0, 0, btHome.width, btHome.height, FlxColor.TRANSPARENT, {thickness:5});
 		add(btHome);
 		
-		var btImport:FlxButton = new FlxButton(0, 0, "", importJsonHandler);
-		btImport.makeGraphic(90, 40, 0xFF000055);
+		var btImport:EditorButton = new EditorButton(0, 0, "Import", importJsonHandler);
 		btImport.setPosition(btHome.x - btImport.width, 0);
-		btImport.label = new FlxText(0, 0, btImport.width, "Import", 20);
-		btImport.label.alignment = FlxTextAlign.CENTER;
-		FlxSpriteUtil.drawRect(btImport, 0, 0, btImport.width, btImport.height, FlxColor.TRANSPARENT, {thickness:5});
 		add(btImport);
 		
-		var btExport:FlxButton = new FlxButton(0, 0, "", exportJsonHandler);
-		btExport.makeGraphic(90, 40, 0xFF000055);
+		var btExport:EditorButton = new EditorButton(0, 0, "Export", exportJsonHandler);
 		btExport.setPosition(btImport.x - btExport.width, 0);
-		btExport.label = new FlxText(0, 0, btExport.width, "Export", 20);
-		btExport.label.alignment = FlxTextAlign.CENTER;
-		FlxSpriteUtil.drawRect(btExport, 0, 0, btExport.width, btExport.height, FlxColor.TRANSPARENT, {thickness:5});
 		add(btExport);
 		
-		var btNew:FlxButton = new FlxButton(0, 0, "", newProjectHandle);
-		btNew.makeGraphic(90, 40, 0xFF000055);
+		var btNew:EditorButton = new EditorButton(0, 0, "New", newProjectHandle);
 		btNew.setPosition(btExport.x - btNew.width, 0);
-		btNew.label = new FlxText(0, 0, btNew.width, "New", 20);
-		btNew.label.alignment = FlxTextAlign.CENTER;
-		FlxSpriteUtil.drawRect(btNew, 0, 0, btNew.width, btNew.height, FlxColor.TRANSPARENT, {thickness:5});
 		add(btNew);
 	}
 	

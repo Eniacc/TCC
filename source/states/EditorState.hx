@@ -14,7 +14,7 @@ import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxRect;
 import model.Bot;
-import model.Path;
+import model.Pathway;
 import model.Wave;
 import model.Waypoint;
 
@@ -84,7 +84,7 @@ class EditorState extends FlxState
 	
 	function setPathURL(url:String) 
 	{
-		var path:Path = waves.members[currentWave].members[currentPath];
+		var path:Pathway = waves.members[currentWave].members[currentPath];
 		path.spriteURL = url;
 	}
 	
@@ -124,7 +124,7 @@ class EditorState extends FlxState
 	function addWave()
 	{
 		var wave:Wave = new Wave();
-		wave.add(new Path());
+		wave.add(new Pathway());
 		waves.add(wave);
 		
 		currentWave = wave.length - 1;
@@ -134,7 +134,7 @@ class EditorState extends FlxState
 	
 	function addPath()
 	{
-		waves.members[currentWave].add(new Path());
+		waves.members[currentWave].add(new Pathway());
 		currentPath = waves.members[currentWave].members.length - 1;
 		//pathBoxer.loadPaths(waves.members[currentWave]);
 		selectPath(currentPath);
@@ -150,7 +150,7 @@ class EditorState extends FlxState
 	
 	function removePath()
 	{
-		var paths:FlxTypedGroup<Path> = waves.members[currentWave];
+		var paths:FlxTypedGroup<Pathway> = waves.members[currentWave];
 		trace(paths.length, paths.members.length);
 		paths.remove(paths.members[currentPath], true);
 		trace(paths.length, paths.members.length);
@@ -188,7 +188,7 @@ class EditorState extends FlxState
 			var wave:Wave = new Wave();
 			for (i in 0...FlxG.random.int(5,10)) 
 			{
-				var path:Path = new Path();
+				var path:Pathway = new Pathway();
 				for (i in 0...FlxG.random.int(1,5))
 				{
 					var waypoint:Waypoint = new Waypoint();

@@ -6,7 +6,7 @@ import flixel.math.FlxRect;
 import flixel.tweens.FlxTween;
 import flixel.tweens.misc.VarTween;
 import flixel.util.FlxTimer;
-import model.Path;
+import model.Pathway;
 
 /**
  * ...
@@ -14,7 +14,7 @@ import model.Path;
  */
 class Bot extends Ship
 {
-	public var botPath:Path;
+	public var botPath:Pathway;
 	public var reference:FlxRect;
 	private var currentWaypoint:Waypoint;
 	private var inEditor:Bool;
@@ -33,7 +33,7 @@ class Bot extends Ship
 		//sprite = new FlxSprite(0, 0, AssetPaths.Bot__png);
 		sprite = new FlxSprite(0, 0, AssetPaths.Enemy1__png);
 		add(sprite);
-		botPath = new Path();
+		botPath = new Pathway();
 		
 		wait = new FlxTimer();
 		shootTimer = new FlxTimer();

@@ -9,6 +9,7 @@ import flixel.addons.editors.tiled.TiledMap.FlxTiledAsset;
 import flixel.effects.particles.FlxParticle;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxSound;
+import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxTimer;
@@ -28,9 +29,6 @@ class PlayState extends FlxState
 	 */
 	
 	private var player:Player;
-	//private var grpEnemy:FlxTypedGroup<Enemy>;
-	private var grpBullet:FlxTypedGroup<Bullet>;
-	private var sndBullet:FlxSound;
 	private var music:FlxSound;
 	private var sndExplosion:FlxSound;
 	private var countFrame:Float = 0;
@@ -58,16 +56,12 @@ class PlayState extends FlxState
 		add(backdrop = new FlxBackdrop(AssetPaths.background__jpg));
 		backdrop.velocity.set(0, 200);
 		
-		//grpBullet = new FlxTypedGroup<Bullet>();
-		//add(grpBullet);
-		
-		//add(new FlxText(100, 100, 200, "Xbox360 Controller " + ((player.gamePad == null) ? "NOT FOUND" : "FOUND")));
-		
-		//trace(FlxG.overlap(player, grpEnemy));
-		
-		sndBullet = FlxG.sound.load(AssetPaths.shot1__wav);
-		sndExplosion = FlxG.sound.load(AssetPaths.explosion1__mp3);
+		sndExplosion = FlxG.sound.load(AssetPaths.explosion1__wav);
+		#if flash
 		music = FlxG.sound.load(AssetPaths.Battle_Normal__mp3);
+		#elseif(cpp || neko)
+		music = FlxG.sound.load(AssetPaths.Battle_Normal__ogg);
+		#end
 		music.volume = .5;
 		music.play();
 		
@@ -97,6 +91,8 @@ class PlayState extends FlxState
 		hud = new HUD();
 		add(hud);
 		
+		add(new FlxText(100, 100, 200, "Xbox360 Controller " + ((player.gamePad == null) ? "NOT FOUND" : "FOUND")));
+		
 		reviveTimer = new FlxTimer();
 		
 		super.create();
@@ -118,8 +114,6 @@ class PlayState extends FlxState
 	override public function destroy():Void
 	{
 		player = FlxDestroyUtil.destroy(player);
-		grpBullet = FlxDestroyUtil.destroy(grpBullet);
-		sndBullet = FlxDestroyUtil.destroy(sndBullet);
 		music = FlxDestroyUtil.destroy(music);
 		sndExplosion = FlxDestroyUtil.destroy(sndExplosion);
 		backdrop = FlxDestroyUtil.destroy(backdrop);
@@ -170,22 +164,12 @@ class PlayState extends FlxState
 					killPlayer();
 					sndExplosion.play(true);
 				}
-				//trace(FlxG.pixelPerfectOverlap(bot.sprite, player.sprite));
 			});
 		}
-		
-		//Registry.bulletPool.forEach(function(B:Bullet) {
-			//if (B.overlaps(player))
-			//{
-				//trace("OVERLAP1");
-			//}
-		//});
 		
 		//FlxG.overlap(gameStage.bots, player, enemyHit);
 		//FlxG.overlap(Registry.bulletPool, gameStage.bots, bulletHitEnemy);
 		//FlxG.overlap(Registry.bulletPool, player, bulletHitPlayer);
-		//grpBullet.forEach(bulletTest);
-		//grpEnemy.forEach(hitTest);
 	}
 	
 	function killPlayer()
@@ -198,102 +182,6 @@ class PlayState extends FlxState
 			player.revivePlayer(); 
 		});
 	}
-	
-	//function bulletHitPlayer(obj1:FlxObject, obj2:FlxObject) 
-	//{
-		//trace("BULLET-PLAYER HIT: ", obj1, obj2);
-		//obj1.kill();
-		//obj2.kill();
-		//gameOver();
-	//}
-	//
-	//function bulletHitEnemy(obj1:FlxObject, obj2:FlxObject) 
-	//{
-		//trace("BULLET-ENEMY HIT: ", obj1, obj2);
-		//obj1.kill();
-		//obj2.kill();
-	//}
-	//
-	//function enemyHit(obj1:FlxObject, obj2:FlxObject) 
-	//{
-		//trace("DIRECT HIT: ", obj1, obj2);
-		////player.killPlayer();
-		//gameOver();
-	//}
-	
-	//private function hitTest(E:Enemy)
-	//{
-		//if (FlxG.pixelPerfectOverlap(E, player))
-		//{
-			//sndExplosion.play(true);
-			//player.killPlayer();
-			//player = FlxDestroyUtil.destroy(player);
-			//health--;
-			//hud.updateHUD(health, enemiesKilled);
-			//startPlayer();
-		//}
-	//}
-	
-	//private function bulletTest(B:Bullet)
-	//{
-		//if (!B.isOnScreen(FlxG.camera)) destroyBullet(B);
-		//grpEnemy.forEach(function(E:Enemy) {
-			//if (FlxG.pixelPerfectOverlap(B, E))
-			//{
-				//bulletHitEnemy(B, E);
-			//}});
-		//trace('Objects: '+(grpEnemy.length+grpBullet.length+1)+' FPS: '+fps.currentFPS);
-	//}
-	//
-	//private function destroyBullet(B:Bullet)
-	//{
-		//B.kill();
-		//B.destroy();
-		//grpBullet.remove(B);
-	//}
-	
-	//private function bulletHitEnemy(B:Bullet, E:Enemy)
-	//{
-		//if (E.alive && E.exists && B.alive && B.exists)
-		//{
-			//destroyBullet(B);
-			//E.kill();
-			//E.destroy();
-			//grpEnemy.remove(E);
-			//grpEnemy.add(new Enemy(FlxG.random.int(200, 1200), FlxG.random.int(0, 400))); // TEST
-			//if(Math.random() > .8) grpEnemy.add(new Enemy(FlxG.random.int(200, 1200), FlxG.random.int(0, 400))); // TEST
-			//
-			//sndExplosion.play(true);
-			//
-			//var fe = new FlxEmitter(B.x, B.y, 30);
-//
-			//fe.launchMode = FlxEmitterMode.SQUARE;
-			//fe.velocity.set(-500, -200, 500, 50);
-			//fe.lifespan.set(0, 2);
-			//add(fe);
-			//
-			//for (i in 0...(Std.int(fe.maxSize / 3))) 
-			//{
-				//_explosionPixel = new FlxParticle();
-				//_explosionPixel.makeGraphic(2, 2, FlxColor.YELLOW);
-				//_explosionPixel.visible = false; 
-				//fe.add(_explosionPixel);
-				//_explosionPixel = new FlxParticle();
-				//_explosionPixel.makeGraphic(1, 1, FlxColor.RED);
-				//_explosionPixel.visible = false;
-				//fe.add(_explosionPixel);
-				//_explosionPixel = new FlxParticle();
-				//_explosionPixel.makeGraphic(1, 1, FlxColor.WHITE);
-				//_explosionPixel.visible = false;
-				//fe.add(_explosionPixel);
-			//}
-			//fe.start(true, 3);
-			//
-			//
-			//enemiesKilled++;
-			//hud.updateHUD(health,enemiesKilled);
-		//}
-	//}
 	
 	private function openMenu() {
 			
