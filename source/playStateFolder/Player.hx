@@ -8,6 +8,7 @@ import flixel.input.gamepad.id.XInputID;
 import flixel.math.FlxAngle;
 import flixel.FlxG;
 import flixel.math.FlxPoint;
+import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import haxe.Log;
 import model.Ship;
@@ -20,6 +21,7 @@ class Player extends Ship
 	public var gamePad:FlxGamepad;
 	public var controlSpeed:Float;
 	private var firing:Float = 0;
+	public var hitbox:FlxSprite;
 	
 	public function new(?X:Float = 0, ?Y:Float = 0) 
 	{
@@ -36,8 +38,13 @@ class Player extends Ship
 		sprite.setFacingFlip(FlxObject.RIGHT, true, false);
 		sprite.animation.add("lr", [1]);
 		sprite.animation.add("ud", [0]);
-		sprite.animation.add("destroy", [2,3,4,5,6,7,8,9], 10, false);
+		sprite.animation.add("destroy", [2, 3, 4, 5, 6, 7, 8, 9], 10, false);
 		add(sprite);
+		
+		hitbox = new FlxSprite();
+		hitbox.makeGraphic(10, 10, FlxColor.TRANSPARENT);
+		FlxSpriteUtil.drawCircle(hitbox, 5, 5, 5, FlxColor.YELLOW, { thickness:2, color:FlxColor.WHITE } );
+		add(hitbox);
 		
 		gamePad = FlxG.gamepads.lastActive;
 		if (gamePad != null) gamePad.deadZone = 0.2;
@@ -130,12 +137,14 @@ class Player extends Ship
 	public function killPlayer():Void
 	{
 		sprite.alive = false;
+		hitbox.visible = false;
 		sprite.animation.play("destroy");
 	}
 	
 	public function revivePlayer()
 	{
 		sprite.alive = true;
+		hitbox.visible = true;
 		sprite.animation.play("lr");
 	}
 	
@@ -146,13 +155,14 @@ class Player extends Ship
 	
 	override public function update(elapsed:Float):Void
 	{
+		super.update(elapsed);
 		if (sprite.alive)
 		{
 			//movement();	
 			controla(elapsed);
+			hitbox.setPosition(sprite.x + sprite.width / 2 - hitbox.width / 2, sprite.y + sprite.height / 2 -hitbox.height / 2);
 			FlxSpriteUtil.bound(sprite, Registry.minXShip, Registry.maxXShip, Registry.minYShip, Registry.maxYShip);
 		}
-		super.update(elapsed);
 	}
 	
 	private function controla(elapsed:Float)

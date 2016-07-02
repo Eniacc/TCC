@@ -15,14 +15,14 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="C:\TCC\Haxe320\haxe\flixel\4,0,1" />
-    <class path="C:\TCC\Haxe320\haxe\openfl\3,6,1" />
-    <class path="C:\TCC\Haxe320\haxe\lime\2,9,1" />
-    <class path="C:\TCC\Haxe320\haxe\flixel-addons\2,0,0" />
-    <class path="C:\TCC\Haxe320\haxe\flixel-ui\2,0,0" />
-    <class path="C:\TCC\Haxe320\haxe\systools\1,1,0" />
+    <class path="C:\Programming\HaxeToolkit\haxe\lib\flixel\4,0,1" />
+    <class path="C:\Programming\HaxeToolkit\haxe\lib\openfl\3,6,1" />
+    <class path="C:\Programming\HaxeToolkit\haxe\lib\lime\2,9,1" />
+    <class path="C:\Programming\HaxeToolkit\haxe\lib\flixel-addons\2,0,0" />
+    <class path="C:\Programming\HaxeToolkit\haxe\lib\flixel-ui\2,0,0" />
+    <class path="C:\Programming\HaxeToolkit\haxe\lib\systools\1,1,0" />
     <class path="source" />
-    <class path="C:\TCC\Haxe320\haxe\openfl\3,6,1\extern" />
+    <class path="C:\Programming\HaxeToolkit\haxe\lib\openfl\3,6,1\extern" />
     <class path="export\windows\neko\haxe" />
   </classpaths>
   <!-- Build options -->

@@ -123,7 +123,7 @@ class GameStageView extends FlxSpriteGroup
 		var bot:Bot = bots.recycle(Bot, botFactory);
 		bot.speed = .001;
 		bot.botPath = p;
-		bot.reference = this.getHitbox();// new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
+		bot.reference = gameArea.getHitbox();// new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
 		bot.awake();
 		
 		totalSpawnedInWave++;

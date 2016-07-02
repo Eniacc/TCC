@@ -135,6 +135,8 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		
+		trace(gameStage.width);
+		
 		if (FlxG.keys.anyPressed(["ESCAPE"])) openMenu();
 		
 		if (player.sprite.alive)
@@ -152,7 +154,7 @@ class PlayState extends FlxState
 					}
 				});
 				
-				if (B.alive && player.sprite.alive && B.owner == "Enemy" && B.overlaps(player.sprite))
+				if (B.alive && player.sprite.alive && B.owner == "Enemy" && B.overlaps(player.hitbox))
 				{
 					B.kill();
 					killPlayer();
@@ -162,7 +164,7 @@ class PlayState extends FlxState
 			
 			gameStage.bots.forEachAlive(function(bot:Bot)
 			{
-				if (bot.sprite.overlaps(player.sprite))
+				if (bot.sprite.overlaps(player.hitbox))
 				{
 					bot.kill();
 					killPlayer();
