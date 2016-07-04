@@ -34,13 +34,13 @@ class Ship extends FlxSpriteGroup
 		bullet.speed = speed;
 		bullet.angle = sprite.angle;
 		bullet.velocity.set(Math.cos((bullet.angle-90) * Math.PI / 180) * speed, Math.sin((bullet.angle-90) * Math.PI / 180) * speed);
-		trace(Registry.bulletPool.length);
+		//trace(Registry.bulletPool.length);
 		sndBullet.play(true);
 	}
 	
 	function bulletFactory():Bullet
 	{
-		trace("Bullet Factory");
+		//trace("Bullet Factory");
 		return new Bullet();
 	}
 	

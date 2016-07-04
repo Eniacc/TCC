@@ -25,7 +25,7 @@ class GameStageView extends FlxSpriteGroup
 	public var callbackStageComplete:Function;
 	public var callbackGameOver:Function;
 	
-	private var gameArea:FlxSprite;
+	public var gameArea:FlxSprite;
 	private var botArea:FlxSpriteGroup;
 	private var totalWaveBots:Int = 0;
 	private var totalSpawnedInWave:Int = 0;
@@ -88,7 +88,7 @@ class GameStageView extends FlxSpriteGroup
 					totalWaveBots += p.getFirstAlive().numShips;
 					p.spawnBots(spawnBot);
 				}else{
-					callbackStageComplete();
+					//callbackStageComplete();
 				}
 			}
 		}
@@ -100,6 +100,7 @@ class GameStageView extends FlxSpriteGroup
 		bot.speed = .001;
 		bot.botPath = p;
 		bot.reference = gameArea.getHitbox();// new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
+		trace(gameArea.getHitbox());
 		bot.awake();
 		
 		totalSpawnedInWave++;

@@ -96,6 +96,8 @@ class EditorState extends FlxState
 	
 	function importJson() 
 	{
+		waveBoxer.clearBoxes();
+		pathBoxer.clearBoxes();
 		var jsonIO:JsonIO = new JsonIO(loadWaves);
 		jsonIO.browse();
 	}
@@ -104,6 +106,8 @@ class EditorState extends FlxState
 	{
 		this.waves = JsonIO.gamify(json);
 		waveBoxer.loadWaves(this.waves);
+		selectWave(0);
+		selectPath(0);
 	}
 	
 	function newStage():Void

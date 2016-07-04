@@ -49,7 +49,7 @@ class Bot extends Ship
 	{
 		gotoWaypoint(getNextWaypoint(null));
 		scoreValue = 50;
-		scoreTimer.start(.1, function(timer:FlxTimer){scoreValue--; }, scoreValue);
+		scoreTimer.start(.1, function(timer:FlxTimer){scoreValue--; trace("value", scoreValue); }, scoreValue-1);
 	}
 	
 	function gotoWaypoint(wp:Waypoint) 

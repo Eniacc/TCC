@@ -129,7 +129,7 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		
-		trace(gameStage.width);
+		//trace(gameStage.width);
 		
 		if (FlxG.keys.anyPressed(["ESCAPE"])) openMenu();
 		
@@ -139,12 +139,13 @@ class PlayState extends FlxState
 			{
 				gameStage.bots.forEachAlive(function(bot:Bot)
 				{
+					//trace("botalive",bot);
 					if(B.alive && bot.alive && B.owner == "Player" && B.overlaps(bot.sprite))
 					{
+						hud.updateHUD(3, hud.score+bot.scoreValue);
 						B.kill();
 						bot.kill();
 						sndExplosion.play(true);
-						hud.updateHUD(3, hud.score+bot.scoreValue);
 					}
 				});
 				
@@ -178,7 +179,7 @@ class PlayState extends FlxState
 		sndExplosion.play(true);
 		hud.updateHUD(3, 0);
 		reviveTimer.start(1, function(timer:FlxTimer){
-			player.sprite.setPosition(gameStage.x + gameStage.width / 2 - player.sprite.width / 2, 600);
+			player.sprite.setPosition(gameStage.gameArea.x + gameStage.gameArea.width / 2 - player.sprite.width / 2, 600);
 			player.revivePlayer(); 
 		});
 	}

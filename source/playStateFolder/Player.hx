@@ -170,11 +170,11 @@ class Player extends Ship
 		//Controls here
 		if (FlxG.keys.pressed.SPACE)
 		{
-			firing += elapsed;
-			if (firing >= rateOfFire)
+			firing -= elapsed;
+			if (firing <= 0)
 			{
 				fire(500, "Player");
-				firing = 0;
+				firing = rateOfFire;
 			}
 		}else if (FlxG.keys.justReleased.SPACE) firing = 0;
 		if (FlxG.keys.pressed.SHIFT) controlSpeed = speed * .5;
