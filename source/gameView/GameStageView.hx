@@ -86,7 +86,6 @@ class GameStageView extends FlxSpriteGroup
 				if (p.getFirstAlive() != null)
 				{
 					totalWaveBots += p.getFirstAlive().numShips;
-					//spawnPath(currentPath);
 					p.spawnBots(spawnBot);
 				}else{
 					callbackStageComplete();
@@ -94,29 +93,6 @@ class GameStageView extends FlxSpriteGroup
 			}
 		}
 	}
-	
-	//private function spawnPath(p:Path) 
-	//{
-		//spawnBot();
-		//trace("spawin!11!");
-		//var numShips:Int = p.getFirstAlive().numShips;
-		//if (numShips > 1)
-		//{
-			//timer = new Timer(Std.int(p.getFirstAlive().interval * 1000));
-			//timer.run = spawnBot;
-			////
-			////function spawnBot() {
-				////var bot:Bot = bots.recycle(Bot, botFactory);
-				////bot.speed = .001;
-				////bot.botPath = p;
-				////bot.reference = this.getHitbox();// new FlxRect(stage.gameStage.x, stage.gameStage.y, stage.gameStage.width, stage.gameStage.height);
-				////bot.awake();
-				////
-				////p.getFirstAlive().numSpawned++;
-				////if (p.getFirstAlive().numSpawned >= p.getFirstAlive().numShips && timer != null) timer.stop();
-			////};
-		//}
-	//}
 	
 	function spawnBot(p:Pathway)
 	{

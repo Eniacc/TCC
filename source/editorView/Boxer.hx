@@ -81,12 +81,12 @@ class Boxer extends FlxSpriteGroup
 	
 	function addBoxHandler() 
 	{
-		callbackAdd();
+		if(!dragging) callbackAdd();
 	}
 	
 	function removeBoxHandler() 
 	{
-		callbackRemove();
+		if(!dragging) callbackRemove();
 		//removeBox(boxes.members[currentSelected]);
 	}
 	
@@ -104,7 +104,7 @@ class Boxer extends FlxSpriteGroup
 		this.currentSelected = currentSelected;
 		for (i in 0...boxes.members.length)
 		{
-			boxes.members[i].selection.visible = i == currentSelected;
+			boxes.members[i].selection.visible = i == this.currentSelected;
 		}
 	}
 	
@@ -126,7 +126,7 @@ class Boxer extends FlxSpriteGroup
 	public function clearBoxes() 
 	{
 		boxes.clear();
-		btDrag.y = btRange.y;
+		//btDrag.y = btRange.y;
 		//while(boxes.length > 0)
 		//{
 			//boxes.remove(boxes.members.pop());
@@ -167,7 +167,7 @@ class Boxer extends FlxSpriteGroup
 		
 		if (dragging)
 		{
-			btDrag.y = FlxMath.maxAdd(0, FlxG.mouse.y, Std.int(btRange.height), Std.int(btRange.y));
+			btDrag.y = FlxMath.maxAdd(0, Std.int(FlxG.mouse.y - btDrag.height * .5), Std.int(btRange.height), Std.int(btRange.y));
 		}
 		positionBoxes();
 		if (FlxG.mouse.justReleased) dragging = false;
@@ -175,8 +175,8 @@ class Boxer extends FlxSpriteGroup
 	
 	function positionBoxes() 
 	{
-		var contentRange:Float = background.height - boxes.height;
-		if (contentRange > 0)
+		var contentRange:Float = background.height - boxes.height - btNew.height;
+		if (contentRange >= 0)
 		{
 			boxes.y = btRange.y;
 			btDrag.visible = false;
@@ -184,7 +184,7 @@ class Boxer extends FlxSpriteGroup
 		else
 		{
 			btDrag.visible = true;
-			boxes.y = btRange.y + (btDrag.y / btRange.height) * contentRange;
+			boxes.y = btRange.y + (((btDrag.y - 40) / (btRange.height - 40)) * contentRange);
 		}
 	}
 }

@@ -91,7 +91,7 @@ class PlayState extends FlxState
 		hud = new HUD();
 		add(hud);
 		
-		add(new FlxText(100, 100, 200, "Xbox360 Controller " + ((player.gamePad == null) ? "NOT FOUND" : "FOUND")));
+		//add(new FlxText(100, 100, 200, "Xbox360 Controller " + ((player.gamePad == null) ? "NOT FOUND" : "FOUND")));
 		
 		reviveTimer = new FlxTimer();
 		

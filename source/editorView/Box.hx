@@ -26,21 +26,21 @@ class Box extends FlxSpriteGroup
 		super();
 		
 		background = new FlxSprite();
-		background.makeGraphic(166, 166);
-		FlxSpriteUtil.drawRect(background, 0, 0, 166, 166, FlxColor.TRANSPARENT, {thickness:5});
+		background.makeGraphic(166, 160);
+		FlxSpriteUtil.drawRect(background, 0, 0, 166, 160, FlxColor.TRANSPARENT, {thickness:5});
 		add(background);
 		
 		stage = new FlxSprite();
-		stage.makeGraphic(166, 166, 0xFF000055);
+		stage.makeGraphic(166, 160, 0xFF000055);
 		stage.scale.set(.9, .9);
 		add(stage);
 		
 		waypoints = new FlxSprite();
-		waypoints.makeGraphic(166, 166,FlxColor.TRANSPARENT,true);
+		waypoints.makeGraphic(166, 160,FlxColor.TRANSPARENT,true);
 		add(waypoints);
 		
 		selection = new FlxSprite();
-		selection.makeGraphic(166, 166, 0x22FFFFFF);
+		selection.makeGraphic(166, 160, 0x22FFFFFF);
 		add(selection);
 		selection.visible = false;
 		
@@ -51,11 +51,9 @@ class Box extends FlxSpriteGroup
 	{
 		super.update(elapsed);
 		FlxSpriteUtil.fill(waypoints, FlxColor.TRANSPARENT);
-		for (i in 0...paths.length)
+		paths.forEachAlive(function(path:Pathway)
 		{
-			var path:Pathway = paths.members[i];
 			//trace(path.length);
-			//for (j in 0...path.length)
 			var prevWp:Waypoint = null;
 			path.forEachAlive(function(wp:Waypoint)
 			{
@@ -68,7 +66,7 @@ class Box extends FlxSpriteGroup
 				
 				prevWp = wp;
 			});
-		}
+		});
 		
 		//waypoints.pixels = paths.members[0].members[0].pixels;
 	}

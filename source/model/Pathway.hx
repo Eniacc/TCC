@@ -29,7 +29,7 @@ class Pathway extends FlxTypedSpriteGroup<Waypoint>
 		if (getFirstAlive().numShips > 1)
 		{
 			var timer:FlxTimer = new FlxTimer();
-			timer.start(getFirstAlive().interval, spawn , getFirstAlive().numShips - 1);
+			timer.start(getFirstAlive().interval, spawn, getFirstAlive().numShips - 1);
 		}
 	}
 	private function spawn(timer:FlxTimer)

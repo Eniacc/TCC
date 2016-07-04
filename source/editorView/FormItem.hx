@@ -21,7 +21,7 @@ class FormItem extends FlxSpriteGroup
 	var content:FlxInputText;
 	@:isVar public var value(get, set):Float;
 	
-	public function new(fitRect:FlxRect, label:String)
+	public function new(fitRect:FlxRect, label:String, justLabel:Bool = false)
 	{
 		super();
 		
@@ -30,13 +30,12 @@ class FormItem extends FlxSpriteGroup
 		this.label.text = label;
 		this.label.color = FlxColor.BLACK;
 		this.label.alignment = FlxTextAlign.RIGHT;
+		add(this.label);
 		
 		content = new FlxInputText(fitRect.width - fitRect.x - 100, 0, 100, "0", 20);
 		content.customFilterPattern = new EReg("[^0-9.]","");
 		enable();
-		
-		add(this.label);
-		add(content);
+		if (!justLabel) add(content);
 	}
 	
 	function get_value():Float 

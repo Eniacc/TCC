@@ -61,6 +61,7 @@ class Bot extends Ship
 			currentWaypoint = wp;
 			var botX:Float = reference.x + wp.xPer * reference.width - sprite.width * .5;
 			var botY:Float = reference.y + wp.yPer * reference.height - sprite.height * .5;
+			trace(sprite.x, sprite.y, botX, botY, getDistance(Std.int(botX), Std.int(botY)));
 			tween = FlxTween.tween(sprite, {x: botX, y: botY , angle: wp.rotation}, speed, {onComplete: getParams});
 		}
 	}
@@ -121,8 +122,8 @@ class Bot extends Ship
 		super.kill();
 	}
 	
-	//function getDistance(gx:Int, gy:Int) 
-	//{
-		//return Math.sqrt(Math.pow(sprite.x - gx, 2) + Math.pow(sprite.y - gy, 2));
-	//}
+	function getDistance(gx:Int, gy:Int) 
+	{
+		return Math.sqrt(Math.pow(sprite.x - gx, 2) + Math.pow(sprite.y - gy, 2));
+	}
 }
